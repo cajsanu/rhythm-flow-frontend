@@ -13,12 +13,12 @@ const getUsers = async () => {
 }
 
 const createUser = async (newUser: CreateUser) => {
-    try {
-        const res = await axios.post(baseURL, newUser)
-        return res.data
-      } catch (err) {
-        console.log(err)
-      }
+  try {
+    const res = await axios.post(baseURL, newUser)
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
 }
 
 const getUserById = async (id: string) => {
@@ -32,4 +32,15 @@ const getUserById = async (id: string) => {
   }
 }
 
-export default { getUsers, createUser, getUserById }
+const getUserByEmail = async (email: string) => {
+  const config = getAuthConfig()
+
+  try {
+    const res = await axios.get<User>(`${baseURL}/email/${email}`, config)
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export default { getUsers, createUser, getUserById, getUserByEmail }

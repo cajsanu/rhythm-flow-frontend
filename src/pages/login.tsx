@@ -3,7 +3,8 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { login } from "@/api/login"
 import { useNavigate } from "react-router-dom"
-import { LoginCredentials } from "@/types/user"
+import { LoginCredentials } from "../types/user"
+import userRequests from "../api/users"
 
 const schema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
@@ -23,8 +24,13 @@ export const Login = () => {
   const onSubmit: SubmitHandler<LoginFields> = async (data: LoginCredentials) => {
     try {
       const token = await login(data)
-      window.localStorage.setItem("token", token)
-      navigate("/home")
+      window.localStorage.clear()
+      token && window.localStorage.setItem("token", token)
+      const user = await userRequests.getUserByEmail(data.email)
+      if (!user) {
+        throw new Error("User not found")
+      }
+      navigate(`/home/${user.id}`)
     } catch (err) {
       console.log(err)
     }
@@ -75,7 +81,7 @@ export const Login = () => {
           </form>
         </div>
         <div className="py-3">
-            <p className="text-white">Don't have an account?</p>
+          <p className="text-white">Don't have an account?</p>
           <button
             className="transition delay-150 flex w-full justify-center rounded-md bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-rose-800 hover:bg-rose-200"
             onClick={() => navigate("/signup")}
