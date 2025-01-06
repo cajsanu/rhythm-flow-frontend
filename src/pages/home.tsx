@@ -1,8 +1,24 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "../components/ui/button"
+import userRequests from "../api/users"
 
 export function Home() {
   const [message, setMessage] = useState("")
+  const [users, setUsers] = useState([])
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const users = await userRequests.getUsers()
+        setUsers(users)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getUsers()
+  }, [])
+
+  console.log("USERS", users)
 
   const handleWelcome = () => {
     setMessage("Why did you?")
