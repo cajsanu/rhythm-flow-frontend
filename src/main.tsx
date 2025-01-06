@@ -4,9 +4,14 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import "./index.css"
-import { Home } from "./pages/home"
+import { Home, Login } from "./pages"
 
 const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />,
+    errorElement: <div>"Not found"</div>
+  },
   {
     path: "/home",
     element: <Home />,

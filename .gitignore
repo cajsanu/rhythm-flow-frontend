@@ -12,7 +12,7 @@ dist
 dist-ssr
 *.local
 .yarn/install-state.gz
-
+wwwroot
 
 # Editor directories and files
 .vscode/*
