@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react"
 import { Button } from "../components/ui/button"
 import userRequests from "../api/users"
+import { User } from "../types/user"
 
-export function Home() {
+export const Home = () => {
   const [message, setMessage] = useState("")
-  const [users, setUsers] = useState([])
+  const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
     const getUsers = async () => {
       try {
         const users = await userRequests.getUsers()
-        setUsers(users)
+        users && setUsers(users)
       } catch (err) {
         console.log(err)
       }
