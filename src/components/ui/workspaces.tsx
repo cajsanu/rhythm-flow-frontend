@@ -8,7 +8,7 @@ type SingleWSProps = {
 const SingleWorkspace = ({ name, id }: SingleWSProps) => {
   return (
     <div className="relative border rounded-xl p-6 flex flex-col bg-rose-100 hover:bg-rose-300">
-      <a href={`/workspaces/${id}`}>
+      <a href={`/workspace/${id}`}>
         <ul className="font-bold text-xl text-rose-800 pb-2">{name}</ul>
       </a>
     </div>

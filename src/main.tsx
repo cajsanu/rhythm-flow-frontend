@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import "./index.css"
-import { Home, Login, Signup } from "./pages"
+import { Home, Login, Signup, CurrentWorkspace } from "./pages"
 
 const router = createBrowserRouter([
   {
@@ -20,6 +20,11 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+    errorElement: <div>"Not found"</div>
+  },
+  {
+    path: "/workspace/:id", 
+    element: <CurrentWorkspace />,
     errorElement: <div>"Not found"</div>
   }
 ])

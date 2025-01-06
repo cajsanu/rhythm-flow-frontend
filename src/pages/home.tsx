@@ -35,6 +35,7 @@ export const Home = () => {
 
   const handleCreateWorkspace = () => setShowCreateWorkspace((prev) => !prev)
 
+  const handleSuccess = () => setShowCreateWorkspace(false)
 
   return (
     <div className="flex flex-col justify-center items-center gap-10 h-screen">
@@ -63,7 +64,7 @@ export const Home = () => {
             aria-describedby="modal-modal-description"
           >
             <Box>
-              <CreateWorkspace />
+              <CreateWorkspace onSuccess={handleSuccess} />
             </Box>
           </Modal>
         </div>
