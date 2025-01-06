@@ -7,6 +7,8 @@ export const Home = () => {
   const [message, setMessage] = useState("")
   const [users, setUsers] = useState<User[]>([])
 
+  const userId = "a9748d6b-c4af-4670-8902-da4b619acc92"
+
   useEffect(() => {
     const getUsers = async () => {
       try {
@@ -28,6 +30,15 @@ export const Home = () => {
     setMessage("")
   }
 
+  const handleGetUser = async () => {
+    try {
+      const user = await userRequests.getUserById(userId)
+      console.log("USER", user)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className="flex flex-col justify-center items-center gap-10 h-screen">
       <h1 className="text-2xl">Welcome!</h1>
@@ -37,6 +48,7 @@ export const Home = () => {
       ) : (
         <Button onClick={handleCleanState}>Undo the damage</Button>
       )}
+      <Button onClick={handleGetUser}>Get User</Button>
     </div>
   )
 }

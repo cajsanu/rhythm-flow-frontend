@@ -3,6 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { login } from "@/api/login"
+import { useNavigate } from "react-router-dom"
 
 const schema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
@@ -17,11 +18,13 @@ export const Login = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<LoginFields>({ resolver: zodResolver(schema) })
+  const navigate = useNavigate()
 
   const onSubmit: SubmitHandler<LoginFields> = async (data) => {
     try {
       const token = await login(data)
-      console.log("TOKEN", token)
+      window.localStorage.setItem("token", token)
+      navigate("/home")
     } catch (err) {
       console.log(err)
     }
