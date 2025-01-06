@@ -14,3 +14,9 @@ export interface CreateUser extends LoginCredentials {
   firstName: string
   lastName: string
 }
+
+export interface UpdateUser {
+  firstName: string
+  lastName: string
+  email: string
+}

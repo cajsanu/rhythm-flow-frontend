@@ -8,3 +8,8 @@ export interface CreateWorkspace {
     name: string
     ownerId: string
 }
+
+export interface UpdateWorkspace {
+    name: string
+    ownerId: string
+}

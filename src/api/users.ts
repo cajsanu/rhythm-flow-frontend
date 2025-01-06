@@ -1,4 +1,4 @@
-import { CreateUser, User } from "../types/user"
+import { CreateUser, UpdateUser, User } from "../types/user"
 import axios from "axios"
 import { getAuthConfig } from "./utils"
 const baseURL = "/api/v1/users"
@@ -43,4 +43,26 @@ const getUserByEmail = async (email: string) => {
   }
 }
 
-export default { getUsers, createUser, getUserById, getUserByEmail }
+const deleteUser = async (id: string) => {
+  const config = getAuthConfig()
+
+  try {
+    const res = await axios.delete(`${baseURL}/${id}`, config)
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+const updateUser = async (id: string, updatedUser: UpdateUser) => {
+  const config = getAuthConfig()
+
+  try {
+    const res = await axios.put(`${baseURL}/${id}`, updatedUser, config)
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export default { getUsers, createUser, getUserById, getUserByEmail, deleteUser, updateUser }
