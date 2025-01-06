@@ -1,4 +1,4 @@
-import { User } from "../types/user"
+import { CreateUser, User } from "../types/user"
 import axios from "axios"
 import { getAuthConfig } from "./utils"
 const baseURL = "/api/v1/users"
@@ -12,6 +12,15 @@ const getUsers = async () => {
   }
 }
 
+const createUser = async (newUser: CreateUser) => {
+    try {
+        const res = await axios.post(baseURL, newUser)
+        return res.data
+      } catch (err) {
+        console.log(err)
+      }
+}
+
 const getUserById = async (id: string) => {
   const config = getAuthConfig()
 
@@ -23,4 +32,4 @@ const getUserById = async (id: string) => {
   }
 }
 
-export default { getUsers, getUserById }
+export default { getUsers, createUser, getUserById }

@@ -1,29 +1,31 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { login } from "@/api/login"
+import userRequests from "../api/users"
 import { useNavigate } from "react-router-dom"
-import { LoginCredentials } from "@/types/user"
+import { CreateUser } from "@/types/user"
 
 const schema = z.object({
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
   email: z.string().email({ message: "Please provide a valid email" }),
   password: z.string().min(10)
 })
 
-type LoginFields = z.infer<typeof schema>
+type SignupFields = z.infer<typeof schema>
 
-export const Login = () => {
+export const Signup = () => {
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm<LoginFields>({ resolver: zodResolver(schema) })
+  } = useForm<SignupFields>({ resolver: zodResolver(schema) })
   const navigate = useNavigate()
 
-  const onSubmit: SubmitHandler<LoginFields> = async (data: LoginCredentials) => {
+  const onSubmit: SubmitHandler<SignupFields> = async (data: CreateUser) => {
     try {
-      const token = await login(data)
-      window.localStorage.setItem("token", token)
+      const user = await userRequests.createUser(data)
+      console.log("USER", user)
       navigate("/home")
     } catch (err) {
       console.log(err)
@@ -34,10 +36,40 @@ export const Login = () => {
     <div className="flex justify-center bg-rose-300 h-screen">
       <div>
         <h2 className="text-2xl font-bold tracking-tight text-white py-2">
-          Sign in to your account
+          Sign up to start managing your tasks more efficiently!
         </h2>
         <div>
           <form onSubmit={handleSubmit(onSubmit)}>
+          <div>
+              <label className="block text-sm font-medium leading-6 text-white flex justify-right pt-2">
+                First Name:
+              </label>
+              <input
+                type="text"
+                {...register("firstName")}
+                className="block w-full rounded-md py-1.5 text-black outline outline-transparent focus:outline-pink-800"
+              />
+              {errors.firstName && (
+                <div className="p-2">
+                  <p className="text-black">{errors.firstName.message}</p>
+                </div>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium leading-6 text-white flex justify-right pt-2">
+                Last Name:
+              </label>
+              <input
+                type="text"
+                {...register("lastName")}
+                className="block w-full rounded-md py-1.5 text-black outline outline-transparent focus:outline-pink-800"
+              />
+              {errors.lastName && (
+                <div className="p-2">
+                  <p className="text-black">{errors.lastName.message}</p>
+                </div>
+              )}
+            </div>
             <div>
               <label className="block text-sm font-medium leading-6 text-white flex justify-right pt-2">
                 Email:
@@ -69,19 +101,10 @@ export const Login = () => {
                 className="transition delay-150 flex w-full justify-center rounded-md bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-rose-800 hover:bg-rose-200"
                 type="submit"
               >
-                Log in
+                Sign up
               </button>
             </div>
           </form>
-        </div>
-        <div className="py-3">
-            <p className="text-white">Don't have an account?</p>
-          <button
-            className="transition delay-150 flex w-full justify-center rounded-md bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-rose-800 hover:bg-rose-200"
-            onClick={() => navigate("/signup")}
-          >
-            Sign up
-          </button>
         </div>
       </div>
     </div>
