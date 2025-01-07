@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import { useQuery } from "@tanstack/react-query"
 import { Workspace } from "../types/workspace"
 import { useState } from "react"
-import { Workspaces, CreateWorkspace } from "../components/ui"
+import { Workspaces, CreateWorkspace } from "../components"
 import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 

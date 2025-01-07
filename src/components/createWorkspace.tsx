@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
-import workspaceRequests from "../../api/workspaces"
+import workspaceRequests from "../api/workspaces"
 import { useParams } from "react-router-dom"
 import { on } from "events"
 

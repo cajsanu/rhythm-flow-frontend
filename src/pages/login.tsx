@@ -1,4 +1,4 @@
-import { LoginForm } from "@/components/ui"
+import { LoginForm } from "@/components"
 import { useNavigate } from "react-router-dom"
 
 export const Login = () => {
