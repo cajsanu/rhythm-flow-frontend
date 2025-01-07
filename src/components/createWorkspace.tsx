@@ -4,10 +4,20 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
 import workspaceRequests from "../api/workspaces"
 import { useParams } from "react-router-dom"
-import { on } from "events"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from "@/components/ui/form"
 
 const schema = z.object({
-  name: z.string()
+  name: z.string().min(1, { message: "Workspace name is required" })
 })
 
 type WSName = z.infer<typeof schema>
@@ -17,12 +27,11 @@ type CreateWorkspaceProps = {
 }
 
 export const CreateWorkspace = ({ onSuccess }: CreateWorkspaceProps) => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm<WSName>({
-    resolver: zodResolver(schema)
+  const form = useForm<WSName>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      name: ""
+    }
   })
   const queryClient = useQueryClient()
   const { id } = useParams()
@@ -34,7 +43,7 @@ export const CreateWorkspace = ({ onSuccess }: CreateWorkspaceProps) => {
     }
   })
 
-  const onSubmit: SubmitHandler<WSName> = async (data: WSName) => {
+  const onSubmit: SubmitHandler<WSName> = async (data) => {
     if (!id) {
       throw new Error("User ID is undefined")
     }
@@ -43,42 +52,39 @@ export const CreateWorkspace = ({ onSuccess }: CreateWorkspaceProps) => {
       await newWorkspaceMutation.mutateAsync({ name: data.name, ownerId: id })
       onSuccess()
     } catch (err) {
-      console.log(err)
+      console.error(err)
     }
   }
 
   return (
     <div className="flex justify-center pt-40">
-      <div className="flex flex-col p-10 bg-rose-300 w-2/4 rounded shadow-2xl">
-        <h1 className="text-2xl font-bold text-white pb-5">Create Workspace</h1>
-        <div>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label className="block text-sm font-medium leading-6 text-white flex justify-right pt-2">
-                Name for workspace:
-              </label>
-              <input
-                type="text"
-                {...register("name")}
-                className="block w-full rounded-md py-1.5 text-black outline outline-transparent focus:outline-pink-800"
+      <Card className="w-full max-w-lg shadow-2xl">
+        <CardHeader>
+          <CardTitle>Create Workspace</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}>
+              <FormField
+                name="name"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Workspace Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Enter workspace name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              {errors.name && (
-                <div className="p-2">
-                  <p className="text-black">{errors.name.message}</p>
-                </div>
-              )}
-            </div>
-            <div className="py-3">
-              <button
-                className="transition delay-150 flex w-full justify-center rounded-md bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-rose-800 hover:bg-rose-200"
-                type="submit"
-              >
+              <Button type="submit" className="w-full mt-4">
                 Create
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
+              </Button>
+            </form>
+          </Form>
+        </CardContent>
+      </Card>
     </div>
   )
 }

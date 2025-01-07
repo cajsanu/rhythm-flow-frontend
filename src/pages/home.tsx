@@ -54,7 +54,7 @@ export const Home = () => {
           Create workspace
         </button>
       </div>
-      <div>{workspaces && showWorkspaces ? <Workspaces workspaces={workspaces} /> : null}</div>
+      <div>{workspaces && workspaces.length >= 1 && showWorkspaces ? <Workspaces workspaces={workspaces} /> : null}</div>
       <div>
         <div>
           <Modal
