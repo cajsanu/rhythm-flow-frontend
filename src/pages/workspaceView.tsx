@@ -7,7 +7,7 @@ import { Project } from "@/types/project"
 import { Projects } from "@/components/projects"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export const CurrentWorkspace = () => {
+export const WorkspaceView = () => {
   const { id } = useParams<{ id: string }>()
 
   const { data: workspace, isLoading: wsLoading } = useQuery<Workspace>({
