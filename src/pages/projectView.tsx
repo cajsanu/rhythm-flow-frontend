@@ -12,15 +12,15 @@ export type Ticket = { id: string; title: string; status: string }
 export type Column = { id: string; title: string; tickets: Ticket[] }
 
 export const ProjectView = () => {
-  const { projId } = useParams<{ projId: string }>()
+  const { wsId, id } = useParams<{ wsId: string, id: string }>()
 
   const { data: project, isLoading: projLoading } = useQuery<Project>({
     queryKey: ["project"],
     queryFn: async () => {
-      if (!projId) {
+      if (!id || !wsId) {
         throw new Error("Project ID is undefined")
       }
-      const project = await projectRequests.getProjectById(projId)
+      const project = await projectRequests.getProjectById(id, wsId)
       if (!project) {
         throw new Error("Failed to fetch project")
       }
@@ -32,10 +32,10 @@ export const ProjectView = () => {
   const { data: tickets, isLoading: ticketsLoading } = useQuery<Ticket[]>({
     queryKey: ["tickets"],
     queryFn: async () => {
-      if (!projId) {
+      if (!id || !wsId) {
         throw new Error("Project ID is undefined")
       }
-      const tickets = await ticketRequests.getTicketsInProject(projId)
+      const tickets = await ticketRequests.getTicketsInProject(id, wsId)
       if (!tickets) {
         throw new Error("Failed to fetch tickets")
       }
@@ -44,15 +44,14 @@ export const ProjectView = () => {
     }
   })
 
+  console.log(tickets)
+
   // Initialize columns for the Kanban board (based on your tickets' status)
   const [columns, setColumns] = useState<Column[]>([
     { id: "todo", title: "To Do", tickets: [] },
     { id: "in-progress", title: "In Progress", tickets: [] },
     { id: "done", title: "Done", tickets: [] }
   ])
-
-  console.log("Project", project)
-  console.log("Tickets:", tickets)
 
   // Populate columns with tickets based on their status
   useEffect(() => {

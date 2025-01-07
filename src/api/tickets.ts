@@ -1,10 +1,13 @@
 import { Ticket } from "@/types/ticket"
 import axios from "axios"
-const baseURL = "/api/v1/projects/:projectId/tickets"
+import { getAuthConfig } from "./utils"
+const baseURL = "/api/v1/workspaces/:workspaceId/projects/:projectId/tickets"
 
-const getTicketsInProject = async ( projectId: string ) => {
+const getTicketsInProject = async ( projectId: string, workspaceId: string ) => {
+  const config = getAuthConfig()
+
   try {
-    const res = await axios.get<Ticket[]>(baseURL.replace(":projectId", projectId))
+    const res = await axios.get<Ticket[]>(baseURL.replace(":workspaceId", workspaceId).replace(":projectId", projectId), config)
     return res.data
   } catch (err) {
     console.log(err)

@@ -28,7 +28,7 @@ const router = createBrowserRouter([
     errorElement: <div>"Not found"</div>
   },
   {
-    path: "/project/:id", 
+    path: "workspace/:wsId/project/:id", 
     element: <ProjectView />,
     errorElement: <div>"Not found"</div>
   }
