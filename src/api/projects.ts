@@ -11,4 +11,14 @@ const getProjectsInWorkspace = async ( workspaceId: string ) => {
   }
 }
 
-export default { getProjectsInWorkspace }
+const getProjectById = async ( projectId: string ) => {
+  try {
+    const res = await axios.get<Project>(`${baseURL}/${projectId}`)
+    console.log("RES", res)
+    return res.data
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export default { getProjectsInWorkspace, getProjectById }
