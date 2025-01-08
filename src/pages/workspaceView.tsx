@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useGetWorkspaceById } from "@/hooks/workspaceManagement"
 import { useGetProjectsInWorkspace } from "@/hooks/projectManagement"
 import { CreateProjectForm } from "@/components"
-import { Box, Modal } from "@mui/material"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 
 export const WorkspaceView = () => {
   const { id = "" } = useParams<{ id: string }>()
@@ -43,16 +43,14 @@ export const WorkspaceView = () => {
                 <div>
                   <Button onClick={handleCreateProject}>Create Project</Button>
                   <div>
-                    <Modal
-                      open={showCreateProject}
-                      onClose={handleCreateProject}
-                      aria-labelledby="modal-modal-title"
-                      aria-describedby="modal-modal-description"
-                    >
-                      <Box>
+                    <Dialog open={showCreateProject} onOpenChange={handleCreateProject}>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle>Create Ticket</DialogTitle>
+                        </DialogHeader>
                         <CreateProjectForm />
-                      </Box>
-                    </Modal>
+                      </DialogContent>
+                    </Dialog>
                   </div>
                   <div></div>
                 </div>

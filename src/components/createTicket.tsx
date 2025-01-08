@@ -35,7 +35,6 @@ export const CreateTicketForm = () => {
   const newTicketMutation = useCreateTicket()
 
   const onSubmit: SubmitHandler<CreateTicket> = async (data: CreateTicket) => {
-    console.log("there's somthin happenin here")
     if (!id || !wsId) {
       throw new Error("Workspace ID or project ID is undefined")
     }
@@ -50,8 +49,8 @@ export const CreateTicketForm = () => {
   }
 
   return (
-    <div className="flex justify-center pt-40">
-      <Card className="w-full max-w-lg shadow-2xl">
+    <div className="flex justify-center">
+      <Card className="w-full shadow-2xl">
         <CardHeader>
           <CardTitle>Create Ticket</CardTitle>
         </CardHeader>

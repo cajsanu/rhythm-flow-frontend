@@ -5,7 +5,7 @@ import { Ticket } from "@/types/ticket"
 import { useGetProjectById } from "@/hooks/projectManagement"
 import { useGetTicketsInProject } from "@/hooks/ticketManagement"
 import { Button } from "@/components/ui/button"
-import { Box, Modal } from "@mui/material"
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { CreateTicketForm } from "@/components/createTicket"
 
 export type Column = { id: number; title: string; tickets: Ticket[] }
@@ -50,23 +50,33 @@ export const ProjectView = () => {
 
   return (
     <div>
-      <div>
-        <div>
-          <div>
-            <Button onClick={handleCreateTicket}>Create Ticket</Button>
-          </div>
-          <Modal
-            open={showCreateTicket}
-            onClose={handleCreateTicket}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box>
-              <CreateTicketForm />
-            </Box>
-          </Modal>
+      <div className="space-y-8">
+        <div className="flex justify-between items-center">
+          {project && <h1 className="text-2xl font-bold">Project View: {project.name}</h1>}
+          <Button onClick={handleCreateTicket}>Create Ticket</Button>
         </div>
+
+        <Dialog open={showCreateTicket} onOpenChange={handleCreateTicket}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Create Ticket</DialogTitle>
+            </DialogHeader>
+            <CreateTicketForm />
+          </DialogContent>
+        </Dialog>
+
+        {/* <Modal
+          open={showCreateTicket}
+          onClose={handleCreateTicket}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box>
+            <CreateTicketForm />
+          </Box>
+        </Modal> */}
       </div>
+
       {project && <h1>Project View: {project.name}</h1>}
       <Kanban columns={columns} setColumns={setColumns} />
     </div>
