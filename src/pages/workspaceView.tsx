@@ -7,6 +7,7 @@ import { CreateProjectForm } from "@/components"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { DialogDescription } from "@radix-ui/react-dialog"
 
 export const WorkspaceView = () => {
   const { id = "" } = useParams<{ id: string }>()
@@ -47,6 +48,7 @@ export const WorkspaceView = () => {
                       <DialogContent>
                         <DialogHeader>
                           <DialogTitle>Create Ticket</DialogTitle>
+                          <DialogDescription>Fill in the details to create a new project.</DialogDescription>
                         </DialogHeader>
                         <CreateProjectForm />
                       </DialogContent>

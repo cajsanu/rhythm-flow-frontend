@@ -5,7 +5,7 @@ import { Ticket } from "@/types/ticket"
 import { useGetProjectById } from "@/hooks/projectManagement"
 import { useGetTicketsInProject } from "@/hooks/ticketManagement"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { CreateTicketForm } from "@/components/createTicket"
 
 export type Column = { id: number; title: string; tickets: Ticket[] }
@@ -55,26 +55,15 @@ export const ProjectView = () => {
           {project && <h1 className="text-2xl font-bold">Project View: {project.name}</h1>}
           <Button onClick={handleCreateTicket}>Create Ticket</Button>
         </div>
-
         <Dialog open={showCreateTicket} onOpenChange={handleCreateTicket}>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create Ticket</DialogTitle>
+              <DialogDescription>Fill in the details to create a new ticket.</DialogDescription>
             </DialogHeader>
             <CreateTicketForm />
           </DialogContent>
         </Dialog>
-
-        {/* <Modal
-          open={showCreateTicket}
-          onClose={handleCreateTicket}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box>
-            <CreateTicketForm />
-          </Box>
-        </Modal> */}
       </div>
 
       {project && <h1>Project View: {project.name}</h1>}
