@@ -3,9 +3,14 @@ import { Projects } from "@/components/projects"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useGetWorkspaceById } from "@/hooks/workspaceManagement"
 import { useGetProjectsInWorkspace } from "@/hooks/projectManagement"
+import { CreateProjectForm } from "@/components"
+import { Box, Modal } from "@mui/material"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
 
 export const WorkspaceView = () => {
   const { id = "" } = useParams<{ id: string }>()
+  const [showCreateProject, setShowCreateProject] = useState(false)
 
   const { data: workspace, isLoading: wsLoading, error: wsError } = useGetWorkspaceById(id)
   const { data: projects, isLoading: projLoading, error: projError } = useGetProjectsInWorkspace(id)
@@ -18,6 +23,8 @@ export const WorkspaceView = () => {
     return <div>error loading data...</div>
   }
 
+  const handleCreateProject = () => setShowCreateProject((prev) => !prev)
+
   return (
     <div className="flex justify-center py-10">
       <Card className="w-full max-w-4xl shadow-lg bg-rose-400">
@@ -29,14 +36,36 @@ export const WorkspaceView = () => {
         <CardContent>
           {workspace ? (
             <div className="text-center">
-              <h3 className="text-xl font-semibold mb-4">Projects in this Workspace</h3>
-              {projects && projects.length > 0 ? (
-                <div className="space-y-4">
-                  <Projects projects={projects} />
+              <div className="flex space-x-4 justify-center">
+                <div>
+                  <h3 className="text-xl font-semibold mb-4">Projects in this Workspace</h3>
                 </div>
-              ) : (
-                <p className="text-gray-500">No projects in this workspace yet.</p>
-              )}
+                <div>
+                  <Button onClick={handleCreateProject}>Create Project</Button>
+                  <div>
+                    <Modal
+                      open={showCreateProject}
+                      onClose={handleCreateProject}
+                      aria-labelledby="modal-modal-title"
+                      aria-describedby="modal-modal-description"
+                    >
+                      <Box>
+                        <CreateProjectForm />
+                      </Box>
+                    </Modal>
+                  </div>
+                  <div></div>
+                </div>
+              </div>
+              <div>
+                {projects && projects.length > 0 ? (
+                  <div className="space-y-4">
+                    <Projects projects={projects} />
+                  </div>
+                ) : (
+                  <p className="text-gray-500">No projects in this workspace yet.</p>
+                )}
+              </div>
             </div>
           ) : (
             <p className="text-gray-500">No workspace selected.</p>

@@ -6,7 +6,7 @@ const workspaceSchema = z.object({
   ownerId: z.string()
 })
 
-const createWorkspaceSchema = workspaceSchema.omit({ id: true })
+export const createWorkspaceSchema = workspaceSchema.omit({ id: true })
 
 const updateWorkspaceSchema = workspaceSchema.omit({ id: true, ownerId: true })
 

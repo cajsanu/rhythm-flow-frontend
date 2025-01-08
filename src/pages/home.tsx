@@ -1,9 +1,10 @@
 import { useParams } from "react-router-dom"
 import { useState } from "react"
-import { Workspaces, CreateWorkspace } from "../components"
+import { Workspaces, CreateWorkspaceForm } from "../components"
 import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
 import { useGetWorkspaces } from "@/hooks/workspaceManagement"
+import { Button } from "@/components/ui/button"
 
 export const Home = () => {
   const [showWorkspaces, setShowWorkspaces] = useState(false)
@@ -25,18 +26,8 @@ export const Home = () => {
     <div className="flex flex-col justify-center items-center gap-10 h-screen">
       <h1 className="text-2xl">Welcome!</h1>
       <div className="flex flex-row gap-4">
-        <button
-          className="transition delay-150 flex w-full justify-center rounded-md bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-rose-800 hover:bg-rose-200"
-          onClick={handleShowWorkspaces}
-        >
-          My workspaces
-        </button>
-        <button
-          className="transition delay-150 flex w-full justify-center rounded-md bg-rose-300 px-3 py-1.5 text-sm font-semibold leading-6 text-rose-800 hover:bg-rose-200"
-          onClick={handleCreateWorkspace}
-        >
-          Create workspace
-        </button>
+        <Button onClick={handleShowWorkspaces}>My workspaces</Button>
+        <Button onClick={handleCreateWorkspace}>Create workspace</Button>
       </div>
       <div>
         {workspaces && workspaces.length >= 1 && showWorkspaces ? (
@@ -52,7 +43,7 @@ export const Home = () => {
             aria-describedby="modal-modal-description"
           >
             <Box>
-              <CreateWorkspace onSuccess={handleSuccess} />
+              <CreateWorkspaceForm onSuccess={handleSuccess} />
             </Box>
           </Modal>
         </div>

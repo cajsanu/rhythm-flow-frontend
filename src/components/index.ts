@@ -1,6 +1,7 @@
-import { CreateWorkspace } from "./createWorkspace";
+import { CreateWorkspaceForm } from "./createWorkspace";
 import { Workspaces } from "./workspaces";
 import { SignupForm } from "./signupFrom";
 import { LoginForm } from "./loginForm";
+import { CreateProjectForm } from "./createProject";
 
-export { CreateWorkspace, Workspaces, SignupForm, LoginForm };
+export { CreateWorkspaceForm, Workspaces, SignupForm, LoginForm, CreateProjectForm };

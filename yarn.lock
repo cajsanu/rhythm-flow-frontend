@@ -1542,7 +1542,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@radix-ui/react-select@npm:^2.0.0":
+"@radix-ui/react-select@npm:^2.1.4":
   version: 2.1.4
   resolution: "@radix-ui/react-select@npm:2.1.4"
   dependencies:
@@ -3677,7 +3677,7 @@ __metadata:
     "@radix-ui/react-menubar": "npm:^1.0.4"
     "@radix-ui/react-navigation-menu": "npm:^1.1.4"
     "@radix-ui/react-popover": "npm:^1.0.7"
-    "@radix-ui/react-select": "npm:^2.0.0"
+    "@radix-ui/react-select": "npm:^2.1.4"
     "@radix-ui/react-slot": "npm:^1.1.1"
     "@shadcn/ui": "npm:^0.0.4"
     "@tanstack/react-query": "npm:^5.35.5"

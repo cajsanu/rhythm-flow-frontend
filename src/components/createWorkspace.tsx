@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { z } from "zod"
 import { useParams } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -14,30 +13,26 @@ import {
   FormMessage
 } from "@/components/ui/form"
 import { useCreateWorkspace } from "@/hooks/workspaceManagement"
-
-const schema = z.object({
-  name: z.string().min(1, { message: "Workspace name is required" })
-})
-
-type WSName = z.infer<typeof schema>
+import { CreateWorkspace, createWorkspaceSchema } from "@/types/workspace"
 
 type CreateWorkspaceProps = {
   onSuccess: () => void
 }
 
-export const CreateWorkspace = ({ onSuccess }: CreateWorkspaceProps) => {
-  const form = useForm<WSName>({
-    resolver: zodResolver(schema),
+export const CreateWorkspaceForm = ({ onSuccess }: CreateWorkspaceProps) => {
+  const { id } = useParams()
+
+  const form = useForm<CreateWorkspace>({
+    resolver: zodResolver(createWorkspaceSchema),
     defaultValues: {
-      name: ""
+      name: "",
+      ownerId: id ?? ""
     }
   })
 
-  const { id } = useParams()
-
   const newWorkspaceMutation = useCreateWorkspace()
 
-  const onSubmit: SubmitHandler<WSName> = async (data) => {
+  const onSubmit: SubmitHandler<CreateWorkspace> = async (data) => {
     if (!id) {
       throw new Error("User ID is undefined")
     }
