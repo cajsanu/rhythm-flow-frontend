@@ -35,7 +35,6 @@ export const SignupForm = () => {
   const onSubmit: SubmitHandler<SignupFields> = async (data: CreateUser) => {
     try {
       const user = await userRequests.createUser(data)
-      console.log("USER", user)
       navigate(`/home/${user.id}`)
     } catch (err) {
       console.error(err)

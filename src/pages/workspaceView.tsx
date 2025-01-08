@@ -1,48 +1,21 @@
-import { Workspace } from "@/types/workspace"
-import { useQuery } from "@tanstack/react-query"
 import { useParams } from "react-router-dom"
-import workspaceRequests from "@/api/workspaces"
-import projectRequests from "@/api/projects"
-import { Project } from "@/types/project"
 import { Projects } from "@/components/projects"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { useGetWorkspaceById } from "@/hooks/workspaceManagement"
+import { useGetProjectsInWorkspace } from "@/hooks/projectManagement"
 
 export const WorkspaceView = () => {
-  const { id } = useParams<{ id: string }>()
+  const { id = "" } = useParams<{ id: string }>()
 
-  const { data: workspace, isLoading: wsLoading } = useQuery<Workspace>({
-    queryKey: ["workspace"],
-    queryFn: async () => {
-      if (!id) {
-        throw new Error("Workspace ID is undefined")
-      }
-      const workspace = await workspaceRequests.getWorkspaceById(id)
-      if (!workspace) {
-        throw new Error("Failed to fetch workspace")
-      }
-
-      return workspace
-    }
-  })
-
-  // Another query to get all projects in the workspace
-  const { data: projects, isLoading: projLoading } = useQuery<Project[]>({
-    queryKey: ["projects", id],
-    queryFn: async () => {
-      if (!id) {
-        throw new Error("Workspace ID is undefined")
-      }
-      const projects = await projectRequests.getProjectsInWorkspace(id)
-      if (!projects) {
-        throw new Error("Failed to fetch projects")
-      }
-
-      return projects
-    }
-  })
+  const { data: workspace, isLoading: wsLoading, error: wsError } = useGetWorkspaceById(id)
+  const { data: projects, isLoading: projLoading, error: projError } = useGetProjectsInWorkspace(id)
 
   if (projLoading || wsLoading) {
     return <div>loading data...</div>
+  }
+
+  if (projError || wsError) {
+    return <div>error loading data...</div>
   }
 
   return (

@@ -1,8 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { z } from "zod"
-import workspaceRequests from "../api/workspaces"
 import { useParams } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -15,6 +13,7 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form"
+import { useCreateWorkspace } from "@/hooks/workspaceManagement"
 
 const schema = z.object({
   name: z.string().min(1, { message: "Workspace name is required" })
@@ -33,15 +32,10 @@ export const CreateWorkspace = ({ onSuccess }: CreateWorkspaceProps) => {
       name: ""
     }
   })
-  const queryClient = useQueryClient()
+
   const { id } = useParams()
 
-  const newWorkspaceMutation = useMutation({
-    mutationFn: workspaceRequests.createWorkspace,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["workspaces"] })
-    }
-  })
+  const newWorkspaceMutation = useCreateWorkspace()
 
   const onSubmit: SubmitHandler<WSName> = async (data) => {
     if (!id) {

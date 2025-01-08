@@ -1,35 +1,19 @@
-import workspaceRequests from "../api/workspaces"
 import { useParams } from "react-router-dom"
-import { useQuery } from "@tanstack/react-query"
-import { Workspace } from "../types/workspace"
 import { useState } from "react"
 import { Workspaces, CreateWorkspace } from "../components"
 import Box from "@mui/material/Box"
 import Modal from "@mui/material/Modal"
+import { useGetWorkspaces } from "@/hooks/workspaceManagement"
 
 export const Home = () => {
   const [showWorkspaces, setShowWorkspaces] = useState(false)
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false)
-  const { id } = useParams<{ id: string }>()
+  const { id = "" } = useParams<{ id: string }>()
 
-  const { data: workspaces, isLoading } = useQuery<Workspace[]>({
-    queryKey: ["workspaces", id],
-    queryFn: async () => {
-      if (!id) {
-        throw new Error("Workspace ID is undefined")
-      }
-      const workspaces = await workspaceRequests.getMyWorkspaces(id)
-      if (!workspaces) {
-        throw new Error("Failed to fetch workspaces")
-      }
+  const { data: workspaces, isLoading, error } = useGetWorkspaces(id)
 
-      return workspaces
-    }
-  })
-
-  if (isLoading) {
-    return <div>loading data...</div>
-  }
+  if (isLoading) return <p>Loading...</p>
+  if (error) return <p>Error: {error.message}</p>
 
   const handleShowWorkspaces = () => setShowWorkspaces((prev) => !prev)
 
@@ -54,7 +38,11 @@ export const Home = () => {
           Create workspace
         </button>
       </div>
-      <div>{workspaces && workspaces.length >= 1 && showWorkspaces ? <Workspaces workspaces={workspaces} /> : null}</div>
+      <div>
+        {workspaces && workspaces.length >= 1 && showWorkspaces ? (
+          <Workspaces workspaces={workspaces} />
+        ) : null}
+      </div>
       <div>
         <div>
           <Modal
