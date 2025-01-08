@@ -1,5 +1,4 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { login } from "@/api/login"
 import { useNavigate } from "react-router-dom"
@@ -15,17 +14,11 @@ import {
   FormLabel,
   FormMessage
 } from "@/components/ui/form"
-
-const schema = z.object({
-  email: z.string().email({ message: "Please provide a valid email" }),
-  password: z.string().min(10, { message: "Password must be at least 10 characters" })
-})
-
-type LoginFields = z.infer<typeof schema>
+import { LoginCredentials, loginSchema } from "@/types/user"
 
 export const LoginForm = () => {
-  const form = useForm<LoginFields>({
-    resolver: zodResolver(schema),
+  const form = useForm<LoginCredentials>({
+    resolver: zodResolver(loginSchema),
     defaultValues: {
       email: "",
       password: ""
@@ -34,7 +27,7 @@ export const LoginForm = () => {
 
   const navigate = useNavigate()
 
-  const onSubmit: SubmitHandler<LoginFields> = async (data: LoginFields) => {
+  const onSubmit: SubmitHandler<LoginCredentials> = async (data: LoginCredentials) => {
     try {
       const token = await login(data)
       window.localStorage.clear()

@@ -12,4 +12,9 @@ const ticketSchema = z.object({
   userIds: z.array(z.string()).optional()
 })
 
+export const createTicketSchema = ticketSchema.omit({
+  id: true
+})
+
 export type Ticket = z.infer<typeof ticketSchema>
+export type CreateTicket = z.infer<typeof createTicketSchema>

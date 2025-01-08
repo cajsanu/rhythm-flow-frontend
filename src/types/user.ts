@@ -7,12 +7,12 @@ const userSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" })
 })
 
-const loginSchema = z.object({
+export const loginSchema = z.object({
   email: z.string().email({ message: "Please provide a valid email" }),
   password: z.string().min(10, { message: "Password must be at least 10 characters" })
 })
 
-const createUserSchema = userSchema.omit({ id: true }).extend({
+export const createUserSchema = userSchema.omit({ id: true }).extend({
   password: z.string().min(10, { message: "Password must be at least 10 characters" })
 })
 

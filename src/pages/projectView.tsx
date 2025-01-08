@@ -4,11 +4,15 @@ import { useParams } from "react-router-dom"
 import { Ticket } from "@/types/ticket"
 import { useGetProjectById } from "@/hooks/projectManagement"
 import { useGetTicketsInProject } from "@/hooks/ticketManagement"
+import { Button } from "@/components/ui/button"
+import { Box, Modal } from "@mui/material"
+import { CreateTicketForm } from "@/components/createTicket"
 
 export type Column = { id: number; title: string; tickets: Ticket[] }
 
 export const ProjectView = () => {
   const { wsId = "", id = "" } = useParams<{ wsId: string; id: string }>()
+  const [showCreateTicket, setShowCreateTicket] = useState(false)
 
   const { data: project, isLoading: projLoading, error: projError } = useGetProjectById(id, wsId)
 
@@ -42,8 +46,27 @@ export const ProjectView = () => {
     return <div>Error loading data...</div>
   }
 
+  const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
+
   return (
     <div>
+      <div>
+        <div>
+          <div>
+            <Button onClick={handleCreateTicket}>Create Ticket</Button>
+          </div>
+          <Modal
+            open={showCreateTicket}
+            onClose={handleCreateTicket}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box>
+              <CreateTicketForm />
+            </Box>
+          </Modal>
+        </div>
+      </div>
       {project && <h1>Project View: {project.name}</h1>}
       <Kanban columns={columns} setColumns={setColumns} />
     </div>

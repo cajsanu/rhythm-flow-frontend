@@ -20,7 +20,7 @@ type CreateWorkspaceProps = {
 }
 
 export const CreateWorkspaceForm = ({ onSuccess }: CreateWorkspaceProps) => {
-  const { id } = useParams()
+  const { id = "" } = useParams<{ id: string }>()
 
   const form = useForm<CreateWorkspace>({
     resolver: zodResolver(createWorkspaceSchema),

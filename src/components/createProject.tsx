@@ -17,7 +17,7 @@ import { CreateProject, createProjectSchema } from "@/types/project"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 
 export const CreateProjectForm = () => {
-  const { id } = useParams()
+  const { id = "" } = useParams<{ id: string }>()
 
   const form = useForm<CreateProject>({
     resolver: zodResolver(createProjectSchema),
@@ -35,7 +35,7 @@ export const CreateProjectForm = () => {
 
   const onSubmit: SubmitHandler<CreateProject> = async (data: CreateProject) => {
     if (!id) {
-      throw new Error("User ID is undefined")
+      throw new Error("Workspace ID is undefined")
     }
 
     try {
@@ -87,7 +87,7 @@ export const CreateProjectForm = () => {
                   <FormItem>
                     <FormLabel>Start date</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter project start date" {...field} />
+                      <Input type="date" placeholder="Enter project start date" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -100,7 +100,7 @@ export const CreateProjectForm = () => {
                   <FormItem>
                     <FormLabel>End date</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter project end date" {...field} />
+                      <Input type="date" placeholder="Enter project end date" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -117,7 +117,7 @@ export const CreateProjectForm = () => {
                         <SelectTrigger>
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
-                          <SelectContent position="popper" style={{ zIndex: 5000 }}>
+                          <SelectContent position="popper" style={{ zIndex: 1300 }}>
                             <SelectItem value="0">To do</SelectItem>
                             <SelectItem value="1">In progress</SelectItem>
                             <SelectItem value="2">Done</SelectItem>

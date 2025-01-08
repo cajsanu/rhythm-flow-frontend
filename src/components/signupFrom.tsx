@@ -3,25 +3,16 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import userRequests from "../api/users"
 import { useNavigate } from "react-router-dom"
-import { CreateUser } from "@/types/user"
+import { CreateUser, createUserSchema } from "@/types/user"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 
-const schema = z.object({
-  firstName: z.string().min(1, { message: "First name is required" }),
-  lastName: z.string().min(1, { message: "Last name is required" }),
-  email: z.string().email({ message: "Please provide a valid email" }),
-  password: z.string().min(10, { message: "Password must be at least 10 characters" })
-})
-
-type SignupFields = z.infer<typeof schema>
-
 export const SignupForm = () => {
-  const form = useForm<SignupFields>({
-    resolver: zodResolver(schema),
+  const form = useForm<CreateUser>({
+    resolver: zodResolver(createUserSchema),
     defaultValues: {
       firstName: "",
       lastName: "",
@@ -32,7 +23,7 @@ export const SignupForm = () => {
 
   const navigate = useNavigate()
 
-  const onSubmit: SubmitHandler<SignupFields> = async (data: CreateUser) => {
+  const onSubmit: SubmitHandler<CreateUser> = async (data: CreateUser) => {
     try {
       const user = await userRequests.createUser(data)
       navigate(`/home/${user.id}`)
