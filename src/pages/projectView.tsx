@@ -5,11 +5,12 @@ import projectRequests from "@/api/projects"
 import ticketRequests from "@/api/tickets"
 import { useQuery } from "@tanstack/react-query"
 import { Project } from "@/types/project"
+import { Ticket } from "@/types/ticket"
 
 
 // Define the type for columns
-export type Ticket = { id: string; title: string; status: string }
-export type Column = { id: string; title: string; tickets: Ticket[] }
+// export type Ticket = { id: string; title: string; status: number }
+export type Column = { id: number; title: string; tickets: Ticket[] }
 
 export const ProjectView = () => {
   const { wsId, id } = useParams<{ wsId: string, id: string }>()
@@ -44,13 +45,11 @@ export const ProjectView = () => {
     }
   })
 
-  console.log(tickets)
-
   // Initialize columns for the Kanban board (based on your tickets' status)
   const [columns, setColumns] = useState<Column[]>([
-    { id: "todo", title: "To Do", tickets: [] },
-    { id: "in-progress", title: "In Progress", tickets: [] },
-    { id: "done", title: "Done", tickets: [] }
+    { id: 0, title: "To Do", tickets: [] },
+    { id: 1, title: "In Progress", tickets: [] },
+    { id: 2, title: "Done", tickets: [] }
   ])
 
   // Populate columns with tickets based on their status

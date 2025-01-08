@@ -1,4 +1,5 @@
-import { Column, Ticket } from "@/pages/projectView"
+import { Column } from "@/pages/projectView"
+import { Ticket } from "@/types/ticket"
 import { DndProvider, useDrag, useDrop } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 
@@ -20,15 +21,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
   return (
     <div
       ref={drag}
-      style={{
-        opacity: isDragging ? 0.5 : 1,
-        padding: "8px",
-        margin: "4px",
-        backgroundColor: "white",
-        border: "1px solid #ccc",
-        borderRadius: "4px",
-        cursor: "grab"
-      }}
+      className="border p-2 rounded bg-rose-100 shadow-md mb-2"
     >
       {ticket.title}
     </div>
@@ -41,7 +34,7 @@ const SingleColumn = ({
   onDropTicket
 }: {
   column: Column
-  onDropTicket: (ticketId: string, targetColumnId: string) => void
+  onDropTicket: (ticketId: string, targetColumnId: number) => void
 }) => {
   const [, drop] = useDrop({
     accept: ItemTypes.TICKET,
@@ -53,13 +46,7 @@ const SingleColumn = ({
   return (
     <div
       ref={drop}
-      style={{
-        margin: "0 8px",
-        padding: "16px",
-        backgroundColor: "#f4f5f7",
-        borderRadius: "4px",
-        minWidth: "200px"
-      }}
+      className="border p-2 rounded bg-rose-200 shadow-md"
     >
       <h3 style={{ textAlign: "center" }}>{column.title}</h3>
       <div style={{ minHeight: "100px" }}>
@@ -79,7 +66,7 @@ type KanbanProps = {
 // Main Kanban Component
 export const Kanban = ({ columns, setColumns }: KanbanProps) => {
 
-  const handleDropTicket = (ticketId: string, targetColumnId: string) => {
+  const handleDropTicket = (ticketId: string, targetColumnId: number) => {
     setColumns((prev) => {
       const sourceColumn = prev.find((col) => col.tickets.some((ticket) => ticket.id === ticketId))
       const targetColumn = prev.find((col) => col.id === targetColumnId)
@@ -88,6 +75,8 @@ export const Kanban = ({ columns, setColumns }: KanbanProps) => {
 
       const ticket = sourceColumn.tickets.find((ticket) => ticket.id === ticketId)
       if (!ticket) return prev
+
+      ticket.status = targetColumn.id
 
       // Remove ticket from source column and add it to the target column
       sourceColumn.tickets = sourceColumn.tickets.filter((ticket) => ticket.id !== ticketId)

@@ -3,7 +3,6 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { login } from "@/api/login"
 import { useNavigate } from "react-router-dom"
-import { LoginCredentials } from "../types/user"
 import userRequests from "../api/users"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -35,7 +34,7 @@ export const LoginForm = () => {
 
   const navigate = useNavigate()
 
-  const onSubmit: SubmitHandler<LoginFields> = async (data: LoginCredentials) => {
+  const onSubmit: SubmitHandler<LoginFields> = async (data: LoginFields) => {
     try {
       const token = await login(data)
       window.localStorage.clear()
@@ -65,7 +64,7 @@ export const LoginForm = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="Enter your email" {...field} />
+                    <Input placeholder="Enter your email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
