@@ -1,7 +1,10 @@
+import { useGetTicketsInProject, useUpdateTicket } from "@/hooks/ticketManagement"
 import { Column } from "@/pages/projectView"
 import { Ticket } from "@/types/ticket"
+import { useEffect, useState } from "react"
 import { DndProvider, useDrag, useDrop } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
+import { useParams } from "react-router-dom"
 
 // Draggable Item Types
 const ItemTypes = {
@@ -19,10 +22,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
   })
 
   return (
-    <div
-      ref={drag}
-      className="border p-2 rounded bg-rose-100 shadow-md mb-2"
-    >
+    <div ref={drag} className="border p-2 rounded bg-rose-100 shadow-md mb-2">
       {ticket.title}
     </div>
   )
@@ -44,14 +44,15 @@ const SingleColumn = ({
   })
 
   return (
-    <div
-      ref={drop}
-      className="border p-2 rounded bg-sky-200 shadow-md"
-    >
+    <div ref={drop} className="border p-2 rounded bg-sky-200 shadow-md">
       <h3 className="font-bold p-2 underline">{column.title}</h3>
       <div className="mt-2 h-96 overflow-y-auto w-60">
         {column.tickets.map((ticket) => (
-          <SingleTicket key={ticket.id} ticket={ticket} onDrop={(id) => onDropTicket(id, column.id)} />
+          <SingleTicket
+            key={ticket.id}
+            ticket={ticket}
+            onDrop={(id) => onDropTicket(id, column.id)}
+          />
         ))}
       </div>
     </div>
@@ -59,31 +60,62 @@ const SingleColumn = ({
 }
 
 type KanbanProps = {
-  columns: Column[]
-  setColumns: React.Dispatch<React.SetStateAction<Column[]>>
+  workspaceId: string
 }
 
 // Main Kanban Component
-export const Kanban = ({ columns, setColumns }: KanbanProps) => {
+export const Kanban = ({ workspaceId }: KanbanProps) => {
+  const { wsId = "", id = "" } = useParams<{ wsId: string; id: string }>()
 
-  const handleDropTicket = (ticketId: string, targetColumnId: number) => {
-    setColumns((prev) => {
-      const sourceColumn = prev.find((col) => col.tickets.some((ticket) => ticket.id === ticketId))
-      const targetColumn = prev.find((col) => col.id === targetColumnId)
+  const updateTicketStatus = useUpdateTicket()
 
-      if (!sourceColumn || !targetColumn) return prev
+  const {
+    data: tickets,
+    isLoading: ticketsLoading,
+    error: ticketsError
+  } = useGetTicketsInProject(id, wsId)
 
-      const ticket = sourceColumn.tickets.find((ticket) => ticket.id === ticketId)
-      if (!ticket) return prev
+  // Initialize columns for the Kanban board (based on your tickets' status)
+  const [columns, setColumns] = useState<Column[]>([
+    { id: 0, title: "To Do", tickets: [] },
+    { id: 1, title: "In Progress", tickets: [] },
+    { id: 2, title: "Done", tickets: [] }
+  ])
 
-      ticket.status = targetColumn.id
+  // Populate columns with tickets based on their status
+  useEffect(() => {
+    const updatedColumns = columns.map((column) => ({
+      ...column,
+      tickets: tickets ? tickets.filter((ticket) => ticket.status === column.id) : []
+    }))
+    setColumns(updatedColumns)
+  }, [tickets])
 
-      // Remove ticket from source column and add it to the target column
-      sourceColumn.tickets = sourceColumn.tickets.filter((ticket) => ticket.id !== ticketId)
-      targetColumn.tickets = [...targetColumn.tickets, ticket]
+  if (ticketsLoading) {
+    return <div>Loading...</div>
+  }
 
-      return [...prev]
-    })
+  if (ticketsError) {
+    return <div>Error loading data...</div>
+  }
+
+  const handleDropTicket = async (ticketId: string, targetColumnId: number) => {
+    const ticket = columns
+      .find((col) => col.tickets.some((ticket) => ticket.id === ticketId))
+      ?.tickets.find((ticket) => ticket.id === ticketId)
+
+    if (!ticket) {
+      return
+    }
+
+    try {
+      await updateTicketStatus.mutateAsync({
+        workspaceId: workspaceId,
+        updatedTicket: { ...ticket, status: targetColumnId }
+      })
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   return (

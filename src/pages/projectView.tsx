@@ -1,9 +1,8 @@
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { Kanban } from "../components/kanban"
 import { useParams } from "react-router-dom"
 import { Ticket } from "@/types/ticket"
 import { useGetProjectById } from "@/hooks/projectManagement"
-import { useGetTicketsInProject } from "@/hooks/ticketManagement"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -22,33 +21,11 @@ export const ProjectView = () => {
 
   const { data: project, isLoading: projLoading, error: projError } = useGetProjectById(id, wsId)
 
-  const {
-    data: tickets,
-    isLoading: ticketsLoading,
-    error: ticketsError
-  } = useGetTicketsInProject(id, wsId)
-
-  // Initialize columns for the Kanban board (based on your tickets' status)
-  const [columns, setColumns] = useState<Column[]>([
-    { id: 0, title: "To Do", tickets: [] },
-    { id: 1, title: "In Progress", tickets: [] },
-    { id: 2, title: "Done", tickets: [] }
-  ])
-
-  // Populate columns with tickets based on their status
-  useEffect(() => {
-    const updatedColumns = columns.map((column) => ({
-      ...column,
-      tickets: tickets ? tickets.filter((ticket) => ticket.status === column.id) : []
-    }))
-    setColumns(updatedColumns)
-  }, [project, tickets])
-
-  if (projLoading || ticketsLoading) {
+  if (projLoading) {
     return <div>Loading...</div>
   }
 
-  if (projError || ticketsError) {
+  if (projError) {
     return <div>Error loading data...</div>
   }
 
@@ -60,7 +37,7 @@ export const ProjectView = () => {
         <div className="flex justify-between">
           <div className="p-5 bg-sky-900 rounded-lg w-full text-white">
             {project && <h1 className="text-2xl font-bold">Project: {project.name}</h1>}
-            </div>
+          </div>
         </div>
         <Dialog open={showCreateTicket} onOpenChange={handleCreateTicket}>
           <DialogContent>
@@ -73,7 +50,7 @@ export const ProjectView = () => {
         </Dialog>
         <Button onClick={handleCreateTicket}>Create Ticket</Button>
       </div>
-      <Kanban columns={columns} setColumns={setColumns} />
+      <Kanban workspaceId={wsId} />
     </div>
   )
 }

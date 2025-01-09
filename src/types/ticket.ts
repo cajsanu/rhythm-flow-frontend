@@ -16,5 +16,18 @@ export const createTicketSchema = ticketSchema.omit({
   id: true
 })
 
+const updateTicketSchema = z.object({
+  id: z.string(),
+  title: z.string().optional(),
+  description: z.string().optional(),
+  priority: z.number().optional(),
+  deadline: z.string().optional(),
+  status: z.number().optional(),
+  projectId: z.string(),
+  type: z.number().optional(),
+  userIds: z.array(z.string()).optional()
+})
+
 export type Ticket = z.infer<typeof ticketSchema>
 export type CreateTicket = z.infer<typeof createTicketSchema>
+export type UpdateTicket = z.infer<typeof updateTicketSchema>

@@ -10,6 +10,14 @@ export const useGetTicketsInProject = (id: string, wsId: string) => {
   return { data, isLoading, error }
 }
 
+export const useGetTicketById = (id: string, wsId: string) => {
+  const { data, isLoading, error } = useQuery<Ticket>({
+    queryKey: ["ticket", id],
+    queryFn: () => ticketRequests.getTicketById(id, wsId)
+  })
+  return { data, isLoading, error }
+}
+
 export const useCreateTicket = () => {
   const queryClient = useQueryClient()
 
@@ -22,4 +30,26 @@ export const useCreateTicket = () => {
   })
 
   return newTickettMutation
+}
+
+export const useUpdateTicket = () => {
+  const queryClient = useQueryClient()
+
+  const updateTicketMutation = useMutation({
+    mutationFn: ({ workspaceId, updatedTicket }: { workspaceId: string; updatedTicket: Ticket }) =>
+      ticketRequests.updateTicket(workspaceId, updatedTicket),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["tickets"] })
+      queryClient.setQueriesData({ queryKey: ["tickets"] }, (oldTickets: Ticket[]) =>
+        oldTickets.map((ticket) => {
+          if (ticket.id === variables.updatedTicket.id) {
+            return variables.updatedTicket
+          }
+          return ticket
+        })
+      )
+    }
+  })
+
+  return updateTicketMutation
 }
