@@ -31,7 +31,7 @@ export const WorkspaceView = () => {
       <Card className="w-5/6 max-w-4xl shadow-lg">
         <CardHeader>
           <CardTitle className="text-center text-2xl">
-            {workspace ? `Workspace: ${workspace.name}` : "Workspace"}
+            {workspace ? `${workspace.name}` : "Workspace"}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -47,7 +47,7 @@ export const WorkspaceView = () => {
                     <Dialog open={showCreateProject} onOpenChange={handleCreateProject}>
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>Create Project</DialogTitle>
+                          <DialogTitle className="text-3xl">Create Project</DialogTitle>
                           <DialogDescription>
                             Fill in the details to create a new project.
                           </DialogDescription>

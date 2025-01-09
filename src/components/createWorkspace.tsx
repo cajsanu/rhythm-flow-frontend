@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useParams } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
@@ -48,10 +48,7 @@ export const CreateWorkspaceForm = ({ onSuccess }: CreateWorkspaceProps) => {
   return (
     <div className="flex justify-center">
       <Card className="w-full max-w-lg shadow-2xl">
-        <CardHeader>
-          <CardTitle>Create Workspace</CardTitle>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="p-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
               <FormField

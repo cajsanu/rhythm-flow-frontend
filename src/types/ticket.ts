@@ -5,7 +5,17 @@ const ticketSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   description: z.string().min(1, { message: "Description is required" }),
   priority: z.number().min(0, { message: "Priority is required" }),
-  deadline: z.string().min(1, { message: "Deadline is required" }),
+  deadline: z
+    .string()
+    .min(1, { message: "Deadline is required" })
+    .refine(
+      (date) => {
+        const deadlineDate = new Date(date)
+        const now = new Date()
+        return deadlineDate >= now
+      },
+      { message: "Deadline cannot be in the past" }
+    ),
   status: z.number().min(0, { message: "Status is required" }),
   projectId: z.string().min(1, { message: "Project ID is required" }),
   type: z.number().min(0, { message: "Type is required" }),

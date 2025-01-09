@@ -47,7 +47,7 @@ export const Home = () => {
           <Dialog open={showCreateWorkspace} onOpenChange={handleCreateWorkspace}>
             <DialogContent>
               <DialogHeader>
-                <DialogTitle>Create Workspace</DialogTitle>
+                <DialogTitle className="text-3xl">Create Workspace</DialogTitle>
                 <DialogDescription>
                   Fill in the details to create a new workspace.
                 </DialogDescription>

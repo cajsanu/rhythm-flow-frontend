@@ -4,9 +4,19 @@ const projectScema = z.object({
   id: z.string(),
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  startDate: z.string().refine((date) => !isNaN(new Date(date).getTime()), {
-    message: "Start date must be a valid date"
-  }),
+  startDate: z
+    .string()
+    .refine((date) => !isNaN(new Date(date).getTime()), {
+      message: "Start date must be a valid date"
+    })
+    .refine(
+      (date) => {
+        const startDate = new Date(date)
+        const now = new Date()
+        return startDate >= now
+      },
+      { message: "Start date cannot be in the past" }
+    ),
   endDate: z.string().refine((date) => !isNaN(new Date(date).getTime()), {
     message: "End date must be a valid date"
   }),
@@ -14,9 +24,18 @@ const projectScema = z.object({
   workspaceId: z.string()
 })
 
-export const createProjectSchema = projectScema.omit({
-  id: true
-})
+export const createProjectSchema = projectScema
+  .omit({
+    id: true
+  })
+  .refine(
+    (data) => {
+      const startDate = new Date(data.startDate)
+      const endDate = new Date(data.endDate)
+      return endDate > startDate
+    },
+    { message: "End date must be after start date", path: ["endDate"] }
+  )
 
 export type Project = z.infer<typeof projectScema>
 export type CreateProject = z.infer<typeof createProjectSchema>
