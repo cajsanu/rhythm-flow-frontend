@@ -46,7 +46,7 @@ export const CreateWorkspaceForm = ({ onSuccess }: CreateWorkspaceProps) => {
   }
 
   return (
-    <div className="flex justify-center pt-40">
+    <div className="flex justify-center">
       <Card className="w-full max-w-lg shadow-2xl">
         <CardHeader>
           <CardTitle>Create Workspace</CardTitle>

@@ -37,11 +37,23 @@ const createWorkspace = async (newWorkspace: CreateWorkspace): Promise<Workspace
   }
 }
 
-const deleteWorkspace = async (workspaceId: string) => {}
+const deleteWorkspace = async (workspaceId: string) => {
+  const config = getAuthConfig()
+
+  try {
+    await axios.delete(`${baseURL}/${workspaceId}`, config)
+  } catch (err) {
+    throw new Error("Failed to delete workspace", { cause: err })
+  }
+}
 
 const updateWorkspace = async (workspaceId: string, updatedWorkspace: UpdateWorkspace) => {}
 
-const addUserToWorkspace = async (workspaceId: string, userId: string, role: Role): Promise<UserWorkspace> => {
+const addUserToWorkspace = async (
+  workspaceId: string,
+  userId: string,
+  role: Role
+): Promise<UserWorkspace> => {
   const config = getAuthConfig()
 
   try {
@@ -52,4 +64,4 @@ const addUserToWorkspace = async (workspaceId: string, userId: string, role: Rol
   }
 }
 
-export default { getMyWorkspaces, getWorkspaceById, createWorkspace, addUserToWorkspace }
+export default { getMyWorkspaces, getWorkspaceById, createWorkspace, deleteWorkspace, addUserToWorkspace }

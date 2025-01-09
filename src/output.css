@@ -634,6 +634,14 @@ body {
   top: 50%;
 }
 
+.right-0 {
+  right: 0px;
+}
+
+.top-0 {
+  top: 0px;
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -734,6 +742,10 @@ body {
   height: 1px;
 }
 
+.h-6 {
+  height: 1.5rem;
+}
+
 .max-h-96 {
   max-height: 24rem;
 }
@@ -756,6 +768,10 @@ body {
 
 .w-4 {
   width: 1rem;
+}
+
+.w-6 {
+  width: 1.5rem;
 }
 
 .min-w-\[300px\] {
@@ -908,6 +924,14 @@ body {
   border-radius: calc(var(--radius) - 4px);
 }
 
+.rounded-bl-xl {
+  border-bottom-left-radius: 0.75rem;
+}
+
+.rounded-tr-xl {
+  border-top-right-radius: 0.75rem;
+}
+
 .border {
   border-width: 1px;
 }
@@ -1028,6 +1052,10 @@ body {
   padding: 0.25rem;
 }
 
+.p-3 {
+  padding: 0.75rem;
+}
+
 .px-3 {
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -1066,6 +1094,11 @@ body {
 .py-1 {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .pt-2 {

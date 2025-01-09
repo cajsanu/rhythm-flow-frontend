@@ -47,8 +47,10 @@ export const WorkspaceView = () => {
                     <Dialog open={showCreateProject} onOpenChange={handleCreateProject}>
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle>Create Ticket</DialogTitle>
-                          <DialogDescription>Fill in the details to create a new project.</DialogDescription>
+                          <DialogTitle>Create Project</DialogTitle>
+                          <DialogDescription>
+                            Fill in the details to create a new project.
+                          </DialogDescription>
                         </DialogHeader>
                         <CreateProjectForm />
                       </DialogContent>

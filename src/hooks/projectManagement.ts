@@ -30,3 +30,17 @@ export const useCreateProject = () => {
 
   return newProjectMutation
 }
+
+export const useDeleteProject = () => {
+  const queryClient = useQueryClient()
+
+  const deleteProjectMutation = useMutation({
+    mutationFn: ({ projectId, workspaceId }: { projectId: string; workspaceId: string }) =>
+      projectRequests.deleteProject(projectId, workspaceId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["projects"] })
+    }
+  })
+
+  return deleteProjectMutation
+}

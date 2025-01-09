@@ -1,7 +1,10 @@
 export const getAuthConfig = () => {
-    let token = window.localStorage.getItem("token")
-    const config = {
-      headers: { Authorization: `Bearer ${token}` }
-    }
-    return config
+  const token = window.localStorage.getItem("token")
+  if (!token) {
+    throw new Error("No token found")
   }
+  const config = {
+    headers: { Authorization: `Bearer ${token}` }
+  }
+  return config
+}

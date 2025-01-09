@@ -1,10 +1,15 @@
 import { useParams } from "react-router-dom"
 import { useState } from "react"
 import { Workspaces, CreateWorkspaceForm } from "../components"
-import Box from "@mui/material/Box"
-import Modal from "@mui/material/Modal"
 import { useGetWorkspaces } from "@/hooks/workspaceManagement"
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog"
 
 export const Home = () => {
   const [showWorkspaces, setShowWorkspaces] = useState(false)
@@ -20,7 +25,10 @@ export const Home = () => {
 
   const handleCreateWorkspace = () => setShowCreateWorkspace((prev) => !prev)
 
-  const handleSuccess = () => setShowCreateWorkspace(false)
+  const handleSuccess = () => {
+    setShowCreateWorkspace(false)
+    setShowWorkspaces(true)
+  }
 
   return (
     <div className="flex flex-col justify-center items-center gap-10 h-screen">
@@ -36,16 +44,17 @@ export const Home = () => {
       </div>
       <div>
         <div>
-          <Modal
-            open={showCreateWorkspace}
-            onClose={handleCreateWorkspace}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <Box>
+          <Dialog open={showCreateWorkspace} onOpenChange={handleCreateWorkspace}>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create Workspace</DialogTitle>
+                <DialogDescription>
+                  Fill in the details to create a new workspace.
+                </DialogDescription>
+              </DialogHeader>
               <CreateWorkspaceForm onSuccess={handleSuccess} />
-            </Box>
-          </Modal>
+            </DialogContent>
+          </Dialog>
         </div>
         <div></div>
       </div>

@@ -30,3 +30,16 @@ export const useCreateWorkspace = () => {
 
   return newWorkspaceMutation
 }
+
+export const useDeleteWorkspace = () => {
+  const queryClient = useQueryClient()
+
+  const deleteWorkspaceMutation = useMutation({
+    mutationFn: workspaceRequests.deleteWorkspace,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["workspaces"] })
+    }
+  })
+
+  return deleteWorkspaceMutation
+}
