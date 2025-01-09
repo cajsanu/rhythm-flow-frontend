@@ -5,7 +5,13 @@ import { Ticket } from "@/types/ticket"
 import { useGetProjectById } from "@/hooks/projectManagement"
 import { useGetTicketsInProject } from "@/hooks/ticketManagement"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog"
 import { CreateTicketForm } from "@/components/createTicket"
 
 export type Column = { id: number; title: string; tickets: Ticket[] }
@@ -49,11 +55,12 @@ export const ProjectView = () => {
   const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
 
   return (
-    <div>
-      <div className="space-y-8">
-        <div className="flex justify-between items-center">
-          {project && <h1 className="text-2xl font-bold">Project View: {project.name}</h1>}
-          <Button onClick={handleCreateTicket}>Create Ticket</Button>
+    <div className="flex flex-col items-center gap-8 p-8">
+      <div className="w-full">
+        <div className="flex justify-between">
+          <div className="p-5 bg-sky-900 rounded-lg w-full text-white">
+            {project && <h1 className="text-2xl font-bold">Project: {project.name}</h1>}
+            </div>
         </div>
         <Dialog open={showCreateTicket} onOpenChange={handleCreateTicket}>
           <DialogContent>
@@ -64,9 +71,8 @@ export const ProjectView = () => {
             <CreateTicketForm />
           </DialogContent>
         </Dialog>
+        <Button onClick={handleCreateTicket}>Create Ticket</Button>
       </div>
-
-      {project && <h1>Project View: {project.name}</h1>}
       <Kanban columns={columns} setColumns={setColumns} />
     </div>
   )

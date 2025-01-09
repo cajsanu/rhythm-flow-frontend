@@ -43,7 +43,7 @@ export const LoginForm = () => {
   }
 
   return (
-    <Card className="max-w-md mx-auto mt-10">
+    <Card className="w-full mx-auto mt-10">
       <CardHeader>
         <CardTitle>Login</CardTitle>
       </CardHeader>

@@ -46,10 +46,10 @@ const SingleColumn = ({
   return (
     <div
       ref={drop}
-      className="border p-2 rounded bg-rose-200 shadow-md"
+      className="border p-2 rounded bg-sky-200 shadow-md"
     >
-      <h3 style={{ textAlign: "center" }}>{column.title}</h3>
-      <div style={{ minHeight: "100px" }}>
+      <h3 className="font-bold p-2 underline">{column.title}</h3>
+      <div className="mt-2 h-96 overflow-y-auto w-60">
         {column.tickets.map((ticket) => (
           <SingleTicket key={ticket.id} ticket={ticket} onDrop={(id) => onDropTicket(id, column.id)} />
         ))}
@@ -88,7 +88,7 @@ export const Kanban = ({ columns, setColumns }: KanbanProps) => {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div style={{ display: "flex", padding: "16px" }}>
+      <div className="flex gap-4">
         {columns.map((column) => (
           <SingleColumn key={column.id} column={column} onDropTicket={handleDropTicket} />
         ))}

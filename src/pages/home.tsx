@@ -31,8 +31,8 @@ export const Home = () => {
   }
 
   return (
-    <div className="flex flex-col justify-center items-center gap-10 h-screen">
-      <h1 className="text-2xl">Welcome!</h1>
+    <div className="flex flex-col justify-center items-center gap-10 h-screen bg-gradient-to-r from-sky-300 to-rose-300">
+      <h1 className="text-4xl text-white font-bold">Welcome!</h1>
       <div className="flex flex-row gap-4">
         <Button onClick={handleShowWorkspaces}>My workspaces</Button>
         <Button onClick={handleCreateWorkspace}>Create workspace</Button>

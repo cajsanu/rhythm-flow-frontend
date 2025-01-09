@@ -27,8 +27,8 @@ export const WorkspaceView = () => {
   const handleCreateProject = () => setShowCreateProject((prev) => !prev)
 
   return (
-    <div className="flex justify-center py-10">
-      <Card className="w-full max-w-4xl shadow-lg bg-rose-400">
+    <div className="flex justify-center py-10 bg-sky-200 h-screen">
+      <Card className="w-5/6 max-w-4xl shadow-lg">
         <CardHeader>
           <CardTitle className="text-center text-2xl">
             {workspace ? `Workspace: ${workspace.name}` : "Workspace"}
@@ -56,7 +56,6 @@ export const WorkspaceView = () => {
                       </DialogContent>
                     </Dialog>
                   </div>
-                  <div></div>
                 </div>
               </div>
               <div>
