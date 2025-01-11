@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { useCreateUser } from "@/hooks/userManagement"
 
 export const SignupForm = () => {
   const form = useForm<CreateUser>({
@@ -22,10 +23,11 @@ export const SignupForm = () => {
   })
 
   const navigate = useNavigate()
+  const newUserMutation = useCreateUser()
 
   const onSubmit: SubmitHandler<CreateUser> = async (data: CreateUser) => {
     try {
-      const user = await userRequests.createUser(data)
+      const user = await newUserMutation.mutateAsync(data)
       navigate(`/home/${user.id}`)
     } catch (err) {
       console.error(err)

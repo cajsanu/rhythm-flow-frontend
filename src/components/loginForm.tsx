@@ -1,6 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { login } from "@/api/login"
 import { useNavigate } from "react-router-dom"
 import userRequests from "../api/users"
 import { Button } from "@/components/ui/button"
@@ -15,6 +14,7 @@ import {
   FormMessage
 } from "@/components/ui/form"
 import { LoginCredentials, loginSchema } from "@/types/user"
+import { useGetUserByEmail, useLogin } from "@/hooks/userManagement"
 
 export const LoginForm = () => {
   const form = useForm<LoginCredentials>({
@@ -25,13 +25,14 @@ export const LoginForm = () => {
     }
   })
 
+  const loginMutation = useLogin()
+  // const { data: user, isLoading, error } = useGetUserByEmail(form.getValues("email"))
+
   const navigate = useNavigate()
 
   const onSubmit: SubmitHandler<LoginCredentials> = async (data: LoginCredentials) => {
     try {
-      const token = await login(data)
-      window.localStorage.clear()
-      token && window.localStorage.setItem("token", token)
+      await loginMutation.mutateAsync(data)
       const user = await userRequests.getUserByEmail(data.email)
       if (!user) {
         throw new Error("User not found")
