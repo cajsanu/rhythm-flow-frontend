@@ -24,8 +24,11 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
   })
 
   return (
-    <div ref={drag} className="border p-2 font-semibold rounded bg-gradient-to-r from-gray-100 to-gray-100 shadow-md mb-2">
-      {ticket.title} <span className="text-xs text-gray-500">({ticket.deadline})</span> 
+    <div
+      ref={drag}
+      className="border p-2 font-semibold rounded bg-gradient-to-r from-gray-100 to-gray-100 shadow-md mb-2"
+    >
+      {ticket.title} <span className="text-xs text-gray-500">({ticket.deadline})</span>
     </div>
   )
 }
@@ -79,45 +82,22 @@ export const Kanban = ({ workspaceId }: KanbanProps) => {
 
   const updateTicketStatus = useUpdateTicket()
 
-  const {
-    data: tickets,
-    isLoading: ticketsLoading,
-    error: ticketsError
-  } = useGetTicketsInProject(id, wsId)
+  const { data: tickets, isLoading, error } = useGetTicketsInProject(id, wsId)
 
-  // Initialize columns for the Kanban board (based on your tickets' status)
-  const [columns, setColumns] = useState<Column[]>([
+  // Initialize columns and dynamically populate with tickets
+  const columns = [
     { id: 0, title: "Not started", tickets: [] },
     { id: 1, title: "In Progress", tickets: [] },
-    { id: 2, title: "Complted", tickets: [] },
+    { id: 2, title: "Completed", tickets: [] },
     { id: 3, title: "Cancelled", tickets: [] }
-  ])
-
-  // Populate columns with tickets based on their status
-  useEffect(() => {
-    const updatedColumns = columns.map((column) => ({
-      ...column,
-      tickets: tickets ? tickets.filter((ticket) => ticket.status === column.id) : []
-    }))
-    setColumns(updatedColumns)
-  }, [tickets])
-
-  if (ticketsLoading) {
-    return <div>Loading...</div>
-  }
-
-  if (ticketsError) {
-    return <div>Error loading data...</div>
-  }
+  ].map((column) => ({
+    ...column,
+    tickets: tickets?.filter((ticket) => ticket.status === column.id) || []
+  }))
 
   const handleDropTicket = async (ticketId: string, targetColumnId: number) => {
-    const ticket = columns
-      .find((col) => col.tickets.some((ticket) => ticket.id === ticketId))
-      ?.tickets.find((ticket) => ticket.id === ticketId)
-
-    if (!ticket) {
-      return
-    }
+    const ticket = tickets?.find((ticket) => ticket.id === ticketId)
+    if (!ticket) return
 
     try {
       await updateTicketStatus.mutateAsync({
@@ -128,6 +108,9 @@ export const Kanban = ({ workspaceId }: KanbanProps) => {
       console.error(err)
     }
   }
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error loading tickets.</div>
 
   return (
     <DndProvider backend={HTML5Backend}>

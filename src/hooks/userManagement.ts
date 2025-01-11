@@ -9,7 +9,6 @@ export const useLogin = () => {
     mutationKey: ["login"],
     mutationFn: login,
     onSuccess: (data) => {
-      window.localStorage.clear()
       data && window.localStorage.setItem("token", data)
     },
     retry: (failureCount: number, error: AxiosError) => {
