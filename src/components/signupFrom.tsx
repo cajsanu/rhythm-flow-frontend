@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
-import { useCreateUser } from "@/hooks/userManagement"
+import { useCreateUser, useLogin } from "@/hooks/userManagement"
 
 export const SignupForm = () => {
   const form = useForm<CreateUser>({
@@ -24,10 +24,12 @@ export const SignupForm = () => {
 
   const navigate = useNavigate()
   const newUserMutation = useCreateUser()
+  const loginMutation = useLogin()
 
   const onSubmit: SubmitHandler<CreateUser> = async (data: CreateUser) => {
     try {
       const user = await newUserMutation.mutateAsync(data)
+      await loginMutation.mutateAsync({ email:data.email, password: data.password })
       navigate(`/home/${user.id}`)
     } catch (err) {
       console.error(err)

@@ -12,19 +12,28 @@ import { DialogDescription } from "@radix-ui/react-dialog"
 export const WorkspaceView = () => {
   const { id = "" } = useParams<{ id: string }>()
   const [showCreateProject, setShowCreateProject] = useState(false)
+  const [search, setSearch] = useState<string>("")
 
   const { data: workspace, isLoading: wsLoading, error: wsError } = useGetWorkspaceById(id)
-  const { data: projects, isLoading: projLoading, error: projError } = useGetProjectsInWorkspace(id)
+  const {
+    data: projects,
+    isLoading: projLoading,
+    error: projError
+  } = useGetProjectsInWorkspace(id, search)
+
+  const handleCreateProject = () => setShowCreateProject((prev) => !prev)
+
+  const handleSearch = (value: string) => {
+    setSearch(value)
+  }
 
   if (projLoading || wsLoading) {
-    return <div>loading data...</div>
+    return <div>Loading data...</div>
   }
 
   if (projError || wsError) {
-    return <div>error loading data...</div>
+    return <div>Error loading data...</div>
   }
-
-  const handleCreateProject = () => setShowCreateProject((prev) => !prev)
 
   return (
     <div className="flex justify-center py-10 bg-sky-200 h-screen">
@@ -57,6 +66,15 @@ export const WorkspaceView = () => {
                     </Dialog>
                   </div>
                 </div>
+              </div>
+              <div className="flex justify-center pt-10">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  placeholder="Search projects by name..."
+                  className="border rounded-md p-2 w-64 shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
+                />
               </div>
               <div>
                 {projects && projects.length > 0 ? (

@@ -25,7 +25,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
 
   return (
     <div ref={drag} className="border p-2 font-semibold rounded bg-gradient-to-r from-gray-100 to-gray-100 shadow-md mb-2">
-      {ticket.title} <span className="text-xs text-gray-500">({ticket.deadline})</span>
+      {ticket.title} <span className="text-xs text-gray-500">({ticket.deadline})</span> 
     </div>
   )
 }
