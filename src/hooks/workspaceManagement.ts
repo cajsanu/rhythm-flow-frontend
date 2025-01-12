@@ -5,7 +5,7 @@ import workspaceRequests from "@/api/workspaces"
 export const useGetWorkspaces = (id: string) => {
   const { data, isLoading, error } = useQuery<Workspace[]>({
     queryKey: ["workspaces", id],
-    queryFn: () => workspaceRequests.getMyWorkspaces(id)
+    queryFn: () => workspaceRequests.getMyWorkspaces(id),
   })
   return { data, isLoading, error }
 }
@@ -13,7 +13,8 @@ export const useGetWorkspaces = (id: string) => {
 export const useGetWorkspaceById = (id: string) => {
   const { data, isLoading, error } = useQuery<Workspace>({
     queryKey: ["workspace", id],
-    queryFn: () => workspaceRequests.getWorkspaceById(id)
+    queryFn: () => workspaceRequests.getWorkspaceById(id),
+    throwOnError: true,
   })
   return { data, isLoading, error }
 }

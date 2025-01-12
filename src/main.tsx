@@ -1,7 +1,7 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { createBrowserRouter, RouterProvider, useNavigate } from "react-router-dom"
+import { Query, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 
 import "./index.css"
 import { Home, Login, Signup, WorkspaceView, ProjectView } from "./pages"
@@ -23,18 +23,39 @@ const router = createBrowserRouter([
     errorElement: <div>"Not found"</div>
   },
   {
-    path: "/workspace/:id", 
+    path: "/workspace/:id",
     element: <WorkspaceView />,
     errorElement: <div>"Not found"</div>
   },
   {
-    path: "workspace/:wsId/project/:id", 
+    path: "workspace/:wsId/project/:id",
     element: <ProjectView />,
     errorElement: <div>"Not found"</div>
   }
 ])
 
-const queryClient = new QueryClient()
+const handleUnauthorized = () => {
+  window.location.href = "/"
+}
+
+// Create the QueryClient
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false
+    },
+    mutations: {
+      retry: false 
+    }
+  },
+  queryCache: new QueryCache({
+    onError: (_: any, query: any) => {
+      if (query?.state?.error?.cause?.status === 401) {
+        handleUnauthorized()
+      }
+    }
+  })
+})
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

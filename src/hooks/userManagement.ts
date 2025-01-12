@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { login } from "@/api/login"
-import { AxiosError } from "axios"
 import { User } from "@/types/user"
 import userRequests from "@/api/users"
 
@@ -11,13 +10,6 @@ export const useLogin = () => {
     onSuccess: (data) => {
       data && window.localStorage.setItem("token", data)
     },
-    retry: (failureCount: number, error: AxiosError) => {
-      const noRetryConditions = [error.status === 400, error.status === 401]
-      if (noRetryConditions.some((condition) => condition)) {
-        return false
-      }
-      return failureCount < 3
-    }
   })
 
   return newLoginMutation

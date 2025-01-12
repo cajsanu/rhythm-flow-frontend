@@ -13,7 +13,8 @@ export const useGetProjectsInWorkspace = (id: string, search: string) => {
         )
       }
       return projects
-    }
+    },
+    throwOnError: true,
   })
 
   return { data, isLoading, error }
