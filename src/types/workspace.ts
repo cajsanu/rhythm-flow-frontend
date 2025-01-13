@@ -10,10 +10,10 @@ export const createWorkspaceSchema = workspaceSchema.omit({ id: true })
 
 const updateWorkspaceSchema = workspaceSchema.omit({ id: true, ownerId: true })
 
-const userWorkspaceSchema = z.object({
+export const userWorkspaceSchema = z.object({
   userId: z.string(),
   workspaceId: z.string(),
-  role: z.number()
+  role: z.string()
 })
 
 export type Workspace = z.infer<typeof workspaceSchema>

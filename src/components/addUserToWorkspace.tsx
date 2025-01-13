@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom"
 import { Button } from "./ui/button"
 import { useGetUsers } from "@/hooks/userManagement"
 import { Role } from "@/types/role"
+import { userWorkspaceSchema } from "@/types/workspace"
+import { ZodError } from "zod"
 
 export const AddUserToWorkspace = () => {
   const { id = "" } = useParams<{ id: string }>()
@@ -16,13 +18,23 @@ export const AddUserToWorkspace = () => {
 
   const handleAssignUserToWorkspace = async () => {
     try {
-      await addUserToWorkspaceMutation.mutateAsync({
+      const data = {
         workspaceId: id,
         userId: selectedUserId,
         role: selectedRole
-      })
+      }
+
+      // Validate the input against the schema
+      userWorkspaceSchema.parse(data)
+
+      await addUserToWorkspaceMutation.mutateAsync(data)
     } catch (err) {
-      console.error(err)
+      if (err instanceof ZodError) {
+        console.error("Validation error:", err.errors)
+        // Show some message to the user
+      } else {
+        console.error("Unexpected error:", err)
+      }
     }
   }
 
