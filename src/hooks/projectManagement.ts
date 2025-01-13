@@ -78,7 +78,9 @@ export const useAssignUserToProject = () => {
       userId: string
     }) => projectRequests.assignUserToProject(workspaceId, projectId, userId),
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ["project", variables.projectId, "tickets"] })
+      queryClient.invalidateQueries({ queryKey: ["project", variables.projectId] })
+      queryClient.invalidateQueries({ queryKey: ["tickets"] })
+      queryClient.invalidateQueries({ queryKey: ["users", variables.projectId] })
     }
   })
 

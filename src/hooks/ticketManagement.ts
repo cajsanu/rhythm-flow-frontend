@@ -69,7 +69,7 @@ export const useAssignUserToTicket = () => {
       ticketId: string
       userId: string
     }) => ticketRequests.assignUserToTicket(workspaceId, projectId, ticketId, userId),
-    onSuccess: (_, variables) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tickets"] })
     }
   })
