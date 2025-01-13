@@ -1,7 +1,7 @@
 import axios from "axios"
 import { getAuthConfig } from "./utils"
 import { CreateWorkspace, UpdateWorkspace, UserWorkspace, Workspace } from "../types/workspace"
-import { Role } from "../types/role"
+import { Role, RoleMap } from "../types/role"
 import { User } from "@/types/user"
 const baseURL = "/api/v1/workspaces"
 
@@ -68,12 +68,25 @@ const addUserToWorkspace = async (
 ): Promise<UserWorkspace> => {
   const config = getAuthConfig()
 
+  const mappedRole = RoleMap[role]
+
   try {
-    const res = await axios.post(`${baseURL}/${workspaceId}/users/${userId}`, { role }, config)
+    const res = await axios.post(
+      `${baseURL}/${workspaceId}/users/${userId}`,
+      { Role: mappedRole },
+      config
+    )
     return res.data
   } catch (err) {
     throw new Error("Failed to add user to workspace", { cause: err })
   }
 }
 
-export default { getMyWorkspaces, getUsersInWorkspace, getWorkspaceById, createWorkspace, deleteWorkspace, addUserToWorkspace }
+export default {
+  getMyWorkspaces,
+  getUsersInWorkspace,
+  getWorkspaceById,
+  createWorkspace,
+  deleteWorkspace,
+  addUserToWorkspace
+}

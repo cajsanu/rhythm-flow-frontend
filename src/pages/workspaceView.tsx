@@ -8,11 +8,13 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { DialogDescription } from "@radix-ui/react-dialog"
+import { AddUserToWorkspace } from "@/components/addUserToWorkspace"
 
 export const WorkspaceView = () => {
   const { id = "" } = useParams<{ id: string }>()
   const [showCreateProject, setShowCreateProject] = useState(false)
   const [search, setSearch] = useState<string>("")
+  const [showAddUsers, setShowAddUsers] = useState(false)
 
   const { data: workspace, isLoading: wsLoading, error: wsError } = useGetWorkspaceById(id)
   const {
@@ -22,18 +24,14 @@ export const WorkspaceView = () => {
   } = useGetProjectsInWorkspace(id, search)
 
   const handleCreateProject = () => setShowCreateProject((prev) => !prev)
+  const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
 
   const handleSearch = (value: string) => {
     setSearch(value)
   }
 
-  if (projLoading || wsLoading) {
-    return <div>Loading data...</div>
-  }
-
-  if (projError || wsError) {
-    return <div>Error loading data...</div>
-  }
+  if (projLoading || wsLoading) return <div>Loading...</div>
+  if (projError || wsError) return <div>Error loading data...</div>
 
   return (
     <div className="flex justify-center py-10 bg-sky-200 h-screen">
@@ -47,11 +45,9 @@ export const WorkspaceView = () => {
           {workspace ? (
             <div className="text-center">
               <div className="flex space-x-4 justify-center">
-                <div>
-                  <h3 className="text-xl font-semibold mb-4">Projects in this Workspace</h3>
-                </div>
-                <div>
-                  <Button onClick={handleCreateProject}>Create Project</Button>
+                <div className="flex space-x-4">
+                  <Button onClick={handleCreateProject}>+ Create Project</Button>
+                  <Button onClick={handleShowAddUsers}>+ Add User</Button>
                   <div>
                     <Dialog open={showCreateProject} onOpenChange={handleCreateProject}>
                       <DialogContent>
@@ -62,6 +58,17 @@ export const WorkspaceView = () => {
                           </DialogDescription>
                         </DialogHeader>
                         <CreateProjectForm />
+                      </DialogContent>
+                    </Dialog>
+                    <Dialog open={showAddUsers} onOpenChange={handleShowAddUsers}>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle className="text-3xl">Add users to workspace</DialogTitle>
+                          <DialogDescription>
+                            Assign users to the workspace.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <AddUserToWorkspace />
                       </DialogContent>
                     </Dialog>
                   </div>

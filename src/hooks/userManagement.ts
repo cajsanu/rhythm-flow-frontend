@@ -15,7 +15,7 @@ export const useLogin = () => {
   return newLoginMutation
 }
 
-export const useGetUsers = (id: string) => {
+export const useGetUsers = () => {
   const { data, isLoading, error } = useQuery<User[]>({
     queryKey: ["users"],
     queryFn: () => userRequests.getUsers()

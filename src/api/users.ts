@@ -4,8 +4,10 @@ import { getAuthConfig } from "./utils"
 const baseURL = "/api/v1/users"
 
 const getUsers = async (): Promise<User[]> => {
+  const config = getAuthConfig()
+
   try {
-    const res = await axios.get<User[]>(baseURL)
+    const res = await axios.get<User[]>(baseURL, config)
     return res.data
   } catch (err) {
     throw new Error("Failed to fetch users", { cause: err })

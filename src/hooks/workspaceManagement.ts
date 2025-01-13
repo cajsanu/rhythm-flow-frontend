@@ -2,6 +2,7 @@ import { Workspace } from "@/types/workspace"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import workspaceRequests from "@/api/workspaces"
 import { User } from "@/types/user"
+import { Role } from "@/types/role"
 
 export const useGetWorkspaces = (id: string) => {
   const { data, isLoading, error } = useQuery<Workspace[]>({
@@ -52,4 +53,19 @@ export const useDeleteWorkspace = () => {
   })
 
   return deleteWorkspaceMutation
+}
+
+export const useAddUserToWorkspace = () => {
+  const queryClient = useQueryClient()
+
+  const assignUserMutation = useMutation({
+    mutationFn: ({ workspaceId, userId, role}: { workspaceId: string, userId: string, role: Role }) => {
+      return workspaceRequests.addUserToWorkspace(workspaceId, userId, role)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] })
+    }
+  })
+
+  return assignUserMutation
 }
