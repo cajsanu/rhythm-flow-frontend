@@ -1,6 +1,7 @@
 import { Workspace } from "@/types/workspace"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import workspaceRequests from "@/api/workspaces"
+import { User } from "@/types/user"
 
 export const useGetWorkspaces = (id: string) => {
   const { data, isLoading, error } = useQuery<Workspace[]>({
@@ -11,7 +12,7 @@ export const useGetWorkspaces = (id: string) => {
 }
 
 export const useGetUsersInWorkspace = (id: string) => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<User[]>({
     queryKey: ["users", id],
     queryFn: () => workspaceRequests.getUsersInWorkspace(id),
   })

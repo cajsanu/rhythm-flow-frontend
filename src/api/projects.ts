@@ -1,6 +1,7 @@
 import { CreateProject, Project } from "@/types/project"
 import axios from "axios"
 import { getAuthConfig } from "./utils"
+import { User } from "@/types/user"
 const baseURL = "/api/v1/workspaces/:workspaceId/projects"
 
 const getProjectsInWorkspace = async (workspaceId: string): Promise<Project[]> => {
@@ -11,6 +12,20 @@ const getProjectsInWorkspace = async (workspaceId: string): Promise<Project[]> =
     return res.data
   } catch (err) {
     throw new Error("Failed to fetch projects", { cause: err })
+  }
+}
+
+const getUsersInProject = async (projectId: string, workspaceId: string): Promise<User[]> => {
+  const config = getAuthConfig()
+
+  try {
+    const res = await axios.get<User[]>(
+      baseURL.replace(":workspaceId", workspaceId) + "/" + projectId + "/users",
+      config
+    )
+    return res.data
+  } catch (err) {
+    throw new Error("Failed to fetch users in project", { cause: err })
   }
 }
 
@@ -43,7 +58,7 @@ const createProject = async (project: CreateProject): Promise<Project> => {
   }
 }
 
-export const deleteProject = async (projectId: string, workspaceId: string): Promise<void> => {
+const deleteProject = async (projectId: string, workspaceId: string): Promise<void> => {
   const config = getAuthConfig()
 
   try {
@@ -53,4 +68,25 @@ export const deleteProject = async (projectId: string, workspaceId: string): Pro
   }
 }
 
-export default { getProjectsInWorkspace, getProjectById, createProject, deleteProject }
+const assignUserToProject = async (workspaceId: string, projectId: string, userId: string) => {
+  const config = getAuthConfig()
+
+  try {
+    await axios.post(
+      baseURL.replace(":workspaceId", workspaceId) + "/" + projectId + "/users/" + userId,
+      {},
+      config
+    )
+  } catch (err) {
+    throw new Error("Failed to assign user to project", { cause: err })
+  }
+}
+
+export default {
+  getProjectsInWorkspace,
+  getUsersInProject,
+  getProjectById,
+  createProject,
+  deleteProject,
+  assignUserToProject
+}

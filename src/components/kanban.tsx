@@ -5,7 +5,7 @@ import {
 } from "@/hooks/ticketManagement"
 import { Column } from "@/pages/projectView"
 import { Ticket } from "@/types/ticket"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { DndProvider, useDrag, useDrop } from "react-dnd"
 import { HTML5Backend } from "react-dnd-html5-backend"
 import { useParams } from "react-router-dom"
@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { ScrollArea } from "./ui/scroll-area"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Button } from "./ui/button"
-import { useGetUsersInWorkspace } from "@/hooks/workspaceManagement"
+import { useGetUsersInProject } from "@/hooks/projectManagement"
 
 // Draggable Item Types
 const ItemTypes = {
@@ -34,7 +34,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
   const { wsId = "" } = useParams<{ wsId: string }>()
   const [selectedUserId, setSelectedUserId] = useState<string>("")
 
-  const { data: users, isLoading, error } = useGetUsersInWorkspace(wsId)
+  const { data: users, isLoading, error } = useGetUsersInProject(ticket.projectId, wsId)
 
   const handleOpenTicket = () => setShowCreateTicket((prev) => !prev)
 
