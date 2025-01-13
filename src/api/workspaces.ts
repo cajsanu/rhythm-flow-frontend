@@ -2,6 +2,7 @@ import axios from "axios"
 import { getAuthConfig } from "./utils"
 import { CreateWorkspace, UpdateWorkspace, UserWorkspace, Workspace } from "../types/workspace"
 import { Role } from "../types/role"
+import { User } from "@/types/user"
 const baseURL = "/api/v1/workspaces"
 
 const getMyWorkspaces = async (userId: string): Promise<Workspace[]> => {
@@ -12,6 +13,17 @@ const getMyWorkspaces = async (userId: string): Promise<Workspace[]> => {
     return res.data
   } catch (err) {
     throw new Error("Failed to fetch workspaces", { cause: err })
+  }
+}
+
+const getUsersInWorkspace = async (workspaceId: string): Promise<User[]> => {
+  const config = getAuthConfig()
+
+  try {
+    const res = await axios.get<User[]>(`${baseURL}/${workspaceId}/users`, config)
+    return res.data
+  } catch (err) {
+    throw new Error("Failed to fetch users in workspace", { cause: err })
   }
 }
 
@@ -64,4 +76,4 @@ const addUserToWorkspace = async (
   }
 }
 
-export default { getMyWorkspaces, getWorkspaceById, createWorkspace, deleteWorkspace, addUserToWorkspace }
+export default { getMyWorkspaces, getUsersInWorkspace, getWorkspaceById, createWorkspace, deleteWorkspace, addUserToWorkspace }

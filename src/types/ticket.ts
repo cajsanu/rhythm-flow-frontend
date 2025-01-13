@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { userSchema } from "./user"
 
 const ticketSchema = z.object({
   id: z.string(),
@@ -19,7 +20,7 @@ const ticketSchema = z.object({
   status: z.number().min(0, { message: "Status is required" }),
   projectId: z.string().min(1, { message: "Project ID is required" }),
   type: z.number().min(0, { message: "Type is required" }),
-  userIds: z.array(z.string()).optional()
+  users: z.array(userSchema).optional()
 })
 
 export const createTicketSchema = ticketSchema.omit({
@@ -35,7 +36,7 @@ const updateTicketSchema = z.object({
   status: z.number().optional(),
   projectId: z.string(),
   type: z.number().optional(),
-  userIds: z.array(z.string()).optional()
+  users: z.array(userSchema).optional()
 })
 
 export type Ticket = z.infer<typeof ticketSchema>

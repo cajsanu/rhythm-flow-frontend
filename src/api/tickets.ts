@@ -61,4 +61,19 @@ const getTicketById = async (id: string, workspaceId: string): Promise<Ticket> =
   }
 }
 
-export default { getTicketsInProject, createTicket, updateTicket, getTicketById }
+const assignUserToTicket = async (workspaceId: string, projectId: string, ticketId: string,  userId: string): Promise<Ticket> => {
+  const config = getAuthConfig()
+
+  try {
+    const res = await axios.post<Ticket>(
+      `${baseURL.replace(":workspaceId", workspaceId).replace(":projectId", projectId)}/${ticketId}/users/${userId}`,
+      {},
+      config
+    )
+    return res.data
+  } catch (err) {
+    throw new Error("Failed to assign user to ticket", { cause: err })
+  }
+}
+
+export default { getTicketsInProject, createTicket, updateTicket, getTicketById, assignUserToTicket }

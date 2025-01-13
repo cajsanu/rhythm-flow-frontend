@@ -10,6 +10,14 @@ export const useGetWorkspaces = (id: string) => {
   return { data, isLoading, error }
 }
 
+export const useGetUsersInWorkspace = (id: string) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["users", id],
+    queryFn: () => workspaceRequests.getUsersInWorkspace(id),
+  })
+  return { data, isLoading, error }
+}
+
 export const useGetWorkspaceById = (id: string) => {
   const { data, isLoading, error } = useQuery<Workspace>({
     queryKey: ["workspace", id],

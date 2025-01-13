@@ -9,7 +9,7 @@ export const useLogin = () => {
     mutationFn: login,
     onSuccess: (data) => {
       data && window.localStorage.setItem("token", data)
-    },
+    }
   })
 
   return newLoginMutation

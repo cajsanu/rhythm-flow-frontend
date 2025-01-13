@@ -1,4 +1,8 @@
-import { useGetTicketsInProject, useUpdateTicket } from "@/hooks/ticketManagement"
+import {
+  useAssignUserToTicket,
+  useGetTicketsInProject,
+  useUpdateTicket
+} from "@/hooks/ticketManagement"
 import { Column } from "@/pages/projectView"
 import { Ticket } from "@/types/ticket"
 import { useEffect, useState } from "react"
@@ -7,6 +11,9 @@ import { HTML5Backend } from "react-dnd-html5-backend"
 import { useParams } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
 import { ScrollArea } from "./ui/scroll-area"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog"
+import { Button } from "./ui/button"
+import { useGetUsersInWorkspace } from "@/hooks/workspaceManagement"
 
 // Draggable Item Types
 const ItemTypes = {
@@ -23,12 +30,109 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
     })
   })
 
+  const [showCreateTicket, setShowCreateTicket] = useState(false)
+  const { wsId = "" } = useParams<{ wsId: string }>()
+  const [selectedUserId, setSelectedUserId] = useState<string>("")
+
+  const { data: users, isLoading, error } = useGetUsersInWorkspace(wsId)
+
+  const handleOpenTicket = () => setShowCreateTicket((prev) => !prev)
+
+  const asignUserToTicketMutation = useAssignUserToTicket()
+
+  const handleAssignTicket = async () => {
+    try {
+      await asignUserToTicketMutation.mutateAsync({
+        workspaceId: wsId,
+        projectId: ticket.projectId,
+        ticketId: ticket.id,
+        userId: selectedUserId
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error loading users.</div>
+
   return (
     <div
       ref={drag}
-      className="border p-2 font-semibold rounded bg-gradient-to-r from-gray-100 to-gray-100 shadow-md mb-2"
+      className="border p-2 font-semibold rounded bg-gradient-to-r from-gray-100 to-gray-200 shadow-md mb-2"
     >
-      {ticket.title} <span className="text-xs text-gray-500">({ticket.deadline})</span>
+      <Dialog open={showCreateTicket} onOpenChange={handleOpenTicket}>
+        <DialogContent className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
+          <DialogHeader>
+            <div className="mb-4">
+              <DialogTitle className="text-2xl font-bold text-gray-800">{ticket.title}</DialogTitle>
+              <DialogDescription></DialogDescription>
+              <div className="flex items-center justify-between text-sm text-gray-700 mt-2">
+                <p>
+                  <span className="font-bold">Deadline:</span> {ticket.deadline}
+                </p>
+                <p>
+                  <span className="font-bold">Priority:</span> {ticket.priority}
+                </p>
+              </div>
+            </div>
+          </DialogHeader>
+
+          <div className="mb-6">
+            <p className="bg-gray-100 text-gray-700 p-4 rounded-md">{ticket.description}</p>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm font-medium text-gray-700 mb-2">
+                <span className="font-bold">Assignees:</span>
+              </p>
+              <div className="space-y-1">
+                {ticket.users?.map((user) => (
+                  <div
+                    key={user.id}
+                    className="text-sm text-gray-600 bg-gray-100 px-3 py-1 rounded-md"
+                  >
+                    {user.email}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <label className="block text-sm font-medium text-gray-700 mb-2" htmlFor="userSelect">
+              Assign a User:
+            </label>
+            <select
+              id="userSelect"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              value={selectedUserId || ""}
+              onChange={(e) => setSelectedUserId(e.target.value)}
+            >
+              <option value="" disabled>
+                Select a user
+              </option>
+              {users?.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.email}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex justify-end mt-4">
+            <Button onClick={handleAssignTicket}>Assign Ticket</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <button
+        onClick={handleOpenTicket}
+        className="w-full text-left text-gray-800 font-medium hover:text-blue-600"
+      >
+        {ticket.title} <span className="text-xs text-gray-500">({ticket.deadline})</span>
+      </button>
     </div>
   )
 }
