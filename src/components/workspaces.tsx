@@ -43,16 +43,14 @@ const SingleWorkspace = ({ name, id }: SingleWSProps) => {
   }
 
   return (
-    <div className="relative border rounded-xl p-10 flex flex-col bg-white hover:bg-rose-300">
-      <div>
-        <div className="absolute top-0 right-0 p-2 px-3 bg-rose-200 rounded-bl-xl rounded-tr-xl text-rose-800 font-bold">
+    <a href={`/workspace/${id}`}>
+      <div className="relative border rounded-xl p-10 flex flex-col bg-white hover:bg-rose-100">
+        <div className="absolute top-0 right-0 p-2 px-3 bg-rose-200 rounded-bl-xl rounded-tr-xl text-rose-800 font-bold hover:bg-rose-300">
           <button onClick={handleDelete}>X</button>
         </div>
+        <ul className="font-bold text-xl text-gray-800 pb-2">{name}</ul>
       </div>
-      <a href={`/workspace/${id}`}>
-        <ul className="font-bold text-xl text-rose-800 pb-2">{name}</ul>
-      </a>
-    </div>
+    </a>
   )
 }
 

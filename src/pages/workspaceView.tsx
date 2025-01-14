@@ -107,11 +107,11 @@ export const WorkspaceView = () => {
               </div>
               <div>
                 {projects && projects.length > 0 ? (
-                  <div className="space-y-4">
+                  <div className="pt-10">
                     <Projects projects={projects} />
                   </div>
                 ) : (
-                  <p className="text-gray-500">No projects found.</p>
+                  <p className="text-gray-500 pt-10">No projects found.</p>
                 )}
               </div>
             </div>

@@ -49,7 +49,7 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
         <button onClick={handleDelete}>X</button>
       </div>
       <a href={`${wsId}/project/${id}`}>
-        <ul className="font-bold text-xl text-rose-800 pb-2">{name}</ul>
+        <ul className="font-bold text-xl text-gray-800 pb-2">{name}</ul>
         <ul className="text-rose-800 text-sm">Due: {endDate}</ul>
       </a>
     </div>
@@ -62,16 +62,18 @@ type ProjectsProps = {
 
 export const Projects = ({ projects }: ProjectsProps) => {
   return (
-    <div className="flex flex-wrap justify-center py-10 gap-10">
-      {projects.map((p) => (
-        <SingleProject
-          key={p.id}
-          name={p.name}
-          endDate={p.endDate}
-          id={p.id}
-          wsId={p.workspaceId}
-        />
-      ))}
+    <div className="max-h-96 overflow-x-auto px-4">
+      <div className="flex flex-wrap justify-center py-10 gap-10">
+        {projects.map((p) => (
+          <SingleProject
+            key={p.id}
+            name={p.name}
+            endDate={p.endDate}
+            id={p.id}
+            wsId={p.workspaceId}
+          />
+        ))}
+      </div>
     </div>
   )
 }
