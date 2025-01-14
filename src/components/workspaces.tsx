@@ -43,7 +43,7 @@ const SingleWorkspace = ({ name, id }: SingleWSProps) => {
   }
 
   return (
-    <div className="relative border rounded-xl p-10 flex flex-col bg-rose-100 hover:bg-rose-300">
+    <div className="relative border rounded-xl p-10 flex flex-col bg-white hover:bg-rose-300">
       <div>
         <div className="absolute top-0 right-0 p-2 px-3 bg-rose-200 rounded-bl-xl rounded-tr-xl text-rose-800 font-bold">
           <button onClick={handleDelete}>X</button>

@@ -10,7 +10,7 @@ export const useGetProjectsInWorkspace = (id: string, search: string) => {
       const projects = await projectRequests.getProjectsInWorkspace(id)
       if (search.trim()) {
         return projects.filter((project) =>
-          project.name.toLowerCase().includes(search.toLowerCase())
+          project.name.toLowerCase().startsWith(search.toLowerCase())
         )
       }
       return projects

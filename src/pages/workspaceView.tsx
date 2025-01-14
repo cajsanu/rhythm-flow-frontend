@@ -11,12 +11,16 @@ import { DialogDescription } from "@radix-ui/react-dialog"
 import { AddUserToWorkspace } from "@/components/addUserToWorkspace"
 import { useGetUserById } from "@/hooks/userManagement"
 import { Alerts } from "@/components/alert"
+import { useDebounce } from "@/hooks/useDebounce"
+import SearchIcon from "@mui/icons-material/Search"
 
 export const WorkspaceView = () => {
   const { id = "" } = useParams<{ id: string }>()
   const [showCreateProject, setShowCreateProject] = useState(false)
   const [search, setSearch] = useState<string>("")
   const [showAddUsers, setShowAddUsers] = useState(false)
+
+  const debouncedSearch = useDebounce(search, 500)
 
   const { data: workspace, isLoading: wsLoading, error: wsError } = useGetWorkspaceById(id)
 
@@ -30,7 +34,7 @@ export const WorkspaceView = () => {
     data: projects,
     isLoading: projLoading,
     error: projError
-  } = useGetProjectsInWorkspace(id, search)
+  } = useGetProjectsInWorkspace(id, debouncedSearch)
 
   const handleCreateProject = () => setShowCreateProject((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
@@ -42,7 +46,8 @@ export const WorkspaceView = () => {
   const handleSuccessCreate = () => setShowCreateProject(false)
   const handleSuccessAdd = () => setShowAddUsers(false)
 
-  if (projLoading || wsLoading || ownerLoading) return <div>Loading...</div>
+  if ((projects && projLoading) || (workspace && wsLoading) || (owner && ownerLoading))
+    return <div>Loading...</div>
   if (projError || wsError || ownerError) return <div>Error loading data...</div>
 
   return (
@@ -96,6 +101,9 @@ export const WorkspaceView = () => {
                   placeholder="Search projects by name..."
                   className="border rounded-md p-2 w-64 shadow-sm focus:outline-none focus:ring focus:ring-blue-300"
                 />
+                <svg className="w-8 h-8 text-gray-500 pt-2">
+                  <SearchIcon />
+                </svg>
               </div>
               <div>
                 {projects && projects.length > 0 ? (
@@ -103,7 +111,7 @@ export const WorkspaceView = () => {
                     <Projects projects={projects} />
                   </div>
                 ) : (
-                  <p className="text-gray-500">No projects in this workspace yet.</p>
+                  <p className="text-gray-500">No projects found.</p>
                 )}
               </div>
             </div>
