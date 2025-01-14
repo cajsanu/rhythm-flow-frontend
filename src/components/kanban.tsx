@@ -14,6 +14,8 @@ import { ScrollArea } from "./ui/scroll-area"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "./ui/dialog"
 import { Button } from "./ui/button"
 import { useGetUsersInProject } from "@/hooks/projectManagement"
+import { useAppDispatch } from "@/hooks/alertManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 
 // Draggable Item Types
 const ItemTypes = {
@@ -33,6 +35,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
   const [showCreateTicket, setShowCreateTicket] = useState(false)
   const { wsId = "" } = useParams<{ wsId: string }>()
   const [selectedUserId, setSelectedUserId] = useState<string>("")
+  const dispatch = useAppDispatch()
 
   const { data: users, isLoading, error } = useGetUsersInProject(ticket.projectId, wsId)
 
@@ -48,8 +51,19 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
         ticketId: ticket.id,
         userId: selectedUserId
       })
+      dispatch(
+        timedAlert({
+          message: `User assigned to ticket successfully`,
+          severity: "success"
+        })
+      )
     } catch (err) {
-      console.error(err)
+      dispatch(
+        timedAlert({
+          message: "An error occurred while assigning the user to the ticket",
+          severity: "error"
+        })
+      )
     }
   }
 

@@ -6,11 +6,14 @@ import { useGetUsers } from "@/hooks/userManagement"
 import { Role } from "@/types/role"
 import { userWorkspaceSchema } from "@/types/workspace"
 import { ZodError } from "zod"
+import { timedAlert } from "@/reducers/alertSlice"
+import { useAppDispatch } from "@/hooks/alertManagement"
 
-export const AddUserToWorkspace = () => {
+export const AddUserToWorkspace = ({ onSuccess }: { onSuccess: () => void }) => {
   const { id = "" } = useParams<{ id: string }>()
   const [selectedUserId, setSelectedUserId] = useState<string>("")
   const [selectedRole, setSelectedRole] = useState<Role>("User")
+  const dispatch = useAppDispatch()
 
   const { data: users, isLoading: userLoading, error: userError } = useGetUsers()
 
@@ -28,12 +31,28 @@ export const AddUserToWorkspace = () => {
       userWorkspaceSchema.parse(data)
 
       await addUserToWorkspaceMutation.mutateAsync(data)
+      dispatch(
+        timedAlert({
+          message: `User added to workspace with role: ${selectedRole}`,
+          severity: "success"
+        })
+      )
+      onSuccess()
     } catch (err) {
       if (err instanceof ZodError) {
-        console.error("Validation error:", err.errors)
-        // Show some message to the user
+        dispatch(
+          timedAlert({
+            message: err.errors[0].message,
+            severity: "error"
+          })
+        )
       } else {
-        console.error("Unexpected error:", err)
+        dispatch(
+          timedAlert({
+            message: "An error occurred while adding the user to the workspace",
+            severity: "error"
+          })
+        )
       }
     }
   }

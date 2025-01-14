@@ -23,16 +23,14 @@ export const ProjectView = () => {
 
   const { data: project, isLoading: projLoading, error: projError } = useGetProjectById(id, wsId)
 
-  if (projLoading) {
-    return <div>Loading...</div>
-  }
-
-  if (projError) {
-    return <div>Error loading data...</div>
-  }
-
   const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
+
+  const handleSuccessCreate = () => setShowCreateTicket(false)
+  const handleSuccessAdd = () => setShowAddUsers(false)
+
+  if (projLoading) return <div>Loading...</div>
+  if (projError) return <div>Error loading data...</div>
 
   return (
     <div className="flex flex-col items-center gap-8 p-8 bg-sky-100 h-screen">
@@ -48,7 +46,7 @@ export const ProjectView = () => {
               <DialogTitle className="text-3xl">Create Ticket</DialogTitle>
               <DialogDescription>Fill in the details to create a new ticket.</DialogDescription>
             </DialogHeader>
-            <CreateTicketForm />
+            <CreateTicketForm onSuccess={handleSuccessCreate} />
           </DialogContent>
         </Dialog>
         <Dialog open={showAddUsers} onOpenChange={handleShowAddUsers}>
@@ -59,7 +57,7 @@ export const ProjectView = () => {
                 Assign users to the project to collaborate on tickets.
               </DialogDescription>
             </DialogHeader>
-            <AddUserToProject />
+            <AddUserToProject onSuccess={handleSuccessAdd}/>
           </DialogContent>
         </Dialog>
         <div className="flex gap-5">

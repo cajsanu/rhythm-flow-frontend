@@ -15,9 +15,12 @@ import {
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { CreateTicket, createTicketSchema } from "@/types/ticket"
 import { useCreateTicket } from "@/hooks/ticketManagement"
+import { useAppDispatch } from "@/hooks/alertManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 
-export const CreateTicketForm = () => {
+export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { id, wsId } = useParams()
+  const dispatch = useAppDispatch()
 
   const form = useForm<CreateTicket>({
     resolver: zodResolver(createTicketSchema),
@@ -43,8 +46,20 @@ export const CreateTicketForm = () => {
 
     try {
       await newTicketMutation.mutateAsync({ workspaceId: wsId, newTicket })
+      dispatch(
+        timedAlert({
+          message: `Ticket created successfully`,
+          severity: "success"
+        })
+      )
+      onSuccess()
     } catch (err) {
-      console.error(err)
+      dispatch(
+        timedAlert({
+          message: "An error occurred while creating the ticket",
+          severity: "error"
+        })
+      )
     }
   }
 

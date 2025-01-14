@@ -30,6 +30,9 @@ export const WorkspaceView = () => {
     setSearch(value)
   }
 
+  const handleSuccessCreate = () => setShowCreateProject(false)
+  const handleSuccessAdd = () => setShowAddUsers(false)
+
   if (projLoading || wsLoading) return <div>Loading...</div>
   if (projError || wsError) return <div>Error loading data...</div>
 
@@ -57,18 +60,16 @@ export const WorkspaceView = () => {
                             Fill in the details to create a new project.
                           </DialogDescription>
                         </DialogHeader>
-                        <CreateProjectForm />
+                        <CreateProjectForm onSuccess={handleSuccessCreate} />
                       </DialogContent>
                     </Dialog>
                     <Dialog open={showAddUsers} onOpenChange={handleShowAddUsers}>
                       <DialogContent>
                         <DialogHeader>
                           <DialogTitle className="text-3xl">Add users to workspace</DialogTitle>
-                          <DialogDescription>
-                            Assign users to the workspace.
-                          </DialogDescription>
+                          <DialogDescription>Assign users to the workspace.</DialogDescription>
                         </DialogHeader>
-                        <AddUserToWorkspace />
+                        <AddUserToWorkspace onSuccess={handleSuccessAdd} />
                       </DialogContent>
                     </Dialog>
                   </div>

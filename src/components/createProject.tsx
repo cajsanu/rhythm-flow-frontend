@@ -15,9 +15,12 @@ import {
 import { useCreateProject } from "@/hooks/projectManagement"
 import { CreateProject, createProjectSchema } from "@/types/project"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
+import { useAppDispatch } from "@/hooks/alertManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 
-export const CreateProjectForm = () => {
+export const CreateProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { id = "" } = useParams<{ id: string }>()
+  const dispatch = useAppDispatch()
 
   const form = useForm<CreateProject>({
     resolver: zodResolver(createProjectSchema),
@@ -40,8 +43,20 @@ export const CreateProjectForm = () => {
 
     try {
       await newProjectMutation.mutateAsync({ ...data, workspaceId: id })
+      dispatch(
+        timedAlert({
+          message: `Project created successfully`,
+          severity: "success"
+        })
+      )
+      onSuccess()
     } catch (err) {
-      console.error(err)
+      dispatch(
+        timedAlert({
+          message: "An error occurred while creating the project",
+          severity: "error"
+        })
+      )
     }
   }
 
@@ -110,15 +125,18 @@ export const CreateProjectForm = () => {
                   <FormItem>
                     <FormLabel>Status</FormLabel>
                     <FormControl>
-                      <Select onValueChange={(value) => field.onChange(Number(value))} value={String(field.value)}>
+                      <Select
+                        onValueChange={(value) => field.onChange(Number(value))}
+                        value={String(field.value)}
+                      >
                         <SelectTrigger>
                           <SelectValue placeholder="Select status" />
                         </SelectTrigger>
-                          <SelectContent position="popper" style={{ zIndex: 1300 }}>
-                            <SelectItem value="0">To do</SelectItem>
-                            <SelectItem value="1">In progress</SelectItem>
-                            <SelectItem value="2">Done</SelectItem>
-                          </SelectContent>
+                        <SelectContent position="popper" style={{ zIndex: 1300 }}>
+                          <SelectItem value="0">To do</SelectItem>
+                          <SelectItem value="1">In progress</SelectItem>
+                          <SelectItem value="2">Done</SelectItem>
+                        </SelectContent>
                       </Select>
                     </FormControl>
                     <FormMessage />

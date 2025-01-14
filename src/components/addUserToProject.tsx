@@ -3,10 +3,13 @@ import { useGetUsersInWorkspace } from "@/hooks/workspaceManagement"
 import { useState } from "react"
 import { useParams } from "react-router-dom"
 import { Button } from "./ui/button"
+import { useAppDispatch } from "@/hooks/alertManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 
-export const AddUserToProject = () => {
+export const AddUserToProject = ({ onSuccess }: { onSuccess: () => void }) => {
   const { wsId = "", id = "" } = useParams<{ wsId: string; id: string }>()
   const [selectedUserId, setSelectedUserId] = useState<string>("")
+  const dispatch = useAppDispatch()
 
   const { data: users, isLoading: userLoading, error: userError } = useGetUsersInWorkspace(wsId)
 
@@ -19,8 +22,20 @@ export const AddUserToProject = () => {
         projectId: id,
         userId: selectedUserId
       })
+      dispatch(
+        timedAlert({
+          message: `User added to project successfully`,
+          severity: "success"
+        })
+      )
+      onSuccess()
     } catch (err) {
-      console.error(err)
+      dispatch(
+        timedAlert({
+          message: "An error occurred while adding the user to the project",
+          severity: "error"
+        })
+      )
     }
   }
 

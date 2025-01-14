@@ -14,13 +14,12 @@ import {
 } from "@/components/ui/form"
 import { useCreateWorkspace } from "@/hooks/workspaceManagement"
 import { CreateWorkspace, createWorkspaceSchema } from "@/types/workspace"
+import { useAppDispatch } from "@/hooks/alertManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 
-type CreateWorkspaceProps = {
-  onSuccess: () => void
-}
-
-export const CreateWorkspaceForm = ({ onSuccess }: CreateWorkspaceProps) => {
+export const CreateWorkspaceForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { id = "" } = useParams<{ id: string }>()
+  const dispatch = useAppDispatch()
 
   const form = useForm<CreateWorkspace>({
     resolver: zodResolver(createWorkspaceSchema),
@@ -39,9 +38,20 @@ export const CreateWorkspaceForm = ({ onSuccess }: CreateWorkspaceProps) => {
 
     try {
       await newWorkspaceMutation.mutateAsync({ name: data.name, ownerId: id })
+      dispatch(
+        timedAlert({
+          message: `Workspace created successfully`,
+          severity: "success"
+        })
+      )
       onSuccess()
     } catch (err) {
-      console.error(err)
+      dispatch(
+        timedAlert({
+          message: "An error occurred while creating the workspace",
+          severity: "error"
+        })
+      )
     }
   }
 

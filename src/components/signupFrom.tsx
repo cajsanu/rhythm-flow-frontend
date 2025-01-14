@@ -10,6 +10,8 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { useCreateUser, useLogin } from "@/hooks/userManagement"
+import { useAppDispatch } from "@/hooks/alertManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 
 export const SignupForm = () => {
   const form = useForm<CreateUser>({
@@ -23,16 +25,28 @@ export const SignupForm = () => {
   })
 
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   const newUserMutation = useCreateUser()
   const loginMutation = useLogin()
 
   const onSubmit: SubmitHandler<CreateUser> = async (data: CreateUser) => {
     try {
       const user = await newUserMutation.mutateAsync(data)
-      await loginMutation.mutateAsync({ email:data.email, password: data.password })
+      await loginMutation.mutateAsync({ email: data.email, password: data.password })
+      dispatch(
+        timedAlert({
+          message: `Welcome, ${user.firstName}`,
+          severity: "success"
+        })
+      )
       navigate(`/home/${user.id}`)
     } catch (err) {
-      console.error(err)
+      dispatch(
+        timedAlert({
+          message: "An error occurred while creating the user",
+          severity: "error"
+        })
+      )
     }
   }
 

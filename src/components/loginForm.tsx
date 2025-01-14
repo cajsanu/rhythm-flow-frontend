@@ -14,7 +14,9 @@ import {
   FormMessage
 } from "@/components/ui/form"
 import { LoginCredentials, loginSchema } from "@/types/user"
-import { useGetUserByEmail, useLogin } from "@/hooks/userManagement"
+import { useLogin } from "@/hooks/userManagement"
+import { useAppDispatch } from "@/hooks/alertManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 
 export const LoginForm = () => {
   const form = useForm<LoginCredentials>({
@@ -25,8 +27,9 @@ export const LoginForm = () => {
     }
   })
 
+  const dispatch = useAppDispatch()
+
   const loginMutation = useLogin()
-  // const { data: user, isLoading, error } = useGetUserByEmail(form.getValues("email"))
 
   const navigate = useNavigate()
 
@@ -37,9 +40,20 @@ export const LoginForm = () => {
       if (!user) {
         throw new Error("User not found")
       }
+      dispatch(
+        timedAlert({
+          message: `Welcome back, ${user.firstName}`,
+          severity: "success"
+        })
+      )
       navigate(`/home/${user.id}`)
     } catch (err) {
-      console.log(err)
+      dispatch(
+        timedAlert({
+          message: "Invalid email or password",
+          severity: "error"
+        })
+      )
     }
   }
 

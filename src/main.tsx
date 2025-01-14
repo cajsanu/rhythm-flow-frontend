@@ -1,10 +1,13 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { createBrowserRouter, RouterProvider, useNavigate } from "react-router-dom"
-import { Query, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { Provider } from "react-redux"
+import { store } from "./store"
 
 import "./index.css"
 import { Home, Login, Signup, WorkspaceView, ProjectView } from "./pages"
+import { Alerts } from "./components/alert"
 
 const router = createBrowserRouter([
   {
@@ -45,7 +48,7 @@ const queryClient = new QueryClient({
       retry: false
     },
     mutations: {
-      retry: false 
+      retry: false
     }
   },
   queryCache: new QueryCache({
@@ -60,7 +63,10 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <Alerts />
+        <RouterProvider router={router} />
+      </Provider>
     </QueryClientProvider>
   </React.StrictMode>
 )

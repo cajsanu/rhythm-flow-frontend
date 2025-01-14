@@ -1,4 +1,6 @@
+import { useAppDispatch } from "@/hooks/alertManagement"
 import { useDeleteWorkspace } from "@/hooks/workspaceManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 import { Workspace } from "@/types/workspace"
 
 type SingleWSProps = {
@@ -8,13 +10,25 @@ type SingleWSProps = {
 
 const SingleWorkspace = ({ name, id }: SingleWSProps) => {
   const deleteWorkspaceMutation = useDeleteWorkspace()
-  
+  const dispatch = useAppDispatch()
+
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete workspace ${name}?`)) {
       try {
         await deleteWorkspaceMutation.mutateAsync(id)
+        dispatch(
+          timedAlert({
+            message: `Workspace deleted successfully`,
+            severity: "success"
+          })
+        )
       } catch (err) {
-        console.error(err)
+        dispatch(
+          timedAlert({
+            message: "An error occurred while deleting the workspace",
+            severity: "error"
+          })
+        )
       }
     }
   }

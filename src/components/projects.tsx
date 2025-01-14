@@ -1,4 +1,6 @@
+import { useAppDispatch } from "@/hooks/alertManagement"
 import { useDeleteProject } from "@/hooks/projectManagement"
+import { timedAlert } from "@/reducers/alertSlice"
 import { Project } from "@/types/project"
 
 type SingleProjProps = {
@@ -10,13 +12,25 @@ type SingleProjProps = {
 
 const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
   const deleteProjectMutation = useDeleteProject()
+  const dispatch = useAppDispatch()
 
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete project ${name}?`)) {
       try {
         await deleteProjectMutation.mutateAsync({ projectId: id, workspaceId: wsId })
+        dispatch(
+          timedAlert({
+            message: `Project deleted successfully`,
+            severity: "success"
+          })
+        )
       } catch (err) {
-        console.error(err)
+        dispatch(
+          timedAlert({
+            message: "An error occurred while deleting the project",
+            severity: "error"
+          })
+        )
       }
     }
   }
