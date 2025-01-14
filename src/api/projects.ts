@@ -7,79 +7,55 @@ const baseURL = "/api/v1/workspaces/:workspaceId/projects"
 const getProjectsInWorkspace = async (workspaceId: string): Promise<Project[]> => {
   const config = getAuthConfig()
 
-  try {
-    const res = await axios.get<Project[]>(baseURL.replace(":workspaceId", workspaceId), config)
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to fetch projects", { cause: err })
-  }
+  const res = await axios.get<Project[]>(baseURL.replace(":workspaceId", workspaceId), config)
+  return res.data
 }
 
 const getUsersInProject = async (projectId: string, workspaceId: string): Promise<User[]> => {
   const config = getAuthConfig()
 
-  try {
-    const res = await axios.get<User[]>(
-      baseURL.replace(":workspaceId", workspaceId) + "/" + projectId + "/users",
-      config
-    )
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to fetch users in project", { cause: err })
-  }
+  const res = await axios.get<User[]>(
+    baseURL.replace(":workspaceId", workspaceId) + "/" + projectId + "/users",
+    config
+  )
+  return res.data
 }
 
 const getProjectById = async (projectId: string, workspaceId: string): Promise<Project> => {
   const config = getAuthConfig()
 
-  try {
-    const res = await axios.get<Project>(
-      baseURL.replace(":workspaceId", workspaceId) + "/" + projectId,
-      config
-    )
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to fetch project", { cause: err })
-  }
+  const res = await axios.get<Project>(
+    baseURL.replace(":workspaceId", workspaceId) + "/" + projectId,
+    config
+  )
+  return res.data
 }
 
 const createProject = async (project: CreateProject): Promise<Project> => {
   const config = getAuthConfig()
 
-  try {
-    const res = await axios.post<Project>(
-      baseURL.replace(":workspaceId", project.workspaceId),
-      project,
-      config
-    )
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to create project", { cause: err })
-  }
+  const res = await axios.post<Project>(
+    baseURL.replace(":workspaceId", project.workspaceId),
+    project,
+    config
+  )
+  return res.data
 }
 
 const deleteProject = async (projectId: string, workspaceId: string): Promise<void> => {
   const config = getAuthConfig()
 
-  try {
-    await axios.delete(baseURL.replace(":workspaceId", workspaceId) + "/" + projectId, config)
-  } catch (err) {
-    throw new Error("Failed to delete project", { cause: err })
-  }
+  await axios.delete(baseURL.replace(":workspaceId", workspaceId) + "/" + projectId, config)
 }
 
 const assignUserToProject = async (workspaceId: string, projectId: string, userId: string) => {
   const config = getAuthConfig()
 
-  try {
-    await axios.post(
-      baseURL.replace(":workspaceId", workspaceId) + "/" + projectId + "/users/" + userId,
-      {},
-      config
-    )
-  } catch (err) {
-    throw new Error("Failed to assign user to project", { cause: err })
-  }
+  await axios.post(
+    baseURL.replace(":workspaceId", workspaceId) + "/" + projectId + "/users/" + userId,
+    {},
+    config
+  )
 }
 
 export default {

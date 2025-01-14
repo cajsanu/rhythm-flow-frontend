@@ -7,7 +7,6 @@ import { store } from "./store"
 
 import "./index.css"
 import { Home, Login, Signup, WorkspaceView, ProjectView } from "./pages"
-import { Alerts } from "./components/alert"
 
 const router = createBrowserRouter([
   {
@@ -64,7 +63,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <Alerts />
         <RouterProvider router={router} />
       </Provider>
     </QueryClientProvider>

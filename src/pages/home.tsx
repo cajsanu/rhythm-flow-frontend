@@ -10,6 +10,7 @@ import {
   DialogHeader,
   DialogTitle
 } from "@/components/ui/dialog"
+import { Alerts } from "@/components/alert"
 
 export const Home = () => {
   const [showWorkspaces, setShowWorkspaces] = useState(false)
@@ -32,6 +33,7 @@ export const Home = () => {
 
   return (
     <div className="flex flex-col justify-center items-center gap-10 h-screen bg-gradient-to-r from-sky-300 to-rose-300">
+      <Alerts />
       <h1 className="text-4xl text-white font-bold">Welcome!</h1>
       <div className="flex flex-row gap-4">
         <Button onClick={handleShowWorkspaces}>My workspaces</Button>

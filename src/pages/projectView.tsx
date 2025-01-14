@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { CreateTicketForm } from "@/components/createTicket"
 import { AddUserToProject } from "@/components/addUserToProject"
+import { Alerts } from "@/components/alert"
 
 export type Column = { id: number; title: string; tickets: Ticket[] }
 
@@ -37,12 +38,13 @@ export const ProjectView = () => {
       <div className="w-full">
         <div className="flex justify-between">
           <div className="p-5 bg-sky-900 rounded-lg w-full text-white">
-            {project && <h1 className="text-2xl font-bold">Project: {project.name}</h1>}
+            {project && <h1 className="text-2xl font-bold">{project.name}</h1>}
           </div>
         </div>
         <Dialog open={showCreateTicket} onOpenChange={handleCreateTicket}>
           <DialogContent>
             <DialogHeader>
+              <Alerts />
               <DialogTitle className="text-3xl">Create Ticket</DialogTitle>
               <DialogDescription>Fill in the details to create a new ticket.</DialogDescription>
             </DialogHeader>
@@ -52,12 +54,13 @@ export const ProjectView = () => {
         <Dialog open={showAddUsers} onOpenChange={handleShowAddUsers}>
           <DialogContent>
             <DialogHeader>
+              <Alerts />
               <DialogTitle className="text-3xl">Add users to project</DialogTitle>
               <DialogDescription>
                 Assign users to the project to collaborate on tickets.
               </DialogDescription>
             </DialogHeader>
-            <AddUserToProject onSuccess={handleSuccessAdd}/>
+            <AddUserToProject onSuccess={handleSuccessAdd} />
           </DialogContent>
         </Dialog>
         <div className="flex gap-5">

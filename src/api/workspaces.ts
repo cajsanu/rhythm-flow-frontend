@@ -8,55 +8,35 @@ const baseURL = "/api/v1/workspaces"
 const getMyWorkspaces = async (userId: string): Promise<Workspace[]> => {
   const config = getAuthConfig()
 
-  try {
-    const res = await axios.get<Workspace[]>(`${baseURL}/joinedby/${userId}`, config)
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to fetch workspaces", { cause: err })
-  }
+  const res = await axios.get<Workspace[]>(`${baseURL}/joinedby/${userId}`, config)
+  return res.data
 }
 
 const getUsersInWorkspace = async (workspaceId: string): Promise<User[]> => {
   const config = getAuthConfig()
 
-  try {
-    const res = await axios.get<User[]>(`${baseURL}/${workspaceId}/users`, config)
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to fetch users in workspace", { cause: err })
-  }
+  const res = await axios.get<User[]>(`${baseURL}/${workspaceId}/users`, config)
+  return res.data
 }
 
 const getWorkspaceById = async (workspaceId: string): Promise<Workspace> => {
   const config = getAuthConfig()
 
-  try {
-    const res = await axios.get<Workspace>(`${baseURL}/${workspaceId}`, config)
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to fetch workspace", { cause: err })
-  }
+  const res = await axios.get<Workspace>(`${baseURL}/${workspaceId}`, config)
+  return res.data
 }
 
 const createWorkspace = async (newWorkspace: CreateWorkspace): Promise<Workspace> => {
   const config = getAuthConfig()
 
-  try {
-    const res = await axios.post(baseURL, newWorkspace, config)
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to create workspace", { cause: err })
-  }
+  const res = await axios.post(baseURL, newWorkspace, config)
+  return res.data
 }
 
 const deleteWorkspace = async (workspaceId: string) => {
   const config = getAuthConfig()
 
-  try {
-    await axios.delete(`${baseURL}/${workspaceId}`, config)
-  } catch (err) {
-    throw new Error("Failed to delete workspace", { cause: err })
-  }
+  await axios.delete(`${baseURL}/${workspaceId}`, config)
 }
 
 const updateWorkspace = async (workspaceId: string, updatedWorkspace: UpdateWorkspace) => {}
@@ -70,16 +50,12 @@ const addUserToWorkspace = async (
 
   const mappedRole = RoleMap[role]
 
-  try {
-    const res = await axios.post(
-      `${baseURL}/${workspaceId}/users/${userId}`,
-      { Role: mappedRole },
-      config
-    )
-    return res.data
-  } catch (err) {
-    throw new Error("Failed to add user to workspace", { cause: err })
-  }
+  const res = await axios.post(
+    `${baseURL}/${workspaceId}/users/${userId}`,
+    { Role: mappedRole },
+    config
+  )
+  return res.data
 }
 
 export default {

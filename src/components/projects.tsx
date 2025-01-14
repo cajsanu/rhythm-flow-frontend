@@ -24,7 +24,16 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
             severity: "success"
           })
         )
-      } catch (err) {
+      } catch (err: any) {
+        if (err.response?.status === 403) {
+          dispatch(
+            timedAlert({
+              message: "You are not authorized to delete this project",
+              severity: "error"
+            })
+          )
+          return
+        }
         dispatch(
           timedAlert({
             message: "An error occurred while deleting the project",

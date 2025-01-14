@@ -5,7 +5,6 @@ import { Button } from "./ui/button"
 import { useGetUsers } from "@/hooks/userManagement"
 import { Role } from "@/types/role"
 import { userWorkspaceSchema } from "@/types/workspace"
-import { ZodError } from "zod"
 import { timedAlert } from "@/reducers/alertSlice"
 import { useAppDispatch } from "@/hooks/alertManagement"
 
@@ -38,22 +37,22 @@ export const AddUserToWorkspace = ({ onSuccess }: { onSuccess: () => void }) => 
         })
       )
       onSuccess()
-    } catch (err) {
-      if (err instanceof ZodError) {
+    } catch (err: any) {
+      if (err.response?.status === 403) {
         dispatch(
           timedAlert({
-            message: err.errors[0].message,
+            message: "You are not authorized to add users to this workspace",
             severity: "error"
           })
         )
-      } else {
-        dispatch(
-          timedAlert({
-            message: "An error occurred while adding the user to the workspace",
-            severity: "error"
-          })
-        )
+        return
       }
+      dispatch(
+        timedAlert({
+          message: "An error occurred while adding the user to the workspace",
+          severity: "error"
+        })
+      )
     }
   }
 

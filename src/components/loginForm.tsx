@@ -17,6 +17,7 @@ import { LoginCredentials, loginSchema } from "@/types/user"
 import { useLogin } from "@/hooks/userManagement"
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
+import { Alerts } from "./alert"
 
 export const LoginForm = () => {
   const form = useForm<LoginCredentials>({
@@ -60,6 +61,7 @@ export const LoginForm = () => {
   return (
     <Card className="w-full mx-auto mt-10">
       <CardHeader>
+        <Alerts />
         <CardTitle>Login</CardTitle>
       </CardHeader>
       <CardContent>

@@ -50,7 +50,16 @@ export const CreateProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
         })
       )
       onSuccess()
-    } catch (err) {
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        dispatch(
+          timedAlert({
+            message: "You are not authorized to create projects in this workspace",
+            severity: "error"
+          })
+        )
+        return
+      }
       dispatch(
         timedAlert({
           message: "An error occurred while creating the project",

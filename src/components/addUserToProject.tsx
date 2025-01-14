@@ -29,7 +29,16 @@ export const AddUserToProject = ({ onSuccess }: { onSuccess: () => void }) => {
         })
       )
       onSuccess()
-    } catch (err) {
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        dispatch(
+          timedAlert({
+            message: "You are not authorized to add users to this project",
+            severity: "error"
+          })
+        )
+        return
+      }
       dispatch(
         timedAlert({
           message: "An error occurred while adding the user to the project",

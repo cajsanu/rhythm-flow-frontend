@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { DialogDescription } from "@radix-ui/react-dialog"
 import { AddUserToWorkspace } from "@/components/addUserToWorkspace"
+import { useGetUserById } from "@/hooks/userManagement"
+import { Alerts } from "@/components/alert"
 
 export const WorkspaceView = () => {
   const { id = "" } = useParams<{ id: string }>()
@@ -17,6 +19,13 @@ export const WorkspaceView = () => {
   const [showAddUsers, setShowAddUsers] = useState(false)
 
   const { data: workspace, isLoading: wsLoading, error: wsError } = useGetWorkspaceById(id)
+
+  const {
+    data: owner,
+    isLoading: ownerLoading,
+    error: ownerError
+  } = useGetUserById(workspace?.ownerId ?? "")
+
   const {
     data: projects,
     isLoading: projLoading,
@@ -33,15 +42,17 @@ export const WorkspaceView = () => {
   const handleSuccessCreate = () => setShowCreateProject(false)
   const handleSuccessAdd = () => setShowAddUsers(false)
 
-  if (projLoading || wsLoading) return <div>Loading...</div>
-  if (projError || wsError) return <div>Error loading data...</div>
+  if (projLoading || wsLoading || ownerLoading) return <div>Loading...</div>
+  if (projError || wsError || ownerError) return <div>Error loading data...</div>
 
   return (
-    <div className="flex justify-center py-10 bg-sky-200 h-screen">
+    <div className="flex justify-center py-10 bg-gray-900 h-screen">
       <Card className="w-5/6 max-w-4xl shadow-lg">
         <CardHeader>
-          <CardTitle className="text-center text-2xl">
+          {!showCreateProject && !showAddUsers && <Alerts />}
+          <CardTitle className="text-center text-3xl">
             {workspace ? `${workspace.name}` : "Workspace"}
+            {owner && <span className="text-gray-500 text-sm"> created by {owner.firstName}</span>}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -55,6 +66,7 @@ export const WorkspaceView = () => {
                     <Dialog open={showCreateProject} onOpenChange={handleCreateProject}>
                       <DialogContent>
                         <DialogHeader>
+                          <Alerts />
                           <DialogTitle className="text-3xl">Create Project</DialogTitle>
                           <DialogDescription>
                             Fill in the details to create a new project.
@@ -66,8 +78,9 @@ export const WorkspaceView = () => {
                     <Dialog open={showAddUsers} onOpenChange={handleShowAddUsers}>
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle className="text-3xl">Add users to workspace</DialogTitle>
-                          <DialogDescription>Assign users to the workspace.</DialogDescription>
+                          <Alerts />
+                          <DialogTitle className="text-3xl">Add user to workspace</DialogTitle>
+                          <DialogDescription>Assign users to this workspace.</DialogDescription>
                         </DialogHeader>
                         <AddUserToWorkspace onSuccess={handleSuccessAdd} />
                       </DialogContent>

@@ -17,6 +17,7 @@ import { CreateTicket, createTicketSchema } from "@/types/ticket"
 import { useCreateTicket } from "@/hooks/ticketManagement"
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
+import { Alerts } from "./alert"
 
 export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const { id, wsId } = useParams()
@@ -53,7 +54,16 @@ export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
         })
       )
       onSuccess()
-    } catch (err) {
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        dispatch(
+          timedAlert({
+            message: "You are not authorized to create tickets in this project",
+            severity: "error"
+          })
+        )
+        return
+      }
       dispatch(
         timedAlert({
           message: "An error occurred while creating the ticket",

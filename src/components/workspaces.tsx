@@ -22,7 +22,16 @@ const SingleWorkspace = ({ name, id }: SingleWSProps) => {
             severity: "success"
           })
         )
-      } catch (err) {
+      } catch (err: any) {
+        if (err.response?.status === 403) {
+          dispatch(
+            timedAlert({
+              message: "You are not authorized to delete this workspace",
+              severity: "error"
+            })
+          )
+          return
+        }
         dispatch(
           timedAlert({
             message: "An error occurred while deleting the workspace",
