@@ -6,16 +6,20 @@ export const Login = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="flex justify-center bg-gradient-to-r from-sky-400 to-rose-400 h-screen">
-      <div>
-        <h2 className="text-4xl font-bold text-white pt-10">
-          Welcome to <span className="text-gray-900">RhythmFlow</span>
+    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-sky-400 to-rose-400">
+      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
+        <h2 className="text-4xl font-bold text-center text-gray-800 mb-6">
+          Welcome to <span className="text-rose-500">RhythmFlow</span>
         </h2>
+        <p className="text-gray-600 text-center mb-8">If you have an account, sign in here!</p>
         <LoginForm />
-        <div className="pt-4">
-          <p className="text-white font-semibold pb-1">Don't have an account?</p>
-          <Button className="w-full" onClick={() => navigate("/signup")}>
-            Sign up
+        <div className="pt-6 text-center">
+          <p className="text-gray-600 mb-3">Don't have an account?</p>
+          <Button
+            className="w-5/6 bg-rose-500 hover:bg-rose-600 text-white"
+            onClick={() => navigate("/signup")}
+          >
+            Sign Up
           </Button>
         </div>
       </div>

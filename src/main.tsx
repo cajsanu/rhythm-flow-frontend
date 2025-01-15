@@ -52,7 +52,6 @@ const queryClient = new QueryClient({
   },
   queryCache: new QueryCache({
     onError: (_: any, query: any) => {
-      console.log(query)
       if (query?.state?.error?.status === 401) {
         handleUnauthorized()
       }
