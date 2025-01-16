@@ -1,7 +1,7 @@
 export const getAuthConfig = () => {
   const token = window.localStorage.getItem("token")
   if (!token) {
-    throw new Error("No token found")
+    window.location.href = "/"
   }
   const config = {
     headers: { Authorization: `Bearer ${token}` }

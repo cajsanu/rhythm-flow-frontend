@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom"
 import { Projects } from "@/components/projects"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useGetWorkspaceById } from "@/hooks/workspaceManagement"
+import { useGetUsersInWorkspace, useGetWorkspaceById } from "@/hooks/workspaceManagement"
 import { useGetProjectsInWorkspace } from "@/hooks/projectManagement"
 import { CreateProjectForm } from "@/components"
 import { useState } from "react"
@@ -13,12 +13,14 @@ import { useGetUserById } from "@/hooks/userManagement"
 import { Alerts } from "@/components/alert"
 import { useDebounce } from "@/hooks/useDebounce"
 import SearchIcon from "@mui/icons-material/Search"
+import { AxiosError } from "axios"
 
 export const WorkspaceView = () => {
   const { id = "" } = useParams<{ id: string }>()
   const [showCreateProject, setShowCreateProject] = useState(false)
   const [search, setSearch] = useState<string>("")
   const [showAddUsers, setShowAddUsers] = useState(false)
+  const [showUsers, setShowUsers] = useState(false)
 
   const debouncedSearch = useDebounce(search, 500)
 
@@ -36,8 +38,11 @@ export const WorkspaceView = () => {
     error: projError
   } = useGetProjectsInWorkspace(id, debouncedSearch)
 
+  const { data: users, isLoading: usersLoading, error: usersError } = useGetUsersInWorkspace(id)
+
   const handleCreateProject = () => setShowCreateProject((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
+  const handleShowUsers = () => setShowUsers((prev) => !prev)
 
   const handleSearch = (value: string) => {
     setSearch(value)
@@ -48,7 +53,16 @@ export const WorkspaceView = () => {
 
   if ((projects && projLoading) || (workspace && wsLoading) || (owner && ownerLoading))
     return <div>Loading...</div>
-  if (projError || wsError || ownerError) return <div>Error loading data...</div>
+  if (projError || wsError || ownerError) {
+    if ((wsError as AxiosError).response?.status === 403) {
+      return (
+        <div className="bg-gray-100 rounded p-2 text-rose-800">
+          You don't have access to this resource
+        </div>
+      )
+    }
+    return <div className="bg-gray-100 rounded p-2 text-rose-800">Not found.</div>
+  }
 
   return (
     <div className="flex justify-center py-10 bg-gray-900 h-screen">
@@ -67,6 +81,7 @@ export const WorkspaceView = () => {
                 <div className="flex space-x-4">
                   <Button onClick={handleCreateProject}>+ Create Project</Button>
                   <Button onClick={handleShowAddUsers}>+ Add User</Button>
+                  <Button onClick={handleShowUsers}>Current users</Button>
                   <div>
                     <Dialog open={showCreateProject} onOpenChange={handleCreateProject}>
                       <DialogContent>
@@ -88,6 +103,41 @@ export const WorkspaceView = () => {
                           <DialogDescription>Assign users to this workspace.</DialogDescription>
                         </DialogHeader>
                         <AddUserToWorkspace onSuccess={handleSuccessAdd} />
+                      </DialogContent>
+                    </Dialog>
+                    <Dialog open={showUsers} onOpenChange={handleShowUsers}>
+                      <DialogContent>
+                        <DialogHeader>
+                          <Alerts />
+                          <DialogTitle className="text-3xl">Users</DialogTitle>
+                          <DialogDescription>
+                            List of users currently in this workspace.
+                          </DialogDescription>
+                        </DialogHeader>
+                        {users && users.length > 0 ? (
+                          <div className="max-h-80 overflow-y-auto px-4 py-2 bg-gray-50 rounded-lg shadow-inner">
+                            <div className="flex flex-col gap-4">
+                              {users.map((user) => (
+                                <div
+                                  key={user.id}
+                                  className="flex items-center justify-between p-3 bg-white rounded-md shadow hover:bg-gray-100 transition"
+                                >
+                                  <div className="text-gray-700">
+                                    <span className="font-medium">
+                                      {user.firstName} {user.lastName}
+                                    </span>
+                                    <br />
+                                    <span className="text-sm text-gray-500">{user.email}</span>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="text-gray-500 mt-4 text-center">
+                            No users in this workspace.
+                          </p>
+                        )}
                       </DialogContent>
                     </Dialog>
                   </div>

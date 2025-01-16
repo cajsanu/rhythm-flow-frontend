@@ -11,6 +11,7 @@ import {
   DialogTitle
 } from "@/components/ui/dialog"
 import { Alerts } from "@/components/alert"
+import { LogOut } from "@/components/logout"
 
 export const Home = () => {
   const [showWorkspaces, setShowWorkspaces] = useState(false)
@@ -38,6 +39,7 @@ export const Home = () => {
       <div className="flex flex-row gap-4">
         <Button onClick={handleShowWorkspaces}>My workspaces</Button>
         <Button onClick={handleCreateWorkspace}>Create workspace</Button>
+        <LogOut />
       </div>
       <div>
         {workspaces && workspaces.length >= 1 && showWorkspaces ? (

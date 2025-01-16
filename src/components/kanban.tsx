@@ -16,6 +16,7 @@ import { Button } from "./ui/button"
 import { useGetUsersInProject } from "@/hooks/projectManagement"
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
+import { AxiosError } from "axios"
 
 // Draggable Item Types
 const ItemTypes = {
@@ -71,10 +72,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
   if (error) return <div>Error loading users.</div>
 
   return (
-    <div
-      ref={drag}
-      className="border p-2 font-semibold rounded bg-gray-100 shadow-md mb-2"
-    >
+    <div ref={drag} className="border p-2 font-semibold rounded bg-gray-100 shadow-md mb-2">
       <Dialog open={showCreateTicket} onOpenChange={handleOpenTicket}>
         <DialogContent className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
           <DialogHeader>
@@ -200,6 +198,8 @@ export const Kanban = ({ workspaceId }: KanbanProps) => {
 
   const updateTicketStatus = useUpdateTicket()
 
+  const dispatch = useAppDispatch()
+
   const { data: tickets, isLoading, error } = useGetTicketsInProject(id, wsId)
 
   // Initialize columns and dynamically populate with tickets
@@ -222,13 +222,36 @@ export const Kanban = ({ workspaceId }: KanbanProps) => {
         workspaceId: workspaceId,
         updatedTicket: { ...ticket, status: targetColumnId }
       })
-    } catch (err) {
-      console.error(err)
+    } catch (err: any) {
+      if (err.response?.status === 403) {
+        dispatch(
+          timedAlert({
+            message: "You are not authorized to update tickets in this project",
+            severity: "error"
+          })
+        )
+        return
+      }
+      dispatch(
+        timedAlert({
+          message: "An error occurred while updating the ticket status",
+          severity: "error"
+        })
+      )
     }
   }
 
   if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error loading tickets.</div>
+  if (error) {
+    if ((error as AxiosError).response?.status === 403) {
+      return (
+        <div className="bg-gray-100 rounded p-2 text-rose-800">
+          You don't have access to this project
+        </div>
+      )
+    }
+    return <div className="bg-gray-100 rounded p-2 text-rose-800">Error loading tickets.</div>
+  }
 
   return (
     <DndProvider backend={HTML5Backend}>

@@ -14,14 +14,13 @@ const api = axios.create({
 
 // setupinterceptors (put logic in  another file and give api to it)
 
-// use this to handle errors gracefully
-// api.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     if (error.response.status === 500) {
-//       throw new Error(error.response.data)
-//     }
-//   }
-// )
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 500) {
+      throw new Error(error.response.data)
+    }
+  }
+)
 
 export default api
