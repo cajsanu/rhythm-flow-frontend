@@ -73,7 +73,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
   return (
     <div
       ref={drag}
-      className="border p-2 font-semibold rounded bg-gradient-to-r from-gray-100 to-gray-200 shadow-md mb-2"
+      className="border p-2 font-semibold rounded bg-gray-100 shadow-md mb-2"
     >
       <Dialog open={showCreateTicket} onOpenChange={handleOpenTicket}>
         <DialogContent className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
@@ -143,7 +143,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
 
       <button
         onClick={handleOpenTicket}
-        className="w-full text-left text-gray-800 font-medium hover:text-blue-600"
+        className="w-full text-left text-gray-700 font-medium hover:text-gray-900"
       >
         {ticket.title} <span className="text-xs text-gray-500">({ticket.deadline})</span>
       </button>

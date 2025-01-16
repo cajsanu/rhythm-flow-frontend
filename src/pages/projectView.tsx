@@ -67,8 +67,8 @@ export const ProjectView = () => {
         </Dialog>
 
         <div className="flex gap-4 mt-6">
-          <Button className="bg-gray-100 text-gray-900 font-bold" onClick={handleCreateTicket}>+ Create Ticket</Button>
-          <Button onClick={handleShowAddUsers}>+ Add Users</Button>
+          <Button className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100" onClick={handleCreateTicket}>+ Create Ticket</Button>
+          <Button className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100" onClick={handleShowAddUsers}>+ Add Users</Button>
         </div>
       </div>
 

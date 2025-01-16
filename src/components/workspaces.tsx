@@ -43,14 +43,21 @@ const SingleWorkspace = ({ name, id }: SingleWSProps) => {
   }
 
   return (
-    <a href={`/workspace/${id}`}>
-      <div className="relative border rounded-xl p-10 flex flex-col bg-white hover:bg-rose-100">
-        <div className="absolute top-0 right-0 p-2 px-3 bg-rose-200 rounded-bl-xl rounded-tr-xl text-rose-800 font-bold hover:bg-rose-300">
-          <button onClick={handleDelete}>X</button>
-        </div>
-        <ul className="font-bold text-xl text-gray-800 pb-2">{name}</ul>
+    <div className="relative border rounded-lg p-6 bg-gradient-to-br from-rose-100 to-rose-200 shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div className="absolute top-2 right-2 px-2 py-1 bg-rose-300 rounded-full text-rose-800 font-bold cursor-pointer hover:bg-rose-400 transition-colors duration-300">
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDelete()
+          }}
+        >
+          X
+        </button>
       </div>
-    </a>
+      <a href={`/workspace/${id}`} className="flex flex-col items-start gap-2 hover:no-underline">
+        <h3 className="font-bold text-lg text-gray-800 p-5">{name}</h3>
+      </a>
+    </div>
   )
 }
 
@@ -60,10 +67,12 @@ type WorkspacesProps = {
 
 export const Workspaces = ({ workspaces }: WorkspacesProps) => {
   return (
-    <div className="flex flex-wrap justify-center py-10 gap-10">
-      {workspaces.map((ws) => (
-        <SingleWorkspace key={ws.id} name={ws.name} id={ws.id} />
-      ))}
+    <div className="max-h-screen overflow-y-auto px-6 py-6">
+      <div className="flex flex-wrap justify-center gap-6">
+        {workspaces.map((ws) => (
+          <SingleWorkspace key={ws.id} name={ws.name} id={ws.id} />
+        ))}
+      </div>
     </div>
   )
 }

@@ -44,13 +44,25 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
     }
   }
   return (
-    <div className="relative border rounded-xl p-10 flex flex-col bg-rose-100 hover:bg-rose-300">
-      <div className="absolute top-0 right-0 p-2 px-3 bg-rose-200 rounded-bl-xl rounded-tr-xl text-rose-800 font-bold">
-        <button onClick={handleDelete}>X</button>
+    <div className="relative border rounded-lg p-6 bg-gradient-to-br from-rose-100 to-rose-200 shadow-md hover:shadow-lg transition-shadow duration-300">
+      <div className="absolute top-2 right-2 px-2 py-1 bg-rose-300 rounded-full text-rose-800 font-bold cursor-pointer hover:bg-rose-400 transition-colors duration-300">
+        <button
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDelete()
+          }}
+        >
+          X
+        </button>
       </div>
-      <a href={`${wsId}/project/${id}`}>
-        <ul className="font-bold text-xl text-gray-800 pb-2">{name}</ul>
-        <ul className="text-rose-800 text-sm">Due: {endDate}</ul>
+      <a
+        href={`${wsId}/project/${id}`}
+        className="flex flex-col items-start gap-2 hover:no-underline"
+      >
+        <h3 className="font-bold text-lg text-gray-800">{name}</h3>
+        <p className="text-sm text-gray-600">
+          <span className="font-medium">Due:</span> {endDate}
+        </p>
       </a>
     </div>
   )
@@ -62,8 +74,8 @@ type ProjectsProps = {
 
 export const Projects = ({ projects }: ProjectsProps) => {
   return (
-    <div className="max-h-96 overflow-x-auto px-4">
-      <div className="flex flex-wrap justify-center py-10 gap-10">
+    <div className="max-h-96 overflow-y-auto px-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 py-10">
         {projects.map((p) => (
           <SingleProject
             key={p.id}
