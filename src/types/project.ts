@@ -4,19 +4,9 @@ const projectScema = z.object({
   id: z.string(),
   name: z.string().min(1, { message: "Name is required" }),
   description: z.string().min(1, { message: "Description is required" }),
-  startDate: z
-    .string()
-    .refine((date) => !isNaN(new Date(date).getTime()), {
-      message: "Start date must be a valid date"
-    })
-    .refine(
-      (date) => {
-        const startDate = new Date(date)
-        const now = new Date()
-        return startDate >= now
-      },
-      { message: "Start date cannot be in the past" }
-    ),
+  startDate: z.string().refine((date) => !isNaN(new Date(date).getTime()), {
+    message: "Start date must be a valid date"
+  }),
   endDate: z.string().refine((date) => !isNaN(new Date(date).getTime()), {
     message: "End date must be a valid date"
   }),
@@ -28,6 +18,14 @@ export const createProjectSchema = projectScema
   .omit({
     id: true
   })
+  .refine(
+    (data) => {
+      const startDate = new Date(data.startDate)
+      const now = new Date()
+      return startDate >= now
+    },
+    { message: "Start date cannot be in the past" }
+  )
   .refine(
     (data) => {
       const startDate = new Date(data.startDate)

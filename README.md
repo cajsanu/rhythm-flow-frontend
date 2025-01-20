@@ -14,6 +14,7 @@ This is a **Task Management Application** designed to help users manage tasks. T
 - **Projects**
   - Projects are organized within workspaces.
   - Users can be assigned to specific projects.
+  - Search projects by name
   - Tickets are managed within projects.
 
 - **Tickets**
@@ -28,7 +29,7 @@ This is a **Task Management Application** designed to help users manage tasks. T
 - Signu up or login to start managing your tasks. 
 - On the home page users can see all the workspaces they are part of. They can aslo create a new workspace or add others to join their workspace, giving them a role inside the workspace. 
 - If users are not part of the workspace they can't access inforamtion abotu the workspace or projects inside it. 
-- When clicking on a workspace the app will take the user to the workspace view where they can see all the projects iside the workspace and if the user has been assigned the role of project manager within the workspace they can create and delete projects. 
+- When clicking on a workspace the app will take the user to the workspace view where they can see all the projects inside the workspace, search project by name and if the user has been assigned the role of project manager within the workspace they can create and delete projects. 
 - By clicking on a project the user is taken to the project view (if the user is part of the project), where the kanban board for tickets withing the project exists. 
 - Tickets can be created by anyone who has been assigned to the project and tickets can be assigned to users in the project. 
 

@@ -82,7 +82,7 @@ export const UpdateProject = ({
       <div className="text-4xl font-bold pb-4">
         {editingField === "name" ? (
           <textarea
-            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-blue-500"
+            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-sky-200"
             value={updatedProject.name}
             onChange={(e) => handleChange("name", e.target.value)}
             onBlur={handleBlur}
@@ -102,7 +102,7 @@ export const UpdateProject = ({
         <strong className="text-gray-400 pe-2">Description:</strong>
         {editingField === "description" ? (
           <textarea
-            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-blue-500"
+            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-sky-200"
             value={updatedProject.description}
             onChange={(e) => handleChange("description", e.target.value)}
             onBlur={handleBlur}
@@ -123,7 +123,7 @@ export const UpdateProject = ({
         {editingField === "startDate" ? (
           <input
             type="date"
-            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-blue-500"
+            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-sky-200"
             value={updatedProject.startDate}
             onChange={(e) => handleChange("startDate", e.target.value)}
             onBlur={handleBlur}
@@ -144,7 +144,7 @@ export const UpdateProject = ({
         {editingField === "endDate" ? (
           <input
             type="date"
-            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-blue-500"
+            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-sky-200"
             value={updatedProject.endDate}
             onChange={(e) => handleChange("endDate", e.target.value)}
             onBlur={handleBlur}
@@ -164,7 +164,7 @@ export const UpdateProject = ({
         <strong className="text-gray-400 pe-2">Status:</strong>
         {editingField === "status" ? (
           <select
-            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-blue-500"
+            className="w-full bg-gray-700 text-gray-100 rounded-lg p-2 mt-2 focus:outline-none focus:ring focus:ring-sky-200"
             value={updatedProject.status}
             onChange={(e) => handleChange("status", e.target.value)}
             onBlur={handleBlur}
