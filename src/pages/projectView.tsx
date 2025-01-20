@@ -40,9 +40,9 @@ export const ProjectView = () => {
   }
 
   return (
-    <div className="flex flex-col items-center gap-8 px-8 bg-gradient-to-br from-gray-800 to-gray-900 min-h-screen text-gray-100">
+    <div className="flex flex-col items-center bg-gray-900 min-h-screen text-gray-100">
       <Alerts />
-      <div className="w-full max-w-6xl bg-gray-800 rounded-lg shadow-lg p-8">
+      <div className="w-full max-w-6xl rounded-lg p-8">
         {project && <UpdateProject project={project} onSuccess={handleSuccessCreate} />}
 
         <div className="flex gap-4 my-6">

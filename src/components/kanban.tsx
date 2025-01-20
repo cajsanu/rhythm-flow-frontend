@@ -72,7 +72,10 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
   if (error) return <div>Error loading users.</div>
 
   return (
-    <div ref={drag} className="border p-2 font-semibold rounded bg-gray-100 shadow-md mb-2">
+    <div
+      ref={drag}
+      className="border p-3 font-semibold rounded-lg bg-gray-800 shadow-md mb-2 hover:bg-gray-900"
+    >
       <Dialog open={showCreateTicket} onOpenChange={handleOpenTicket}>
         <DialogContent className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-6">
           <DialogHeader>
@@ -84,7 +87,7 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
                   <span className="font-bold">Deadline:</span> {ticket.deadline}
                 </p>
                 <p>
-                  <span className="font-bold">Priority:</span> {ticket.priority}
+                  <span className="font-bold">Priority:</span> {(ticket.priority === 2 && "High") || (ticket.priority === 1 && "Medium") || "Low"}
                 </p>
               </div>
             </div>
@@ -139,11 +142,11 @@ const SingleTicket = ({ ticket, onDrop }: { ticket: Ticket; onDrop: (id: string)
         </DialogContent>
       </Dialog>
 
-      <button
-        onClick={handleOpenTicket}
-        className="w-full text-left text-gray-700 font-medium hover:text-gray-900"
-      >
-        {ticket.title} <span className="text-xs text-gray-500">({ticket.deadline})</span>
+      <button onClick={handleOpenTicket} className="w-full text-left text-gray-100 font-medium">
+        {ticket.title}{" "}
+        <span className="text-xs text-gray-400">
+          {(ticket.priority === 2 && "🔴") || (ticket.priority === 1 && "🟠") || "🟢"}
+        </span>
       </button>
     </div>
   )
@@ -166,9 +169,9 @@ const SingleColumn = ({
 
   return (
     <div ref={drop}>
-      <Card className="w-64 bg-gradient-to-r from-sky-300 to-rose-400">
+      <Card className="bg-gradient-to-r from-sky-300 to-rose-400">
         <CardHeader className="p-4">
-          <CardTitle className="text-lg font-bold text-sky-900">{column.title}</CardTitle>
+          <CardTitle className="text-lg font-bold text-gray-900">{column.title}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <ScrollArea className="h-96">
@@ -242,16 +245,7 @@ export const Kanban = ({ workspaceId }: KanbanProps) => {
   }
 
   if (isLoading) return <div>Loading...</div>
-  if (error) {
-    if ((error as AxiosError).response?.status === 403) {
-      return (
-        <div className="bg-gray-100 rounded p-2 text-rose-800">
-          You don't have access to this project
-        </div>
-      )
-    }
-    return <div className="bg-gray-100 rounded p-2 text-rose-800">Error loading tickets.</div>
-  }
+  if (error) return <div>Error loading tickets.</div>
 
   return (
     <DndProvider backend={HTML5Backend}>

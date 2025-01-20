@@ -14,7 +14,7 @@ import { Alerts } from "@/components/alert"
 import { LogOut } from "@/components/logout"
 
 export const Home = () => {
-  const [showWorkspaces, setShowWorkspaces] = useState(false)
+  const [showWorkspaces, setShowWorkspaces] = useState(true)
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false)
   const { id = "" } = useParams<{ id: string }>()
 

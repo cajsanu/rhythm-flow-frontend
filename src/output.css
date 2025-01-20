@@ -696,6 +696,10 @@ body {
   margin: 1.5rem;
 }
 
+.m-2 {
+  margin: 0.5rem;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -976,6 +980,10 @@ body {
 
 .w-2\/6 {
   width: 33.333333%;
+}
+
+.w-screen {
+  width: 100vw;
 }
 
 .min-w-\[300px\] {
@@ -2443,6 +2451,11 @@ body {
 .hover\:bg-gray-600:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(75 85 99 / var(--tw-bg-opacity, 1));
+}
+
+.hover\:bg-gray-900:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));
 }
 
 .hover\:from-rose-100:hover {

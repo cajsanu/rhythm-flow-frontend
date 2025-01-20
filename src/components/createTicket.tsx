@@ -183,9 +183,9 @@ export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
                           <SelectValue placeholder="Select" />
                         </SelectTrigger>
                         <SelectContent position="popper" style={{ zIndex: 5000 }}>
-                          <SelectItem value="0">Not sure</SelectItem>
-                          <SelectItem value="1">Business</SelectItem>
-                          <SelectItem value="2">IT</SelectItem>
+                          <SelectItem value="0">Personal</SelectItem>
+                          <SelectItem value="1">Technical</SelectItem>
+                          <SelectItem value="2">Other</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
