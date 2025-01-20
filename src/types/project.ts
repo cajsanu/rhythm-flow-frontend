@@ -1,4 +1,5 @@
 import { z } from "zod"
+import { userSchema } from "./user"
 
 const projectScema = z.object({
   id: z.string(),
@@ -11,7 +12,8 @@ const projectScema = z.object({
     message: "End date must be a valid date"
   }),
   status: z.number().min(0, { message: "Status is required" }),
-  workspaceId: z.string()
+  workspaceId: z.string(),
+  users: z.array(userSchema).optional()
 })
 
 export const createProjectSchema = projectScema

@@ -1,7 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useNavigate } from "react-router-dom"
-import userRequests from "../api/users"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -37,17 +36,17 @@ export const LoginForm = () => {
   const onSubmit: SubmitHandler<LoginCredentials> = async (data: LoginCredentials) => {
     try {
       await loginMutation.mutateAsync(data)
-      const user = await userRequests.getUserByEmail(data.email)
-      if (!user) {
+      const userId = window.localStorage.getItem("userId")
+      if (!userId) {
         throw new Error("User not found")
       }
       dispatch(
         timedAlert({
-          message: `Welcome back, ${user.firstName}`,
+          message: `Welcome back, ${data.email}`,
           severity: "success"
         })
       )
-      navigate(`/home/${user.id}`)
+      navigate(`/home/${userId}`)
     } catch (err) {
       dispatch(
         timedAlert({

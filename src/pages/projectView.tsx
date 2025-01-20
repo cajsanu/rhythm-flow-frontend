@@ -19,6 +19,8 @@ export const ProjectView = () => {
   const [showCreateTicket, setShowCreateTicket] = useState(false)
   const [showAddUsers, setShowAddUsers] = useState(false)
 
+  const userId = window.localStorage.getItem("userId") ?? ""
+
   const { data: project, isLoading: projLoading, error: projError } = useGetProjectById(id, wsId)
 
   const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
@@ -30,6 +32,12 @@ export const ProjectView = () => {
 
   if (projLoading) return <div>Loading...</div>
   if (projError) return <div>Error loading data...</div>
+
+  const userInProject = project?.users?.find((u) => u.id === userId)
+
+  if (!userInProject) {
+    return <div>You are not authorized to view this project</div>
+  }
 
   return (
     <div className="flex flex-col items-center gap-8 px-8 bg-gradient-to-br from-gray-800 to-gray-900 min-h-screen text-gray-100">

@@ -22,13 +22,6 @@ const getUserById = async (id: string): Promise<User> => {
   return res.data
 }
 
-const getUserByEmail = async (email: string): Promise<User> => {
-  const config = getAuthConfig()
-
-  const res = await axios.get<User>(`${baseURL}/email/${email}`, config)
-  return res.data
-}
-
 const deleteUser = async (id: string): Promise<void> => {
   const config = getAuthConfig()
 
@@ -43,4 +36,4 @@ const updateUser = async (id: string, updatedUser: UpdateUser): Promise<User> =>
   return res.data
 }
 
-export default { getUsers, createUser, getUserById, getUserByEmail, deleteUser, updateUser }
+export default { getUsers, createUser, getUserById, deleteUser, updateUser }
