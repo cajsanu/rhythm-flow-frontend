@@ -1,4 +1,4 @@
-import { CreateProject, Project } from "@/types/project"
+import { CreateProject, Project, UpdateProject } from "@/types/project"
 import axios from "axios"
 import { getAuthConfig } from "./utils"
 import { User } from "@/types/user"
@@ -42,6 +42,17 @@ const createProject = async (project: CreateProject): Promise<Project> => {
   return res.data
 }
 
+const updateProject = async (project: UpdateProject): Promise<UpdateProject> => {
+  const config = getAuthConfig()
+
+  const res = await axios.put<UpdateProject>(
+    baseURL.replace(":workspaceId", project.workspaceId) + "/" + project.id,
+    project,
+    config
+  )
+  return res.data
+}
+
 const deleteProject = async (projectId: string, workspaceId: string): Promise<void> => {
   const config = getAuthConfig()
 
@@ -64,5 +75,6 @@ export default {
   getProjectById,
   createProject,
   deleteProject,
+  updateProject,
   assignUserToProject
 }

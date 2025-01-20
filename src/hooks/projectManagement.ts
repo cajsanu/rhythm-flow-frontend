@@ -64,6 +64,19 @@ export const useDeleteProject = () => {
   return deleteProjectMutation
 }
 
+export const useUpdateProject = () => {
+  const queryClient = useQueryClient()
+
+  const updateProjectMutation = useMutation({
+    mutationFn: projectRequests.updateProject,
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["project", variables.id] })
+    }
+  })
+
+  return updateProjectMutation
+}
+
 export const useAssignUserToProject = () => {
   const queryClient = useQueryClient()
 
