@@ -115,7 +115,7 @@ export const ProjectView = () => {
             <DialogDescription>List of users currently in this project.</DialogDescription>
           </DialogHeader>
           {project?.users ? (
-            <Users users={project.users} />
+            <Users users={project.users} typeOfResource="project" project={project}/>
           ) : (
             <p className="text-gray-500 mt-4 text-center">No users in this project.</p>
           )}

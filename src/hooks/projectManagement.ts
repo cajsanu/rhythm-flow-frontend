@@ -99,3 +99,26 @@ export const useAssignUserToProject = () => {
 
   return assignUserToProjectMutation
 }
+
+export const useUnassignUserFromProject = () => {
+  const queryClient = useQueryClient()
+
+  const unassignUserFromProjectMutation = useMutation({
+    mutationFn: ({
+      workspaceId,
+      projectId,
+      userId
+    }: {
+      workspaceId: string
+      projectId: string
+      userId: string
+    }) => projectRequests.unassignUserFromProject(workspaceId, projectId, userId),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["project", variables.projectId] })
+      queryClient.invalidateQueries({ queryKey: ["tickets"] })
+      queryClient.invalidateQueries({ queryKey: ["users", variables.projectId] })
+    }
+  })
+
+  return unassignUserFromProjectMutation
+}

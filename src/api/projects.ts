@@ -69,6 +69,15 @@ const assignUserToProject = async (workspaceId: string, projectId: string, userI
   )
 }
 
+const unassignUserFromProject = async (workspaceId: string, projectId: string, userId: string) => {
+  const config = getAuthConfig()
+
+  await axios.delete(
+    baseURL.replace(":workspaceId", workspaceId) + "/" + projectId + "/users/" + userId,
+    config
+  )
+}
+
 export default {
   getProjectsInWorkspace,
   getUsersInProject,
@@ -76,5 +85,6 @@ export default {
   createProject,
   deleteProject,
   updateProject,
-  assignUserToProject
+  assignUserToProject,
+  unassignUserFromProject
 }

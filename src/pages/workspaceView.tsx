@@ -112,7 +112,7 @@ export const WorkspaceView = () => {
                           </DialogDescription>
                         </DialogHeader>
                         {users && users.length > 0 ? (
-                          <Users users={users} />
+                          <Users users={users} typeOfResource="workspace"/>
                         ) : (
                           <p className="text-gray-500 mt-4 text-center">
                             No users in this workspace.
