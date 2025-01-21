@@ -1,16 +1,13 @@
 import { useParams } from "react-router-dom"
-import { Projects } from "@/components/projects"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useGetUsersInWorkspace, useGetWorkspaceById } from "@/hooks/workspaceManagement"
 import { useGetProjectsInWorkspace } from "@/hooks/projectManagement"
-import { CreateProjectForm } from "@/components"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { DialogDescription } from "@radix-ui/react-dialog"
-import { AddUserToWorkspace } from "@/components/addUserToWorkspace"
 import { useGetUserById } from "@/hooks/userManagement"
-import { Alerts } from "@/components/alert"
+import { Alerts, Users, AddUserToWorkspace, Projects, CreateProjectForm } from "@/components"
 import { useDebounce } from "@/hooks/useDebounce"
 import SearchIcon from "@mui/icons-material/Search"
 import { AxiosError } from "axios"
@@ -115,24 +112,7 @@ export const WorkspaceView = () => {
                           </DialogDescription>
                         </DialogHeader>
                         {users && users.length > 0 ? (
-                          <div className="max-h-80 overflow-y-auto px-4 py-2 bg-gray-50 rounded-lg shadow-inner">
-                            <div className="flex flex-col gap-4">
-                              {users.map((user) => (
-                                <div
-                                  key={user.id}
-                                  className="flex items-center justify-between p-3 bg-white rounded-md shadow hover:bg-gray-100 transition"
-                                >
-                                  <div className="text-gray-700">
-                                    <span className="font-medium">
-                                      {user.firstName} {user.lastName}
-                                    </span>
-                                    <br />
-                                    <span className="text-sm text-gray-500">{user.email}</span>
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
+                          <Users users={users} />
                         ) : (
                           <p className="text-gray-500 mt-4 text-center">
                             No users in this workspace.

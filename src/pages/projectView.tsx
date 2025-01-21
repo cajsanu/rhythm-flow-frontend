@@ -10,7 +10,14 @@ import {
   DialogHeader,
   DialogTitle
 } from "@/components/ui/dialog"
-import { Kanban, Alerts, AddUserToProject, CreateTicketForm, UpdateProject } from "@/components"
+import {
+  Kanban,
+  Alerts,
+  AddUserToProject,
+  CreateTicketForm,
+  UpdateProject,
+  Users
+} from "@/components"
 
 export type Column = { id: number; title: string; tickets: Ticket[] }
 
@@ -18,6 +25,7 @@ export const ProjectView = () => {
   const { wsId = "", id = "" } = useParams<{ wsId: string; id: string }>()
   const [showCreateTicket, setShowCreateTicket] = useState(false)
   const [showAddUsers, setShowAddUsers] = useState(false)
+  const [showUsers, setShowUsers] = useState(false)
 
   const userId = window.localStorage.getItem("userId") ?? ""
 
@@ -25,6 +33,7 @@ export const ProjectView = () => {
 
   const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
+  const handleShowUsers = () => setShowUsers((prev) => !prev)
 
   const handleSuccessCreate = () => setShowCreateTicket(false)
 
@@ -58,6 +67,12 @@ export const ProjectView = () => {
           >
             + Add Users
           </Button>
+          <Button
+            className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100"
+            onClick={handleShowUsers}
+          >
+            View Users
+          </Button>
         </div>
 
         {/* Kanban Board */}
@@ -89,6 +104,21 @@ export const ProjectView = () => {
             </DialogDescription>
           </DialogHeader>
           <AddUserToProject onSuccess={handleSuccessAdd} />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showUsers} onOpenChange={handleShowUsers}>
+        <DialogContent>
+          <DialogHeader>
+            <Alerts />
+            <DialogTitle className="text-3xl">Users</DialogTitle>
+            <DialogDescription>List of users currently in this project.</DialogDescription>
+          </DialogHeader>
+          {project?.users ? (
+            <Users users={project.users} />
+          ) : (
+            <p className="text-gray-500 mt-4 text-center">No users in this project.</p>
+          )}
         </DialogContent>
       </Dialog>
     </div>

@@ -11,6 +11,7 @@ import { LogOut } from "./logout"
 import { Alerts } from "./alert"
 import { Projects } from "./projects"
 import { UpdateProject } from "./updateProject"
+import { Users } from "./users"
 
 export {
   CreateWorkspaceForm,
@@ -25,5 +26,6 @@ export {
   LogOut,
   Alerts,
   Projects,
-  UpdateProject
+  UpdateProject,
+  Users
 }
