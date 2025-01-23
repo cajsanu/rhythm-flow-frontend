@@ -9,9 +9,9 @@ import { timedAlert } from "@/reducers/alertSlice"
 import { useAppDispatch } from "@/hooks/alertManagement"
 
 export const AddUserToWorkspace = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { id = "" } = useParams<{ id: string }>()
+  const { wsId = "" } = useParams<{ wsId: string }>()
   const [selectedUserId, setSelectedUserId] = useState<string>("")
-  const [selectedRole, setSelectedRole] = useState<Role>("User")
+  const [selectedRole, setSelectedRole] = useState<Role>(2)
   const dispatch = useAppDispatch()
 
   const { data: users, isLoading: userLoading, error: userError } = useGetUsers()
@@ -21,10 +21,17 @@ export const AddUserToWorkspace = ({ onSuccess }: { onSuccess: () => void }) => 
   const handleAssignUserToWorkspace = async () => {
     try {
       const data = {
-        workspaceId: id,
+        workspaceId: wsId,
         userId: selectedUserId,
         role: selectedRole
       }
+
+      const mappedRole =
+        selectedRole === 0
+          ? " Workspace Owner"
+          : selectedRole === 1
+          ? " Project Manager"
+          : " User"
 
       // Validate the input against the schema
       userWorkspaceSchema.parse(data)
@@ -32,7 +39,7 @@ export const AddUserToWorkspace = ({ onSuccess }: { onSuccess: () => void }) => 
       await addUserToWorkspaceMutation.mutateAsync(data)
       dispatch(
         timedAlert({
-          message: `User added to workspace with role: ${selectedRole}`,
+          message: `User added to workspace with role: ${mappedRole}`,
           severity: "success"
         })
       )
@@ -90,10 +97,10 @@ export const AddUserToWorkspace = ({ onSuccess }: { onSuccess: () => void }) => 
           id="roleSelect"
           className="w-full px-3 py-2 border border-gray-300 rounded-md"
           value={selectedRole}
-          onChange={(e) => setSelectedRole(e.target.value as Role)}
+          onChange={(e) => setSelectedRole(Number(e.target.value) as Role)}
         >
-          <option value="User">User</option>
-          <option value="ProjectManager">Project Manager</option>
+          <option value="2">User</option>
+          <option value="1">Project Manager</option>
         </select>
       </div>
 

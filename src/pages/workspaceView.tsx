@@ -13,7 +13,7 @@ import SearchIcon from "@mui/icons-material/Search"
 import { AxiosError } from "axios"
 
 export const WorkspaceView = () => {
-  const { id = "" } = useParams<{ id: string }>()
+  const { wsId = "" } = useParams<{ wsId: string }>()
   const [showCreateProject, setShowCreateProject] = useState(false)
   const [search, setSearch] = useState<string>("")
   const [showAddUsers, setShowAddUsers] = useState(false)
@@ -21,7 +21,7 @@ export const WorkspaceView = () => {
 
   const debouncedSearch = useDebounce(search, 500)
 
-  const { data: workspace, isLoading: wsLoading, error: wsError } = useGetWorkspaceById(id)
+  const { data: workspace, isLoading: wsLoading, error: wsError } = useGetWorkspaceById(wsId)
 
   const {
     data: owner,
@@ -33,9 +33,9 @@ export const WorkspaceView = () => {
     data: projects,
     isLoading: projLoading,
     error: projError
-  } = useGetProjectsInWorkspace(id, debouncedSearch)
+  } = useGetProjectsInWorkspace(wsId, debouncedSearch)
 
-  const { data: users, isLoading: usersLoading, error: usersError } = useGetUsersInWorkspace(id)
+  const { data: users, isLoading: usersLoading, error: usersError } = useGetUsersInWorkspace(wsId)
 
   const handleCreateProject = () => setShowCreateProject((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)

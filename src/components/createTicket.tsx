@@ -20,7 +20,7 @@ import { timedAlert } from "@/reducers/alertSlice"
 import { Alerts } from "./alert"
 
 export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { id, wsId } = useParams()
+  const { projectId, wsId } = useParams<{ projectId: string; wsId: string }>()
   const dispatch = useAppDispatch()
 
   const form = useForm<CreateTicket>({
@@ -31,7 +31,7 @@ export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
       priority: 0,
       deadline: "",
       status: 0,
-      projectId: id ?? "",
+      projectId: projectId ?? "",
       type: 0
     }
   })
@@ -39,11 +39,11 @@ export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
   const newTicketMutation = useCreateTicket()
 
   const onSubmit: SubmitHandler<CreateTicket> = async (data: CreateTicket) => {
-    if (!id || !wsId) {
+    if (!projectId || !wsId) {
       throw new Error("Workspace ID or project ID is undefined")
     }
 
-    const newTicket = { ...data, projectId: id }
+    const newTicket = { ...data, projectId: projectId }
 
     try {
       await newTicketMutation.mutateAsync({ workspaceId: wsId, newTicket })

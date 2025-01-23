@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     errorElement: <div>"Not found"</div>
   },
   {
-    path: "/home/:id",
+    path: "/home/:userId",
     element: <Home />,
     errorElement: <div>"Not found"</div>
   },
@@ -25,12 +25,12 @@ const router = createBrowserRouter([
     errorElement: <div>"Not found"</div>
   },
   {
-    path: "/workspace/:id",
+    path: "/workspace/:wsId",
     element: <WorkspaceView />,
     errorElement: <div>"Not found"</div>
   },
   {
-    path: "workspace/:wsId/project/:id",
+    path: "workspace/:wsId/project/:projectId",
     element: <ProjectView />,
     errorElement: <div>"Not found"</div>
   }

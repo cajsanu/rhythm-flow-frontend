@@ -7,7 +7,7 @@ import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 
 export const AddUserToProject = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { wsId = "", id = "" } = useParams<{ wsId: string; id: string }>()
+  const { wsId = "", projectId = "" } = useParams<{ wsId: string; projectId: string }>()
   const [selectedUserId, setSelectedUserId] = useState<string>("")
   const dispatch = useAppDispatch()
 
@@ -19,7 +19,7 @@ export const AddUserToProject = ({ onSuccess }: { onSuccess: () => void }) => {
     try {
       await assignUserToProjectMutation.mutateAsync({
         workspaceId: wsId,
-        projectId: id,
+        projectId: projectId,
         userId: selectedUserId
       })
       dispatch(

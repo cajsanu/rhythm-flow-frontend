@@ -18,26 +18,26 @@ import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 
 export const CreateWorkspaceForm = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { id = "" } = useParams<{ id: string }>()
+  const { userId = "" } = useParams<{ userId: string }>()
   const dispatch = useAppDispatch()
 
   const form = useForm<CreateWorkspace>({
     resolver: zodResolver(createWorkspaceSchema),
     defaultValues: {
       name: "",
-      ownerId: id ?? ""
+      ownerId: userId ?? ""
     }
   })
 
   const newWorkspaceMutation = useCreateWorkspace()
 
   const onSubmit: SubmitHandler<CreateWorkspace> = async (data) => {
-    if (!id) {
+    if (!userId) {
       throw new Error("User ID is undefined")
     }
 
     try {
-      await newWorkspaceMutation.mutateAsync({ name: data.name, ownerId: id })
+      await newWorkspaceMutation.mutateAsync({ name: data.name, ownerId: userId })
       dispatch(
         timedAlert({
           message: `Workspace created successfully`,

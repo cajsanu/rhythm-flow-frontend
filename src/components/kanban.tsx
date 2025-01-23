@@ -197,13 +197,13 @@ type KanbanProps = {
 
 // Main Kanban Component
 export const Kanban = ({ workspaceId }: KanbanProps) => {
-  const { wsId = "", id = "" } = useParams<{ wsId: string; id: string }>()
+  const { wsId = "", projectId = "" } = useParams<{ wsId: string; projectId: string }>()
 
   const updateTicketStatus = useUpdateTicket()
 
   const dispatch = useAppDispatch()
 
-  const { data: tickets, isLoading, error } = useGetTicketsInProject(id, wsId)
+  const { data: tickets, isLoading, error } = useGetTicketsInProject(projectId, wsId)
 
   // Initialize columns and dynamically populate with tickets
   const columns = [

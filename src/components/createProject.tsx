@@ -19,7 +19,7 @@ import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 
 export const CreateProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
-  const { id = "" } = useParams<{ id: string }>()
+  const { wsId = "" } = useParams<{ wsId: string }>()
   const dispatch = useAppDispatch()
 
   const form = useForm<CreateProject>({
@@ -30,19 +30,19 @@ export const CreateProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
       startDate: "",
       endDate: "",
       status: 0,
-      workspaceId: id ?? ""
+      workspaceId: wsId ?? ""
     }
   })
 
   const newProjectMutation = useCreateProject()
 
   const onSubmit: SubmitHandler<CreateProject> = async (data: CreateProject) => {
-    if (!id) {
+    if (!wsId) {
       throw new Error("Workspace ID is undefined")
     }
 
     try {
-      await newProjectMutation.mutateAsync({ ...data, workspaceId: id })
+      await newProjectMutation.mutateAsync({ ...data, workspaceId: wsId })
       dispatch(
         timedAlert({
           message: `Project created successfully`,

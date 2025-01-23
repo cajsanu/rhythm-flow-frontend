@@ -17,7 +17,7 @@ import axios from "axios"
 export const Home = () => {
   const [showWorkspaces, setShowWorkspaces] = useState(false)
   const [showCreateWorkspace, setShowCreateWorkspace] = useState(false)
-  const { id = "" } = useParams<{ id: string }>()
+  const { userId = "" } = useParams<{ userId: string }>()
   const [fact, setFact] = useState(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export const Home = () => {
     getDogFact();
   }, []);
 
-  const { data: workspaces, isLoading, error } = useGetWorkspaces(id)
+  const { data: workspaces, isLoading, error } = useGetWorkspaces(userId)
 
   if (isLoading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>

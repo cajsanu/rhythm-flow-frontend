@@ -22,14 +22,14 @@ import {
 export type Column = { id: number; title: string; tickets: Ticket[] }
 
 export const ProjectView = () => {
-  const { wsId = "", id = "" } = useParams<{ wsId: string; id: string }>()
+  const { wsId = "", projectId = "" } = useParams<{ wsId: string; projectId: string }>()
   const [showCreateTicket, setShowCreateTicket] = useState(false)
   const [showAddUsers, setShowAddUsers] = useState(false)
   const [showUsers, setShowUsers] = useState(false)
 
   const userId = window.localStorage.getItem("userId") ?? ""
 
-  const { data: project, isLoading: projLoading, error: projError } = useGetProjectById(id, wsId)
+  const { data: project, isLoading: projLoading, error: projError } = useGetProjectById(projectId, wsId)
 
   const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)

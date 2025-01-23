@@ -1,4 +1,4 @@
-import { Workspace } from "@/types/workspace"
+import { UserWorkspace, Workspace } from "@/types/workspace"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import workspaceRequests from "@/api/workspaces"
 import { User } from "@/types/user"
@@ -68,4 +68,13 @@ export const useAddUserToWorkspace = () => {
   })
 
   return assignUserMutation
+}
+
+
+export const useGetUserRoleInworkspace = (workspaceId: string, userId: string) => {
+  const { data, isLoading, error } = useQuery<Role>({
+    queryKey: ["userworkspace", userId],
+    queryFn: () => workspaceRequests.getUserRoleInWorkspace(workspaceId, userId),
+  })
+  return { data, isLoading, error }
 }
