@@ -29,7 +29,7 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
           dispatch(
             timedAlert({
               message: "You are not authorized to delete this project",
-              severity: "error"
+              severity: "warning"
             })
           )
           return

@@ -68,7 +68,7 @@ export const Users = ({ users, typeOfResource, project }: UsersProps) => {
       dispatch(
         timedAlert({
           message: "A project must have at least one user",
-          severity: "error"
+          severity: "warning"
         })
       )
       return

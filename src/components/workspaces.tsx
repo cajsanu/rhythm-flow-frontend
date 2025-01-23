@@ -27,7 +27,7 @@ const SingleWorkspace = ({ name, id }: SingleWSProps) => {
           dispatch(
             timedAlert({
               message: "You are not authorized to delete this workspace",
-              severity: "error"
+              severity: "warning"
             })
           )
           return

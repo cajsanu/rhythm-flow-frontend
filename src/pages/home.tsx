@@ -37,7 +37,7 @@ export const Home = () => {
 
   const handleCreateWorkspace = () => setShowCreateWorkspace((prev) => !prev)
 
-  const handleSuccess = () => {
+  const handleCloseForm = () => {
     setShowCreateWorkspace(false)
     setShowWorkspaces(true)
   }
@@ -80,7 +80,7 @@ export const Home = () => {
                   Fill in the details to create a new workspace.
                 </DialogDescription>
               </DialogHeader>
-              <CreateWorkspaceForm onSuccess={handleSuccess} />
+              <CreateWorkspaceForm closeForm={handleCloseForm} />
             </DialogContent>
           </Dialog>
         </div>

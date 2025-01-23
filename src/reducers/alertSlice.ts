@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AppDispatch } from "../store"
 
-type Severity = "success" | "error"
+type Severity = "success" | "error" | "warning" | "info"
 
 export type Alert = {
   message: string

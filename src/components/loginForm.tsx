@@ -38,19 +38,25 @@ export const LoginForm = () => {
       await loginMutation.mutateAsync(data)
       const userId = window.localStorage.getItem("userId")
       if (!userId) {
-        throw new Error("User not found")
+        dispatch(
+          timedAlert({
+            message: "An error occurred while logging in",
+            severity: "error"
+          })
+        )
+        return
       }
       dispatch(
         timedAlert({
           message: `Welcome back, ${data.email}`,
-          severity: "success"
+          severity: "info"
         })
       )
       navigate(`/home/${userId}`)
     } catch (err) {
       dispatch(
         timedAlert({
-          message: "Invalid email or password",
+          message: `An error occurred while logging in: ${err}`,
           severity: "error"
         })
       )

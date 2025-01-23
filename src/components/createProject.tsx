@@ -18,7 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 
-export const CreateProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
+export const CreateProjectForm = ({ closeForm }: { closeForm: () => void }) => {
   const { wsId = "" } = useParams<{ wsId: string }>()
   const dispatch = useAppDispatch()
 
@@ -36,11 +36,17 @@ export const CreateProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
 
   const newProjectMutation = useCreateProject()
 
-  const onSubmit: SubmitHandler<CreateProject> = async (data: CreateProject) => {
-    if (!wsId) {
-      throw new Error("Workspace ID is undefined")
-    }
+  if (!wsId) {
+    dispatch(
+      timedAlert({
+        message: "Workspace ID is undefined",
+        severity: "error"
+      })
+    )
+    return
+  }
 
+  const onSubmit: SubmitHandler<CreateProject> = async (data: CreateProject) => {
     try {
       await newProjectMutation.mutateAsync({ ...data, workspaceId: wsId })
       dispatch(
@@ -49,13 +55,13 @@ export const CreateProjectForm = ({ onSuccess }: { onSuccess: () => void }) => {
           severity: "success"
         })
       )
-      onSuccess()
+      closeForm()
     } catch (err: any) {
       if (err.response?.status === 403) {
         dispatch(
           timedAlert({
             message: "You are not authorized to create projects in this workspace",
-            severity: "error"
+            severity: "warning"
           })
         )
         return

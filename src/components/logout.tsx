@@ -11,8 +11,8 @@ export const LogOut = () => {
     window.localStorage.clear()
     dispatch(
       timedAlert({
-        message: "Logout successful",
-        severity: "success"
+        message: "Logged out successfully",
+        severity: "info"
       })
     )
     navigate("/")

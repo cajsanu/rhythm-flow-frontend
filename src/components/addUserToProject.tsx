@@ -6,7 +6,7 @@ import { Button } from "./ui/button"
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 
-export const AddUserToProject = ({ onSuccess }: { onSuccess: () => void }) => {
+export const AddUserToProject = ({ closeModal }: { closeModal: () => void }) => {
   const { wsId = "", projectId = "" } = useParams<{ wsId: string; projectId: string }>()
   const [selectedUserId, setSelectedUserId] = useState<string>("")
   const dispatch = useAppDispatch()
@@ -28,13 +28,13 @@ export const AddUserToProject = ({ onSuccess }: { onSuccess: () => void }) => {
           severity: "success"
         })
       )
-      onSuccess()
+      closeModal()
     } catch (err: any) {
       if (err.response?.status === 403) {
         dispatch(
           timedAlert({
             message: "You are not authorized to add users to this project",
-            severity: "error"
+            severity: "warning"
           })
         )
         return

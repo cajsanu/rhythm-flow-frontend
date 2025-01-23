@@ -8,7 +8,7 @@ import { userWorkspaceSchema } from "@/types/workspace"
 import { timedAlert } from "@/reducers/alertSlice"
 import { useAppDispatch } from "@/hooks/alertManagement"
 
-export const AddUserToWorkspace = ({ onSuccess }: { onSuccess: () => void }) => {
+export const AddUserToWorkspace = ({ closeModal }: { closeModal: () => void }) => {
   const { wsId = "" } = useParams<{ wsId: string }>()
   const [selectedUserId, setSelectedUserId] = useState<string>("")
   const [selectedRole, setSelectedRole] = useState<Role>(2)
@@ -43,13 +43,13 @@ export const AddUserToWorkspace = ({ onSuccess }: { onSuccess: () => void }) => 
           severity: "success"
         })
       )
-      onSuccess()
+      closeModal()
     } catch (err: any) {
       if (err.response?.status === 403) {
         dispatch(
           timedAlert({
             message: "You are not authorized to add users to this workspace",
-            severity: "error"
+            severity: "warning"
           })
         )
         return

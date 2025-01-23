@@ -17,9 +17,8 @@ import { CreateTicket, createTicketSchema } from "@/types/ticket"
 import { useCreateTicket } from "@/hooks/ticketManagement"
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
-import { Alerts } from "./alert"
 
-export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
+export const CreateTicketForm = ({ closeForm }: { closeForm: () => void }) => {
   const { projectId, wsId } = useParams<{ projectId: string; wsId: string }>()
   const dispatch = useAppDispatch()
 
@@ -38,11 +37,17 @@ export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
 
   const newTicketMutation = useCreateTicket()
 
-  const onSubmit: SubmitHandler<CreateTicket> = async (data: CreateTicket) => {
-    if (!projectId || !wsId) {
-      throw new Error("Workspace ID or project ID is undefined")
-    }
+  if (!projectId || !wsId) {
+    dispatch(
+      timedAlert({
+        message: "Project ID or Workspace ID is undefined",
+        severity: "error"
+      })
+    )
+    return
+  }
 
+  const onSubmit: SubmitHandler<CreateTicket> = async (data: CreateTicket) => {
     const newTicket = { ...data, projectId: projectId }
 
     try {
@@ -53,13 +58,13 @@ export const CreateTicketForm = ({ onSuccess }: { onSuccess: () => void }) => {
           severity: "success"
         })
       )
-      onSuccess()
+      closeForm()
     } catch (err: any) {
       if (err.response?.status === 403) {
         dispatch(
           timedAlert({
             message: "You are not authorized to create tickets in this project",
-            severity: "error"
+            severity: "warning"
           })
         )
         return

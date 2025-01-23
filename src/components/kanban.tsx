@@ -230,7 +230,7 @@ export const Kanban = ({ workspaceId }: KanbanProps) => {
         dispatch(
           timedAlert({
             message: "You are not authorized to update tickets in this project",
-            severity: "error"
+            severity: "warning"
           })
         )
         return

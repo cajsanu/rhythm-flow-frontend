@@ -2,14 +2,14 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import { login } from "@/api/login"
 import { User } from "@/types/user"
 import userRequests from "@/api/users"
-import { jwtDecode } from "jwt-decode";
+import { jwtDecode } from "jwt-decode"
 
 export const useLogin = () => {
   const newLoginMutation = useMutation({
     mutationKey: ["login"],
     mutationFn: login,
-    onSuccess: (data) => {
-      if (data) {
+    onSuccess: (data: string) => {
+      if (data && data !== "") {
         window.localStorage.setItem("token", data)
         // Decode token to store userId in localStorage
         const decoded = jwtDecode<{ nameid: string }>(data)

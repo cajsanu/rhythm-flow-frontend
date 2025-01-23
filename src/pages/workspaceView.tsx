@@ -4,8 +4,7 @@ import { useGetUsersInWorkspace, useGetWorkspaceById } from "@/hooks/workspaceMa
 import { useGetProjectsInWorkspace } from "@/hooks/projectManagement"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { DialogDescription } from "@radix-ui/react-dialog"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { useGetUserById } from "@/hooks/userManagement"
 import { Alerts, Users, AddUserToWorkspace, Projects, CreateProjectForm } from "@/components"
 import { useDebounce } from "@/hooks/useDebounce"
@@ -45,8 +44,8 @@ export const WorkspaceView = () => {
     setSearch(value)
   }
 
-  const handleSuccessCreate = () => setShowCreateProject(false)
-  const handleSuccessAdd = () => setShowAddUsers(false)
+  const handleCloseProjectForm = () => setShowCreateProject(false)
+  const handleCloseAddUsers = () => setShowAddUsers(false)
 
   if ((projects && projLoading) || (workspace && wsLoading) || (owner && ownerLoading))
     return <div>Loading...</div>
@@ -89,7 +88,7 @@ export const WorkspaceView = () => {
                             Fill in the details to create a new project.
                           </DialogDescription>
                         </DialogHeader>
-                        <CreateProjectForm onSuccess={handleSuccessCreate} />
+                        <CreateProjectForm closeForm={handleCloseProjectForm} />
                       </DialogContent>
                     </Dialog>
                     <Dialog open={showAddUsers} onOpenChange={handleShowAddUsers}>
@@ -99,7 +98,7 @@ export const WorkspaceView = () => {
                           <DialogTitle className="text-3xl">Add user to workspace</DialogTitle>
                           <DialogDescription>Assign users to this workspace.</DialogDescription>
                         </DialogHeader>
-                        <AddUserToWorkspace onSuccess={handleSuccessAdd} />
+                        <AddUserToWorkspace closeModal={handleCloseAddUsers} />
                       </DialogContent>
                     </Dialog>
                     <Dialog open={showUsers} onOpenChange={handleShowUsers}>

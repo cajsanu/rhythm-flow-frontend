@@ -4,13 +4,7 @@ import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 import { Project, updateProjectSchema } from "@/types/project"
 
-export const UpdateProject = ({
-  project,
-  onSuccess
-}: {
-  project: Project
-  onSuccess: () => void
-}) => {
+export const UpdateProject = ({ project }: { project: Project }) => {
   const [editingField, setEditingField] = useState("") // Tracks the field being edited
   const [updatedProject, setUpdatedProject] = useState({
     name: project.name,
@@ -54,13 +48,12 @@ export const UpdateProject = ({
 
       try {
         await updateProjectMutation.mutateAsync({ ...data })
-        onSuccess()
       } catch (err: any) {
         if (err.response?.status === 403) {
           dispatch(
             timedAlert({
               message: "You are not authorized to update this project",
-              severity: "error"
+              severity: "warning"
             })
           )
           return

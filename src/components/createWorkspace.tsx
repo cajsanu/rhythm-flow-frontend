@@ -17,7 +17,7 @@ import { CreateWorkspace, createWorkspaceSchema } from "@/types/workspace"
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 
-export const CreateWorkspaceForm = ({ onSuccess }: { onSuccess: () => void }) => {
+export const CreateWorkspaceForm = ({ closeForm }: { closeForm: () => void }) => {
   const { userId = "" } = useParams<{ userId: string }>()
   const dispatch = useAppDispatch()
 
@@ -31,11 +31,17 @@ export const CreateWorkspaceForm = ({ onSuccess }: { onSuccess: () => void }) =>
 
   const newWorkspaceMutation = useCreateWorkspace()
 
-  const onSubmit: SubmitHandler<CreateWorkspace> = async (data) => {
-    if (!userId) {
-      throw new Error("User ID is undefined")
-    }
+  if (!userId) {
+    dispatch(
+      timedAlert({
+        message: "User ID is undefined",
+        severity: "error"
+      })
+    )
+    return
+  }
 
+  const onSubmit: SubmitHandler<CreateWorkspace> = async (data) => {
     try {
       await newWorkspaceMutation.mutateAsync({ name: data.name, ownerId: userId })
       dispatch(
@@ -44,7 +50,7 @@ export const CreateWorkspaceForm = ({ onSuccess }: { onSuccess: () => void }) =>
           severity: "success"
         })
       )
-      onSuccess()
+      closeForm()
     } catch (err) {
       dispatch(
         timedAlert({
