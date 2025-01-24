@@ -16,7 +16,8 @@ import {
   AddUserToProject,
   CreateTicketForm,
   UpdateProject,
-  Users
+  Users,
+  AccessControl
 } from "@/components"
 import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 
@@ -36,8 +37,6 @@ export const ProjectView = () => {
     error: projError
   } = useGetProjectById(projectId, wsId)
 
-  const { role, isLoading: roleLoading, error: roleError } = useRoleOfCurrentUser(wsId)
-
   const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
   const handleShowUsers = () => setShowUsers((prev) => !prev)
@@ -46,8 +45,8 @@ export const ProjectView = () => {
 
   const handleCloseAddUsers = () => setShowAddUsers(false)
 
-  if (projLoading || roleLoading) return <div>Loading...</div>
-  if (projError || roleError) return <div>Error loading data...</div>
+  if (projLoading) return <div>Loading...</div>
+  if (projError) return <div>Error loading data...</div>
 
   const userInProject = project?.users?.find((u) => u.id === userId)
 
@@ -66,22 +65,20 @@ export const ProjectView = () => {
         {project && <UpdateProject project={project} />}
 
         <div className="flex gap-4 my-6">
-          <Button
-            className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100"
-            onClick={handleCreateTicket}
-          >
-            + Create Ticket
-          </Button>
-
-          {(role === 0 || role === 1) && (
+          <AccessControl minimumRequiredRole={1}>
             <Button
               className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100"
               onClick={handleShowAddUsers}
             >
               + Add Users
             </Button>
-          )}
-
+          </AccessControl>
+          <Button
+            className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100"
+            onClick={handleCreateTicket}
+          >
+            + Create Ticket
+          </Button>
           <Button
             className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100"
             onClick={handleShowUsers}

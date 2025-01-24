@@ -6,6 +6,7 @@ import { timedAlert } from "@/reducers/alertSlice"
 import { Project } from "@/types/project"
 import { User } from "@/types/user"
 import { useParams } from "react-router-dom"
+import { AccessControl } from "./AccessControl"
 
 const SingleUser = ({
   user,
@@ -16,14 +17,10 @@ const SingleUser = ({
 }) => {
   const { wsId = "" } = useParams<{ wsId: string }>()
   const { data: role, isLoading, error } = useGetUserRoleInworkspace(wsId, user.id)
-  const {
-    role: currentUserRole,
-    isLoading: currentUserRoleLoading,
-    error: currentUserRoleError
-  } = useRoleOfCurrentUser(wsId)
 
-  if (isLoading || currentUserRoleLoading) return <div>Loading...</div>
-  if (error || currentUserRoleError) return <div>Error loading data</div>
+
+  if (isLoading) return <div>Loading...</div>
+  if (error) return <div>Error loading data</div>
 
   const mappedRole =
     role === 0 ? " (Workspace Owner)" : role === 1 ? " (Project Manager)" : " (User)"
@@ -42,11 +39,12 @@ const SingleUser = ({
           {user.email} <span className="text-xs text-gray-500">{mappedRole}</span>
         </span>
       </div>
-      {currentUserRole === 0 || currentUserRole === 1 ? (
-        <div className="px-2 py-1 bg-rose-300 rounded-full text-rose-800 font-bold cursor-pointer hover:bg-rose-400 transition-colors duration-300">
-          <button onClick={() => handleDelete(user.id)}>X</button>
-        </div>
-      ) : null}
+    <AccessControl minimumRequiredRole={1}>
+      <div className="px-2 py-1 bg-rose-300 rounded-full text-rose-800 font-bold cursor-pointer hover:bg-rose-400 transition-colors duration-300">
+        <button onClick={() => handleDelete(user.id)}>X</button>
+      </div>
+    </AccessControl>
+    
     </div>
   )
 }

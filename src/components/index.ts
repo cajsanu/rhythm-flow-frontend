@@ -12,6 +12,7 @@ import { Alerts } from "./alert"
 import { Projects } from "./projects"
 import { UpdateProject } from "./updateProject"
 import { Users } from "./users"
+import { AccessControl } from "./AccessControl"
 
 export {
   CreateWorkspaceForm,
@@ -27,5 +28,6 @@ export {
   Alerts,
   Projects,
   UpdateProject,
-  Users
+  Users,
+  AccessControl
 }

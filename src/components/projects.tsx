@@ -3,6 +3,7 @@ import { useDeleteProject } from "@/hooks/projectManagement"
 import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 import { timedAlert } from "@/reducers/alertSlice"
 import { Project } from "@/types/project"
+import { AccessControl } from "./AccessControl"
 
 type SingleProjProps = {
   name: string
@@ -14,11 +15,6 @@ type SingleProjProps = {
 const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
   const deleteProjectMutation = useDeleteProject()
   const dispatch = useAppDispatch()
-
-  const { role, isLoading: roleLoading, error: roleError } = useRoleOfCurrentUser(wsId)
-
-  if (roleLoading) return <div>Loading...</div>
-  if (roleError) return <div>Error loading data...</div>
 
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete project ${name}?`)) {
@@ -42,7 +38,7 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
   }
   return (
     <div className="relative border rounded-lg p-6 bg-gradient-to-br from-sky-300 to-sky-800 shadow-md hover:shadow-lg transition-shadow duration-300 hover:from-sky-400 hover:to-sky-900">
-      {role === 0 || role === 1 ? (
+      <AccessControl minimumRequiredRole={1}>
         <div className="absolute top-2 right-2 px-2 py-1 bg-black rounded-full text-gray-100 font-bold cursor-pointer hover:bg-rose-900 transition-colors duration-300">
           <button
             onClick={(e) => {
@@ -53,7 +49,7 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
             X
           </button>
         </div>
-      ) : null}
+      </AccessControl>
 
       <a
         href={`${wsId}/project/${id}`}
