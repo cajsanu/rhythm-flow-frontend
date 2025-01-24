@@ -1,15 +1,26 @@
 import { useParams } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { useGetUsersInWorkspace, useGetWorkspaceById } from "@/hooks/workspaceManagement"
+import {
+  useGetUserRoleInworkspace,
+  useGetUsersInWorkspace,
+  useGetWorkspaceById
+} from "@/hooks/workspaceManagement"
 import { useGetProjectsInWorkspace } from "@/hooks/projectManagement"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle
+} from "@/components/ui/dialog"
 import { useGetUserById } from "@/hooks/userManagement"
 import { Alerts, Users, AddUserToWorkspace, Projects, CreateProjectForm } from "@/components"
 import { useDebounce } from "@/hooks/useDebounce"
 import SearchIcon from "@mui/icons-material/Search"
 import { AxiosError } from "axios"
+import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 
 export const WorkspaceView = () => {
   const { wsId = "" } = useParams<{ wsId: string }>()
@@ -36,6 +47,8 @@ export const WorkspaceView = () => {
 
   const { data: users, isLoading: usersLoading, error: usersError } = useGetUsersInWorkspace(wsId)
 
+  const { role, isLoading: roleLoading, error: roleError } = useRoleOfCurrentUser(wsId)
+
   const handleCreateProject = () => setShowCreateProject((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
   const handleShowUsers = () => setShowUsers((prev) => !prev)
@@ -47,9 +60,9 @@ export const WorkspaceView = () => {
   const handleCloseProjectForm = () => setShowCreateProject(false)
   const handleCloseAddUsers = () => setShowAddUsers(false)
 
-  if ((projects && projLoading) || (workspace && wsLoading) || (owner && ownerLoading))
+  if (wsLoading || projLoading || usersLoading || ownerLoading || roleLoading)
     return <div>Loading...</div>
-  if (projError || wsError || ownerError) {
+  if (projError || wsError || ownerError || usersError) {
     if ((wsError as AxiosError).response?.status === 403) {
       return (
         <div className="bg-gray-100 rounded p-2 text-rose-800">
@@ -58,6 +71,14 @@ export const WorkspaceView = () => {
       )
     }
     return <div className="bg-gray-100 rounded p-2 text-rose-800">Not found.</div>
+  }
+
+  if (roleError) {
+    return (
+      <div className="bg-gray-100 rounded p-2 text-rose-800">
+        There was a problem finding user details.
+      </div>
+    )
   }
 
   return (
@@ -75,9 +96,13 @@ export const WorkspaceView = () => {
             <div className="text-center">
               <div className="flex space-x-4 justify-center">
                 <div className="flex space-x-4">
-                  <Button onClick={handleCreateProject}>+ Create Project</Button>
-                  <Button onClick={handleShowAddUsers}>+ Add User</Button>
-                  <Button onClick={handleShowUsers}>Current users</Button>
+                  {role !== undefined && (
+                    <>
+                      {role <= 1 && <Button onClick={handleCreateProject}>+ Create Project</Button>}
+                      {role === 0 && <Button onClick={handleShowAddUsers}>+ Add User</Button>}
+                      <Button onClick={handleShowUsers}>Current users</Button>
+                    </>
+                  )}
                   <div>
                     <Dialog open={showCreateProject} onOpenChange={handleCreateProject}>
                       <DialogContent>
@@ -111,7 +136,7 @@ export const WorkspaceView = () => {
                           </DialogDescription>
                         </DialogHeader>
                         {users && users.length > 0 ? (
-                          <Users users={users} typeOfResource="workspace"/>
+                          <Users users={users} typeOfResource="workspace" />
                         ) : (
                           <p className="text-gray-500 mt-4 text-center">
                             No users in this workspace.

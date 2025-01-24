@@ -56,16 +56,7 @@ export const CreateProjectForm = ({ closeForm }: { closeForm: () => void }) => {
         })
       )
       closeForm()
-    } catch (err: any) {
-      if (err.response?.status === 403) {
-        dispatch(
-          timedAlert({
-            message: "You are not authorized to create projects in this workspace",
-            severity: "warning"
-          })
-        )
-        return
-      }
+    } catch (err) {
       dispatch(
         timedAlert({
           message: "An error occurred while creating the project",

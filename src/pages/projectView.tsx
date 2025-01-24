@@ -18,6 +18,7 @@ import {
   UpdateProject,
   Users
 } from "@/components"
+import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 
 export type Column = { id: number; title: string; tickets: Ticket[] }
 
@@ -27,13 +28,15 @@ export const ProjectView = () => {
   const [showAddUsers, setShowAddUsers] = useState(false)
   const [showUsers, setShowUsers] = useState(false)
 
-  const userId = window.localStorage.getItem("userId") ?? ""
+  const userId = window.localStorage.getItem("userId")
 
   const {
     data: project,
     isLoading: projLoading,
     error: projError
   } = useGetProjectById(projectId, wsId)
+
+  const { role, isLoading: roleLoading, error: roleError } = useRoleOfCurrentUser(wsId)
 
   const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
@@ -43,8 +46,8 @@ export const ProjectView = () => {
 
   const handleCloseAddUsers = () => setShowAddUsers(false)
 
-  if (projLoading) return <div>Loading...</div>
-  if (projError) return <div>Error loading data...</div>
+  if (projLoading || roleLoading) return <div>Loading...</div>
+  if (projError || roleError) return <div>Error loading data...</div>
 
   const userInProject = project?.users?.find((u) => u.id === userId)
 
@@ -69,12 +72,16 @@ export const ProjectView = () => {
           >
             + Create Ticket
           </Button>
-          <Button
-            className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100"
-            onClick={handleShowAddUsers}
-          >
-            + Add Users
-          </Button>
+
+          {(role === 0 || role === 1) && (
+            <Button
+              className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100"
+              onClick={handleShowAddUsers}
+            >
+              + Add Users
+            </Button>
+          )}
+
           <Button
             className="bg-gray-200 text-gray-900 font-bold hover:bg-gray-100"
             onClick={handleShowUsers}

@@ -3,7 +3,7 @@ import { Alerts } from "@/components/alert"
 
 export const Signup = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-sky-400 to-rose-400">
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-sky-800 via-black to-sky-800">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md m-5">
         <Alerts />
         <div className="text-center mb-8">

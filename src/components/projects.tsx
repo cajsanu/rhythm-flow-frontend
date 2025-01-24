@@ -1,5 +1,6 @@
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { useDeleteProject } from "@/hooks/projectManagement"
+import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 import { timedAlert } from "@/reducers/alertSlice"
 import { Project } from "@/types/project"
 
@@ -14,6 +15,11 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
   const deleteProjectMutation = useDeleteProject()
   const dispatch = useAppDispatch()
 
+  const { role, isLoading: roleLoading, error: roleError } = useRoleOfCurrentUser(wsId)
+
+  if (roleLoading) return <div>Loading...</div>
+  if (roleError) return <div>Error loading data...</div>
+
   const handleDelete = async () => {
     if (window.confirm(`Are you sure you want to delete project ${name}?`)) {
       try {
@@ -24,16 +30,7 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
             severity: "success"
           })
         )
-      } catch (err: any) {
-        if (err.response?.status === 403) {
-          dispatch(
-            timedAlert({
-              message: "You are not authorized to delete this project",
-              severity: "warning"
-            })
-          )
-          return
-        }
+      } catch (err) {
         dispatch(
           timedAlert({
             message: "An error occurred while deleting the project",
@@ -45,16 +42,19 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
   }
   return (
     <div className="relative border rounded-lg p-6 bg-gradient-to-br from-sky-300 to-sky-800 shadow-md hover:shadow-lg transition-shadow duration-300 hover:from-sky-400 hover:to-sky-900">
-      <div className="absolute top-2 right-2 px-2 py-1 bg-black rounded-full text-gray-100 font-bold cursor-pointer hover:bg-rose-900 transition-colors duration-300">
-        <button
-          onClick={(e) => {
-            e.stopPropagation()
-            handleDelete()
-          }}
-        >
-          X
-        </button>
-      </div>
+      {role === 0 || role === 1 ? (
+        <div className="absolute top-2 right-2 px-2 py-1 bg-black rounded-full text-gray-100 font-bold cursor-pointer hover:bg-rose-900 transition-colors duration-300">
+          <button
+            onClick={(e) => {
+              e.stopPropagation()
+              handleDelete()
+            }}
+          >
+            X
+          </button>
+        </div>
+      ) : null}
+
       <a
         href={`${wsId}/project/${id}`}
         className="flex flex-col items-start gap-2 hover:no-underline"

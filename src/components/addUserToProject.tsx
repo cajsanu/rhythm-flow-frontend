@@ -29,16 +29,7 @@ export const AddUserToProject = ({ closeModal }: { closeModal: () => void }) => 
         })
       )
       closeModal()
-    } catch (err: any) {
-      if (err.response?.status === 403) {
-        dispatch(
-          timedAlert({
-            message: "You are not authorized to add users to this project",
-            severity: "warning"
-          })
-        )
-        return
-      }
+    } catch (err) {
       dispatch(
         timedAlert({
           message: "An error occurred while adding the user to the project",

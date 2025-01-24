@@ -59,16 +59,7 @@ export const CreateTicketForm = ({ closeForm }: { closeForm: () => void }) => {
         })
       )
       closeForm()
-    } catch (err: any) {
-      if (err.response?.status === 403) {
-        dispatch(
-          timedAlert({
-            message: "You are not authorized to create tickets in this project",
-            severity: "warning"
-          })
-        )
-        return
-      }
+    } catch (err) {
       dispatch(
         timedAlert({
           message: "An error occurred while creating the ticket",

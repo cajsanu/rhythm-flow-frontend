@@ -1,5 +1,6 @@
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { useUnassignUserFromProject } from "@/hooks/projectManagement"
+import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 import { useGetUserRoleInworkspace } from "@/hooks/workspaceManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 import { Project } from "@/types/project"
@@ -15,9 +16,14 @@ const SingleUser = ({
 }) => {
   const { wsId = "" } = useParams<{ wsId: string }>()
   const { data: role, isLoading, error } = useGetUserRoleInworkspace(wsId, user.id)
+  const {
+    role: currentUserRole,
+    isLoading: currentUserRoleLoading,
+    error: currentUserRoleError
+  } = useRoleOfCurrentUser(wsId)
 
-  if (isLoading) return <div>Loading...</div>
-  if (error) return <div>Error: {error.message}</div>
+  if (isLoading || currentUserRoleLoading) return <div>Loading...</div>
+  if (error || currentUserRoleError) return <div>Error loading data</div>
 
   const mappedRole =
     role === 0 ? " (Workspace Owner)" : role === 1 ? " (Project Manager)" : " (User)"
@@ -36,9 +42,11 @@ const SingleUser = ({
           {user.email} <span className="text-xs text-gray-500">{mappedRole}</span>
         </span>
       </div>
-      <div className="px-2 py-1 bg-rose-300 rounded-full text-rose-800 font-bold cursor-pointer hover:bg-rose-400 transition-colors duration-300">
-        <button onClick={() => handleDelete(user.id)}>X</button>
-      </div>
+      {currentUserRole === 0 || currentUserRole === 1 ? (
+        <div className="px-2 py-1 bg-rose-300 rounded-full text-rose-800 font-bold cursor-pointer hover:bg-rose-400 transition-colors duration-300">
+          <button onClick={() => handleDelete(user.id)}>X</button>
+        </div>
+      ) : null}
     </div>
   )
 }
@@ -81,14 +89,13 @@ export const Users = ({ users, typeOfResource, project }: UsersProps) => {
           projectId: project?.id ?? "",
           userId: userId
         })
-
         dispatch(
           timedAlert({
             message: "User removed from project",
             severity: "success"
           })
         )
-      } catch (error) {
+      } catch (err) {
         dispatch(
           timedAlert({
             message: "An error occurred while removing the user from the project",

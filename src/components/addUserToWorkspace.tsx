@@ -27,11 +27,7 @@ export const AddUserToWorkspace = ({ closeModal }: { closeModal: () => void }) =
       }
 
       const mappedRole =
-        selectedRole === 0
-          ? " Workspace Owner"
-          : selectedRole === 1
-          ? " Project Manager"
-          : " User"
+        selectedRole === 0 ? " Workspace Owner" : selectedRole === 1 ? " Project Manager" : " User"
 
       // Validate the input against the schema
       userWorkspaceSchema.parse(data)
@@ -44,16 +40,7 @@ export const AddUserToWorkspace = ({ closeModal }: { closeModal: () => void }) =
         })
       )
       closeModal()
-    } catch (err: any) {
-      if (err.response?.status === 403) {
-        dispatch(
-          timedAlert({
-            message: "You are not authorized to add users to this workspace",
-            severity: "warning"
-          })
-        )
-        return
-      }
+    } catch (err) {
       dispatch(
         timedAlert({
           message: "An error occurred while adding the user to the workspace",

@@ -117,7 +117,7 @@ export const SignupForm = () => {
             />
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full">
+            <Button type="submit" className="w-full bg-sky-700 hover:bg-sky-600 text-white">
               Sign Up
             </Button>
           </CardFooter>

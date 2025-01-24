@@ -225,16 +225,7 @@ export const Kanban = ({ workspaceId }: KanbanProps) => {
         workspaceId: workspaceId,
         updatedTicket: { ...ticket, status: targetColumnId }
       })
-    } catch (err: any) {
-      if (err.response?.status === 403) {
-        dispatch(
-          timedAlert({
-            message: "You are not authorized to update tickets in this project",
-            severity: "warning"
-          })
-        )
-        return
-      }
+    } catch (err) {
       dispatch(
         timedAlert({
           message: "An error occurred while updating the ticket status",
