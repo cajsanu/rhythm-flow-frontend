@@ -73,6 +73,9 @@ The application leverages modern web development tools and frameworks:
 - **TailwindCSS**: For styling and responsive design.
 - **TanStack Query**: For server state management and API interaction.
 - **Redux Toolkit**: For global state management.
+- **React Hook Form** Integrated with **Zod**
+
+## Testing
 
 
 ## Future features and improvements

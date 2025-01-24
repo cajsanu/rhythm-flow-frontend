@@ -71,7 +71,7 @@ export const UpdateProject = ({ project }: { project: Project }) => {
   }
 
   return (
-    <div className="p-8 bg-gray-800 text-gray-100 rounded-lg shadow-lg">
+    <div className="p-8 bg-gradient-to-br from-sky-800 via-black to-sky-800 text-gray-100 rounded-lg shadow-lg">
       <div className="text-4xl font-bold pb-4">
         {editingField === "name" ? (
           <textarea

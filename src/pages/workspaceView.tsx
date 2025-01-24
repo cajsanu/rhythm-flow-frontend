@@ -61,7 +61,7 @@ export const WorkspaceView = () => {
   }
 
   return (
-    <div className="flex justify-center py-10 bg-gray-900 h-screen">
+    <div className="flex justify-center py-10 bg-gradient-to-br from-sky-800 via-black to-sky-800 h-screen">
       <Card className="w-5/6 max-w-4xl shadow-lg">
         <CardHeader>
           {!showCreateProject && !showAddUsers && <Alerts />}

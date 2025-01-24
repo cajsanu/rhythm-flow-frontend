@@ -44,8 +44,8 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
     }
   }
   return (
-    <div className="relative border rounded-lg p-6 bg-gradient-to-br from-rose-100 to-rose-200 shadow-md hover:shadow-lg transition-shadow duration-300">
-      <div className="absolute top-2 right-2 px-2 py-1 bg-rose-300 rounded-full text-rose-800 font-bold cursor-pointer hover:bg-rose-400 transition-colors duration-300">
+    <div className="relative border rounded-lg p-6 bg-gradient-to-br from-sky-300 to-sky-800 shadow-md hover:shadow-lg transition-shadow duration-300 hover:from-sky-400 hover:to-sky-900">
+      <div className="absolute top-2 right-2 px-2 py-1 bg-black rounded-full text-gray-100 font-bold cursor-pointer hover:bg-rose-900 transition-colors duration-300">
         <button
           onClick={(e) => {
             e.stopPropagation()
@@ -59,7 +59,7 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
         href={`${wsId}/project/${id}`}
         className="flex flex-col items-start gap-2 hover:no-underline"
       >
-        <h3 className="font-bold text-lg text-gray-800">{name}</h3>
+        <h3 className="font-bold text-lg text-gray-900">{name}</h3>
         <p className="text-sm text-gray-600">
           <span className="font-medium">Due:</span> {endDate}
         </p>

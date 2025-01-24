@@ -29,7 +29,11 @@ export const ProjectView = () => {
 
   const userId = window.localStorage.getItem("userId") ?? ""
 
-  const { data: project, isLoading: projLoading, error: projError } = useGetProjectById(projectId, wsId)
+  const {
+    data: project,
+    isLoading: projLoading,
+    error: projError
+  } = useGetProjectById(projectId, wsId)
 
   const handleCreateTicket = () => setShowCreateTicket((prev) => !prev)
   const handleShowAddUsers = () => setShowAddUsers((prev) => !prev)
@@ -45,7 +49,11 @@ export const ProjectView = () => {
   const userInProject = project?.users?.find((u) => u.id === userId)
 
   if (!userInProject) {
-    return <div>You are not authorized to view this project</div>
+    return (
+      <div className="p-10 font-bold bg-gray-100 rounded p-2 text-rose-800">
+        You are not authorized to view this project
+      </div>
+    )
   }
 
   return (
@@ -115,7 +123,7 @@ export const ProjectView = () => {
             <DialogDescription>List of users currently in this project.</DialogDescription>
           </DialogHeader>
           {project?.users ? (
-            <Users users={project.users} typeOfResource="project" project={project}/>
+            <Users users={project.users} typeOfResource="project" project={project} />
           ) : (
             <p className="text-gray-500 mt-4 text-center">No users in this project.</p>
           )}

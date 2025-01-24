@@ -169,9 +169,9 @@ const SingleColumn = ({
 
   return (
     <div ref={drop}>
-      <Card className="bg-gradient-to-r from-sky-300 to-rose-400">
+      <Card className="bg-gradient-to-br from-sky-900 via-sky-300 to-sky-900">
         <CardHeader className="p-4">
-          <CardTitle className="text-lg font-bold text-gray-900">{column.title}</CardTitle>
+          <CardTitle className="text-lg font-bold text-gray-100">{column.title}</CardTitle>
         </CardHeader>
         <CardContent className="p-0">
           <ScrollArea className="h-96">
