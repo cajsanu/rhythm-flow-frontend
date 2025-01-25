@@ -79,7 +79,7 @@ export const useAddUserToWorkspace = () => {
 
 export const useGetUserRoleInworkspace = (workspaceId: string, userId: string) => {
   const { data, isLoading, error } = useQuery<Role>({
-    queryKey: ["userworkspace", userId],
+    queryKey: ["userworkspace", workspaceId, userId],
     queryFn: () => workspaceRequests.getUserRoleInWorkspace(workspaceId, userId)
   })
   return { data, isLoading, error }

@@ -1,7 +1,6 @@
 import { useParams } from "react-router-dom"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
-  useGetUserRoleInworkspace,
   useGetUsersInWorkspace,
   useGetWorkspaceById
 } from "@/hooks/workspaceManagement"

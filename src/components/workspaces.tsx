@@ -1,5 +1,4 @@
 import { useAppDispatch } from "@/hooks/alertManagement"
-import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 import { useDeleteWorkspace } from "@/hooks/workspaceManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 import { Workspace } from "@/types/workspace"
@@ -46,7 +45,7 @@ const SingleWorkspace = ({ name, id }: SingleWSProps) => {
 
   return (
     <div className="relative border rounded-lg w-64 py-8 text-gray-200 hover:text-white bg-gradient-to-br from-sky-900 via-sky-500 to-sky-900 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col justify-between">
-      <AccessControl minimumRequiredRole={0}>
+      <AccessControl workspaceId={id} minimumRequiredRole={0}>
         <div className="absolute top-2 right-2 px-2 py-1 bg-black rounded-full text-gray-100 font-bold cursor-pointer hover:bg-rose-900 transition-colors duration-300">
           <button
             onClick={(e) => {

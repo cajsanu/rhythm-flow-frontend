@@ -1,6 +1,5 @@
 import { useAppDispatch } from "@/hooks/alertManagement"
 import { useUnassignUserFromProject } from "@/hooks/projectManagement"
-import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 import { useGetUserRoleInworkspace } from "@/hooks/workspaceManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 import { Project } from "@/types/project"
