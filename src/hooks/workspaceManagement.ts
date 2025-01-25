@@ -77,10 +77,12 @@ export const useAddUserToWorkspace = () => {
   return assignUserMutation
 }
 
-export const useGetUserRoleInworkspace = (workspaceId: string, userId: string) => {
+export const useGetUserRoleInworkspace = (workspaceId: string, userId: string | null) => {
   const { data, isLoading, error } = useQuery<Role>({
+    enabled: !!userId,
     queryKey: ["userworkspace", workspaceId, userId],
-    queryFn: () => workspaceRequests.getUserRoleInWorkspace(workspaceId, userId)
+    // will not call the queryFn if userId is null. See enabled above
+    queryFn: () => workspaceRequests.getUserRoleInWorkspace(workspaceId, userId ?? "")
   })
   return { data, isLoading, error }
 }

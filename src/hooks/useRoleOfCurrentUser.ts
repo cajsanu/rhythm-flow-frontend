@@ -22,7 +22,7 @@ export const useRoleOfCurrentUser = (workspaceId: string): RoleResult => {
     data: currentUserRole,
     isLoading,
     error
-  } = useGetUserRoleInworkspace(workspaceId, userId ?? "")
+  } = useGetUserRoleInworkspace(workspaceId, userId)
 
   return {
     role: currentUserRole,
