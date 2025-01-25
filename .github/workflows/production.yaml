@@ -1,0 +1,13 @@
+name: Deployment pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  simple_deployment_pipeline:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: call Render.io hook to trigger the deploy
+        run: |
+          curl ${{ secrets.RENDER_DEPLOY_HOOK }}
