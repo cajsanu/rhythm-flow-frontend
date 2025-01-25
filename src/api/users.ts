@@ -1,5 +1,5 @@
 import { CreateUser, UpdateUser, User } from "../types/user"
-import axios from "axios"
+import axios from "."
 import { getAuthConfig } from "./utils"
 const baseURL = "/api/v1/users"
 

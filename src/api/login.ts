@@ -1,5 +1,5 @@
 import { LoginCredentials } from "@/types/user"
-import axios from "axios"
+import axios from "."
 const baseURL = "/api/v1/authentication/login"
 
 export const login = async ({ email, password }: LoginCredentials): Promise<string> => {

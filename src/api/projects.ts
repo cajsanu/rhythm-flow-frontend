@@ -1,5 +1,5 @@
 import { CreateProject, Project, UpdateProject } from "@/types/project"
-import axios from "axios"
+import axios from "."
 import { getAuthConfig } from "./utils"
 import { User } from "@/types/user"
 const baseURL = "/api/v1/workspaces/:workspaceId/projects"

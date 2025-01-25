@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "."
 import { getAuthConfig } from "./utils"
 import { CreateTicket, Ticket, UpdateTicket } from "@/types/ticket"
 const baseURL = "/api/v1/workspaces/:workspaceId/projects/:projectId/tickets"

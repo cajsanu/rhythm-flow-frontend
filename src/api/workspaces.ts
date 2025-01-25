@@ -1,4 +1,4 @@
-import axios from "axios"
+import axios from "."
 import { getAuthConfig } from "./utils"
 import { CreateWorkspace, UpdateWorkspace, UserWorkspace, Workspace } from "../types/workspace"
 import { Role } from "../types/role"
