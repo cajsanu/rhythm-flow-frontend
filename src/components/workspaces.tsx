@@ -3,6 +3,7 @@ import { useDeleteWorkspace } from "@/hooks/workspaceManagement"
 import { timedAlert } from "@/reducers/alertSlice"
 import { Workspace } from "@/types/workspace"
 import { AccessControl } from "./AccessControl"
+import { Link } from "react-router-dom"
 
 type SingleWSProps = {
   name: string
@@ -58,9 +59,9 @@ const SingleWorkspace = ({ name, id }: SingleWSProps) => {
         </div>
       </AccessControl>
 
-      <a href={`/workspace/${id}`} className="flex items-center gap-2 h-full px-4">
+      <Link to={`/workspace/${id}`} className="flex items-center gap-2 h-full px-4">
         <h3 className="font-bold text-lg">{name}</h3>
-      </a>
+      </Link>
     </div>
   )
 }

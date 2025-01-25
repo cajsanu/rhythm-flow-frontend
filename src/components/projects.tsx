@@ -4,6 +4,7 @@ import { useRoleOfCurrentUser } from "@/hooks/useRoleOfCurrentUser"
 import { timedAlert } from "@/reducers/alertSlice"
 import { Project } from "@/types/project"
 import { AccessControl } from "./AccessControl"
+import { Link } from "react-router-dom"
 
 type SingleProjProps = {
   name: string
@@ -51,15 +52,15 @@ const SingleProject = ({ name, endDate, id, wsId }: SingleProjProps) => {
         </div>
       </AccessControl>
 
-      <a
-        href={`${wsId}/project/${id}`}
+      <Link
+        to={`/workspace/${wsId}/project/${id}`}
         className="flex flex-col items-start gap-2 hover:no-underline"
       >
         <h3 className="font-bold text-lg text-gray-900">{name}</h3>
         <p className="text-sm text-gray-600">
           <span className="font-medium">Due:</span> {endDate}
         </p>
-      </a>
+      </Link>
     </div>
   )
 }

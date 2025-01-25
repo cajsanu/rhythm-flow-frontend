@@ -1,6 +1,6 @@
 import React from "react"
 import ReactDOM from "react-dom/client"
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { createBrowserRouter, redirect, RouterProvider } from "react-router-dom"
 import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { Provider } from "react-redux"
 import { store } from "./store"
@@ -11,6 +11,14 @@ import { Home, Login, Signup, WorkspaceView, ProjectView } from "./pages"
 const router = createBrowserRouter([
   {
     path: "/",
+    loader: () => {
+      const token = localStorage.getItem("token")
+      const userId = localStorage.getItem("userId")
+      if (token && userId) {
+        throw redirect(`/home/${userId}`)
+      }
+      return null
+    },
     element: <Login />,
     errorElement: <div>"Not found"</div>
   },
@@ -37,6 +45,8 @@ const router = createBrowserRouter([
 ])
 
 const handleUnauthorized = () => {
+  localStorage.removeItem("token")
+  localStorage.removeItem("userId")
   window.location.href = "/"
 }
 
