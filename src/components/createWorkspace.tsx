@@ -38,7 +38,7 @@ export const CreateWorkspaceForm = ({ closeForm }: { closeForm: () => void }) =>
         severity: "error"
       })
     )
-    return
+    return null
   }
 
   const onSubmit: SubmitHandler<CreateWorkspace> = async (data) => {

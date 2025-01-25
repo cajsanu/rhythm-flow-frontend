@@ -4,7 +4,7 @@
 
 This is a **Task Management Application** designed to help users manage tasks. The application allows users to manage their workspaces, projects, and tickets effectively. Roles are handled at the workspace level, and creators of workspaces can assign users to their workspace. A dynamic Kanban drag-and-drop feature ensures efficient ticket management within projects.
 
-The project is a React + TypeScript frontend that integrates with this backend: __________. The project was made during three weeks of intense keyboard abuse and neglect of human nature. The focus was on not touching the already existing backend and to implement as many features as possible.
+The project is a React + TypeScript frontend that integrates with this backend: *https://github.com/cajsanu/rhythm-flow-backend*. The project was made during three weeks of intense keyboard abuse and neglect of human nature. The focus was on not touching the already existing backend and to implement as many features as possible.
 
 ## Get started
 
@@ -20,7 +20,7 @@ Ensure you have the following installed:
 1. **Clone the Repository**  
    Clone the project to your local machine:  
    ```bash
-   git clone https://github.com/cajsanu/fs19_frontend
+   git clone https://github.com/cajsanu/rhythm-flow-frontend
 
 2. Use Yarn to **install packages** with
   `yarn install`

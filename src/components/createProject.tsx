@@ -43,7 +43,7 @@ export const CreateProjectForm = ({ closeForm }: { closeForm: () => void }) => {
         severity: "error"
       })
     )
-    return
+    return null
   }
 
   const onSubmit: SubmitHandler<CreateProject> = async (data: CreateProject) => {

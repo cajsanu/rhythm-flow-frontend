@@ -44,7 +44,7 @@ export const CreateTicketForm = ({ closeForm }: { closeForm: () => void }) => {
         severity: "error"
       })
     )
-    return
+    return null
   }
 
   const onSubmit: SubmitHandler<CreateTicket> = async (data: CreateTicket) => {

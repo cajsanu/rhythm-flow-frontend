@@ -38,22 +38,20 @@ export const Home = () => {
   return (
     <div className="flex h-screen bg-gradient-to-br from-sky-800 via-black to-sky-800">
       <aside className="transform bg-gradient-to-tr from-sky-800 to-black text-white flex flex-col p-6 transition-transform duration-300 max-w-96 w-full">
-        <>
-          <h2 className="text-2xl font-bold mb-4">Workspaces</h2>
-          <div className="flex-1 overflow-y-auto flex flex-wrap gap-4">
-            {workspaces && workspaces.length > 0 ? (
-              <Workspaces workspaces={workspaces} />
-            ) : (
-              <p>No workspaces found.</p>
-            )}
-          </div>
-          <Button
-            className="mt-4 bg-gray-100 text-black font-bold hover:bg-gray-200"
-            onClick={handleCreateWorkspace}
-          >
-            Create Workspace
-          </Button>
-        </>
+        <h2 className="text-2xl font-bold mb-4">Workspaces</h2>
+        <div className="flex-1 overflow-y-auto flex flex-wrap gap-4">
+          {workspaces && workspaces.length > 0 ? (
+            <Workspaces workspaces={workspaces} />
+          ) : (
+            <p>No workspaces found.</p>
+          )}
+        </div>
+        <Button
+          className="mt-4 bg-gray-100 text-black font-bold hover:bg-gray-200"
+          onClick={handleCreateWorkspace}
+        >
+          Create Workspace
+        </Button>
       </aside>
 
       <main className="flex-1 flex flex-col">
