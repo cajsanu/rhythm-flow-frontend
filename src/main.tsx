@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     loader: () => {
       const token = localStorage.getItem("token")
       const userId = localStorage.getItem("userId")
-      if (token && userId) {
+      if (token && userId) { 
         throw redirect(`/home/${userId}`)
       }
       return null
@@ -45,8 +45,7 @@ const router = createBrowserRouter([
 ])
 
 const handleUnauthorized = () => {
-  localStorage.removeItem("token")
-  localStorage.removeItem("userId")
+  localStorage.clear()
   window.location.href = "/"
 }
 

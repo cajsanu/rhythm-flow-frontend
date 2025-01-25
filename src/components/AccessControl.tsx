@@ -11,7 +11,6 @@ export const AccessControl = ({
   workspaceId?: string
   children: React.ReactNode
 }) => {
-  console.log(workspaceId)
   const { wsId = "" } = useParams<{ wsId: string }>()
   // if workspaceId is not provided, use the workspaceId from the URL
   const { role, isLoading, error } = useRoleOfCurrentUser(workspaceId ?? wsId)
